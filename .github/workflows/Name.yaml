@@ -1,0 +1,28 @@
+name: Check PR name
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+    branches:
+    - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check_name:
+    name: Check PR name
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR Naming Convention
+        run: |
+          pr_title="${{ github.event.pull_request.title }}"
+          pattern="^(feat|chore|test|refactor|fix)\(#[0-9]+\) [A-Z].+"
+          if [[ ! "$pr_title" =~ $pattern ]]; then
+            echo "Pull request title does not match the required pattern."
+            echo "Title format should be: <pr-type>(#<pr-num>) <pr-full-title>"
+            echo "Allowed types: feat, chore, test, refactor, fix"
+            echo "Example: 'feat(#1) Add feature'"
+            exit 1
+          fi
