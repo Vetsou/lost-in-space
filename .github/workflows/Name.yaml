@@ -18,11 +18,12 @@ jobs:
       - name: Check PR Naming Convention
         run: |
           pr_title="${{ github.event.pull_request.title }}"
-          pattern="^(feat|chore|test|refactor|fix)\(#[0-9]+\) [A-Z].+"
+          pattern="^(feat|chore|refactor|fix)\(#[0-9]+(,#[0-9]+)*\) [A-Z].+"
           if [[ ! "$pr_title" =~ $pattern ]]; then
             echo "Pull request title does not match the required pattern."
-            echo "Title format should be: <pr-type>(#<pr-num>) <pr-full-title>"
-            echo "Allowed types: feat, chore, test, refactor, fix"
-            echo "Example: 'feat(#1) Add feature'"
+            echo "Title format should be: <pr-type>(#<issue-nums>) <pr-full-title>"
+            echo "Allowed types: feat, chore, refactor, fix"
+            echo "Example 1: 'feat(#1) Add feature'"
+            echo "Example 2: 'fix(#22,#13,#7) Add multiple fixes'"
             exit 1
           fi
