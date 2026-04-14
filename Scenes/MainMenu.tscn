@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://ctsnqtbg2rxqe"]
+
+[ext_resource type="Script" uid="uid://bwh3j7fvyitwk" path="res://Scripts/MainMenu.cs" id="1_tt5f1"]
+
+[node name="MainMenu" type="Node2D" unique_id=703334634]
+script = ExtResource("1_tt5f1")
+
+[node name="StartButton" type="Button" parent="." unique_id=2133388026]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 56.0
+offset_bottom = 41.0
+text = "Start"
+
+[node name="SettingsButton" type="Button" parent="." unique_id=1471047026]
+offset_left = 10.0
+offset_top = 50.0
+offset_right = 80.0
+offset_bottom = 81.0
+text = "Settings"
+
+[node name="ExitButton" type="Button" parent="." unique_id=670867117]
+offset_left = 10.0
+offset_top = 90.0
+offset_right = 56.0
+offset_bottom = 121.0
+text = "Exit"
+
+[connection signal="pressed" from="StartButton" to="." method="OnStartPressed"]
+[connection signal="pressed" from="ExitButton" to="." method="OnExitPressed"]
