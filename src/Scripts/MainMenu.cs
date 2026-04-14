@@ -5,7 +5,7 @@ public partial class MainMenu : Scene
 {
 	private void OnStartPressed()
     {
-        EmitSignal(SignalName.RequestSceneChange, "LEVEL_SELECTOR");
+        ChangeScene("LEVEL_SELECTOR");
     }
 
 	private void OnExitPressed()

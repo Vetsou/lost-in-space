@@ -5,7 +5,7 @@ public partial class SceneManager : Node
 {
 	private Node sceneContainer;
 	
-	[Export] private Godot.Collections.Dictionary<string, Resource> scenePaths;
+	[Export] private Godot.Collections.Dictionary<string, Resource> sceneIds;
 
 	public override void _Ready()
 	{
@@ -25,30 +25,32 @@ public partial class SceneManager : Node
 		_ = ChangeScene("MAIN_MENU");
 	}
 
-	public async Task ChangeScene(string sceneId)
+	// this will be async and await transitions when we need them
+	private Task ChangeScene(string sceneId)
 	{
 		foreach (Node child in sceneContainer.GetChildren())
 		{
 			child.QueueFree();
 		}
 
-		if (!scenePaths.TryGetValue(sceneId, out Resource res))
+		if (!sceneIds.TryGetValue(sceneId, out Resource res))
 		{
 			GD.PushError($"Scene not found: {sceneId}");
-			return;
+			return Task.CompletedTask;
 		}
 
 		var newScene = (Scene)((PackedScene)res).Instantiate();
 		newScene.RequestSceneChange += OnSceneChangeRequested;
 		sceneContainer.AddChild(newScene);
+		return Task.CompletedTask;
 	}
 
 #if TOOLS
 	private void ValidateScenes()
 	{
-		foreach (string key in scenePaths.Keys)
+		foreach (string key in sceneIds.Keys)
 		{
-			Resource res = scenePaths[key];
+			Resource res = sceneIds[key];
 			if (res is not PackedScene scene)
 			{
 				GD.PushError($"Resource for {key} is not a PackedScene");
