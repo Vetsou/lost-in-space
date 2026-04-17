@@ -1,46 +1,32 @@
-using Godot;
 using System.Threading.Tasks;
+using Godot;
 
 public partial class SceneManager : Node
 {
-	private Node sceneContainer;
-	
-	[Export] private Godot.Collections.Dictionary<string, Resource> sceneIds;
+	[Export] private Node sceneContainer;
+
+	[Export] private Godot.Collections.Dictionary<SceneId, PackedScene> sceneIds;
 
 	public override void _Ready()
 	{
-		sceneContainer = GetNode("SceneContainer");
-
-		if (sceneContainer == null)
-		{
-			GD.PushError("SceneContainer node not found!");
-			GetTree().Quit();
-			return;
-		}
-
-		#if TOOLS
+#if TOOLS
 		ValidateScenes();
-		#endif
+#endif
 
-		_ = ChangeScene("MAIN_MENU");
+		ChangeScene(SceneId.MAIN_MENU);
 	}
 
 	// this will be async and await transitions when we need them
-	private Task ChangeScene(string sceneId)
+	private Task ChangeScene(SceneId sceneId)
 	{
 		foreach (Node child in sceneContainer.GetChildren())
 		{
 			child.QueueFree();
 		}
 
-		if (!sceneIds.TryGetValue(sceneId, out Resource res))
-		{
-			GD.PushError($"Scene not found: {sceneId}");
-			return Task.CompletedTask;
-		}
-
-		var newScene = (Scene)((PackedScene)res).Instantiate();
-		newScene.RequestSceneChange += OnSceneChangeRequested;
+		var newScene = (Scene)sceneIds[sceneId].Instantiate();
+		//newScene.RequestSceneChange += OnSceneChangeRequested;
+		newScene.Connect(Scene.SignalName.RequestSceneChange, Callable.From<SceneId>(OnSceneChangeRequested));
 		sceneContainer.AddChild(newScene);
 		return Task.CompletedTask;
 	}
@@ -48,17 +34,16 @@ public partial class SceneManager : Node
 #if TOOLS
 	private void ValidateScenes()
 	{
-		foreach (string key in sceneIds.Keys)
+		foreach (SceneId key in sceneIds.Keys)
 		{
-			Resource res = sceneIds[key];
-			if (res is not PackedScene scene)
+			if (!sceneIds.TryGetValue(key, out PackedScene scene))
 			{
-				GD.PushError($"Resource for {key} is not a PackedScene");
+				GD.PushError($"Scene '{key}' not found");
 				GetTree().Quit();
 				return;
 			}
 
-			Node tempInstance = scene.Instantiate();
+			Node tempInstance = sceneIds[key].Instantiate();
 
 			if (tempInstance is not Scene)
 			{
@@ -73,7 +58,7 @@ public partial class SceneManager : Node
 	}
 #endif
 
-	private async void OnSceneChangeRequested(string sceneId)
+	private async void OnSceneChangeRequested(SceneId sceneId)
 	{
 		await ChangeScene(sceneId);
 	}

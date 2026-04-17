@@ -6,11 +6,12 @@
 
 [node name="Game" type="Node2D" unique_id=1343548827]
 
-[node name="SceneManager" type="Node" parent="." unique_id=1552336108]
+[node name="SceneManager" type="Node" parent="." unique_id=1552336108 node_paths=PackedStringArray("sceneContainer")]
 script = ExtResource("1_xq6wo")
-sceneIds = Dictionary[String, Resource]({
-"LEVEL_SELECTOR": ExtResource("2_kc8ui"),
-"MAIN_MENU": ExtResource("3_bs6l1")
+sceneContainer = NodePath("SceneContainer")
+sceneIds = Dictionary[int, PackedScene]({
+0: ExtResource("3_bs6l1"),
+1: ExtResource("2_kc8ui")
 })
 
 [node name="SceneContainer" type="Node" parent="SceneManager" unique_id=1830883478]
