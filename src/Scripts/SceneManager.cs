@@ -7,13 +7,13 @@ public partial class SceneManager : Node
 
 	[Export] private Godot.Collections.Dictionary<SceneId, PackedScene> sceneIds;
 
-	public override void _Ready()
+	public override async void _Ready()
 	{
 #if TOOLS
 		ValidateScenes();
 #endif
 
-		ChangeScene(SceneId.MAIN_MENU);
+		await ChangeScene(SceneId.MAIN_MENU);
 	}
 
 	// this will be async and await transitions when we need them
@@ -25,7 +25,6 @@ public partial class SceneManager : Node
 		}
 
 		var newScene = (Scene)sceneIds[sceneId].Instantiate();
-		//newScene.RequestSceneChange += OnSceneChangeRequested;
 		newScene.Connect(Scene.SignalName.RequestSceneChange, Callable.From<SceneId>(OnSceneChangeRequested));
 		sceneContainer.AddChild(newScene);
 		return Task.CompletedTask;
