@@ -1,12 +1,19 @@
 [gd_scene format=3 uid="uid://c2dabaf0cmwcm"]
 
-[node name="KeybindsPanel" type="Control" unique_id=270025585]
+[ext_resource type="Script" uid="uid://bvr8w55mg77y8" path="res://src/Scripts/Scenes/Settings/KeybindsPanel.cs" id="1_r42p3"]
+
+[node name="KeybindsPanel" type="Control" unique_id=270025585 node_paths=PackedStringArray("_moveUpButton", "_moveDownButton", "_moveLeftButton", "_moveRightButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_r42p3")
+_moveUpButton = NodePath("KeybindsContainer/MoveUpContainer/MoveUpButton")
+_moveDownButton = NodePath("KeybindsContainer/MoveDownContainer/MoveDownButton")
+_moveLeftButton = NodePath("KeybindsContainer/MoveLeftContainer/MoveLeftButton")
+_moveRightButton = NodePath("KeybindsContainer/MoveRightContainer/MoveRightButton")
 
 [node name="KeybindsContainer" type="VBoxContainer" parent="." unique_id=1635763688]
 layout_mode = 1

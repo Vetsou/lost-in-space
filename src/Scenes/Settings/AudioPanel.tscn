@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://b0kmy4njoca15"]
 
+[ext_resource type="Script" uid="uid://jdg343tpghf3" path="res://src/Scripts/Scenes/Settings/AudioPanel.cs" id="1_dl324"]
+
 [node name="AudioPanel" type="Control" unique_id=173584112]
 layout_mode = 3
 anchors_preset = 15
@@ -7,6 +9,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_dl324")
 
 [node name="AudioContainer" type="VBoxContainer" parent="." unique_id=1107211280]
 layout_mode = 1
@@ -27,3 +30,5 @@ text = "Volume"
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
+
+[connection signal="value_changed" from="AudioContainer/MVolumeContainer/MVolumeSlider" to="." method="OnMasterVolumeChanged"]
