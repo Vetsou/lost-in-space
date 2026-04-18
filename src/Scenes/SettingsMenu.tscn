@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cobi6jrijcisg"]
 
 [ext_resource type="Script" uid="uid://dpgax7cqu6jx3" path="res://src/Scripts/Scenes/SettingsMenu.cs" id="1_e3jmt"]
-[ext_resource type="PackedScene" uid="uid://blqtwagtqn01r" path="res://src/Scenes/SettingsPanels/VideoPanel.tscn" id="2_m4dqw"]
-[ext_resource type="PackedScene" uid="uid://b0kmy4njoca15" path="res://src/Scenes/SettingsPanels/AudioPanel.tscn" id="3_wqold"]
-[ext_resource type="PackedScene" uid="uid://c2dabaf0cmwcm" path="res://src/Scenes/SettingsPanels/KeybindsPanel.tscn" id="4_mjpxk"]
+[ext_resource type="PackedScene" uid="uid://blqtwagtqn01r" path="res://src/Scenes/Settings/VideoPanel.tscn" id="2_m4dqw"]
+[ext_resource type="PackedScene" uid="uid://b0kmy4njoca15" path="res://src/Scenes/Settings/AudioPanel.tscn" id="3_wqold"]
+[ext_resource type="PackedScene" uid="uid://c2dabaf0cmwcm" path="res://src/Scenes/Settings/KeybindsPanel.tscn" id="4_mjpxk"]
 
 [node name="SettingsMenu" type="Control" unique_id=1613867365 node_paths=PackedStringArray("_audioPanel", "_videoPanel", "_keybindsPanel")]
 layout_mode = 3
