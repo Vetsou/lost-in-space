@@ -1,5 +1,6 @@
-using Godot;
 using System;
+using System.Collections.Generic;
+using Godot;
 
 public enum ActionType
 {
@@ -17,7 +18,7 @@ public partial class KeybindsPanel : Control
 	[Export] private Button _moveLeftButton;
 	[Export] private Button _moveRightButton;
 
-	private ActionType WaitingForAction { get; set; } = ActionType.None;
+	private ActionType? WaitingForAction { get; set; } = null;
 	private Godot.Collections.Dictionary<ActionType, Button> _actionButtons;
 
 	public override void _Ready()
@@ -30,7 +31,7 @@ public partial class KeybindsPanel : Control
 			{ ActionType.MoveRightKey, _moveRightButton },
 		};
 
-		foreach (var kvp in _actionButtons)
+		foreach (KeyValuePair<ActionType, Button> kvp in _actionButtons)
 		{
 			ActionType action = kvp.Key;
 			Button button = kvp.Value;
@@ -40,14 +41,14 @@ public partial class KeybindsPanel : Control
 
 	private void StartRebind(ActionType action)
 	{
-		if (WaitingForAction != ActionType.None)
+		if (WaitingForAction.HasValue)
 		{
 			return;
 		}
 
 		WaitingForAction = action;
 
-		var actionButton = _actionButtons[action];
+		Button actionButton = _actionButtons[action];
 		actionButton.Text = "Press a key...";
 		actionButton.Disabled = true;
 
@@ -77,10 +78,10 @@ public partial class KeybindsPanel : Control
 
 	private void EndRebind()
 	{
-		var button = _actionButtons[WaitingForAction];
+		Button button = _actionButtons[(ActionType)WaitingForAction];
 		button.Disabled = false;
 
-		WaitingForAction = ActionType.None;
+		WaitingForAction = null;
 		SetProcessInput(false);
 	}
 }

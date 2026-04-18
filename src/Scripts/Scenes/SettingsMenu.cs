@@ -1,5 +1,5 @@
-using Godot;
 using System;
+using Godot;
 
 public enum SettingsTab
 {
@@ -34,7 +34,7 @@ public partial class SettingsMenu : Scene
 
 	private void ChangePanel(SettingsTab tab)
 	{
-		foreach (var panel in _panels.Values)
+		foreach (Control panel in _panels.Values)
 		{
 			panel.Visible = false;
 		}
