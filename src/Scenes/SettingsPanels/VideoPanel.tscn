@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://blqtwagtqn01r"]
+
+[node name="VideoPanel" type="Control" unique_id=1994329431]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VideoContainer" type="VBoxContainer" parent="." unique_id=985538565]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FullscreenToggle" type="CheckBox" parent="VideoContainer" unique_id=1739118942]
+layout_mode = 2
+text = "Fullscreen"

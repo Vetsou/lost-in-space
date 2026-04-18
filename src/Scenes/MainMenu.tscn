@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ctsnqtbg2rxqe"]
 
-[ext_resource type="Script" uid="uid://bwh3j7fvyitwk" path="res://src/Scripts/MainMenu.cs" id="1_tt5f1"]
+[ext_resource type="Script" uid="uid://bwh3j7fvyitwk" path="res://src/Scripts/Scenes/MainMenu.cs" id="1_tt5f1"]
 
 [node name="MainMenu" type="Node2D" unique_id=703334634]
 script = ExtResource("1_tt5f1")
@@ -27,4 +27,5 @@ offset_bottom = 121.0
 text = "Exit"
 
 [connection signal="pressed" from="StartButton" to="." method="OnStartPressed"]
+[connection signal="pressed" from="SettingsButton" to="." method="OnSettingsPressed"]
 [connection signal="pressed" from="ExitButton" to="." method="OnExitPressed"]

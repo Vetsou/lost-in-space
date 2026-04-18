@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://c2dabaf0cmwcm"]
+
+[node name="KeybindsPanel" type="Control" unique_id=270025585]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="KeybindsContainer" type="VBoxContainer" parent="." unique_id=1635763688]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MoveUpContainer" type="HBoxContainer" parent="KeybindsContainer" unique_id=980080213]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="KeybindsContainer/MoveUpContainer" unique_id=62962701]
+layout_mode = 2
+text = "Move Up"
+
+[node name="MoveUpButton" type="Button" parent="KeybindsContainer/MoveUpContainer" unique_id=1050582659]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="MoveDownContainer" type="HBoxContainer" parent="KeybindsContainer" unique_id=1941114540]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="KeybindsContainer/MoveDownContainer" unique_id=743316102]
+layout_mode = 2
+text = "Move Down"
+
+[node name="MoveDownButton" type="Button" parent="KeybindsContainer/MoveDownContainer" unique_id=1951419987]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="MoveLeftContainer" type="HBoxContainer" parent="KeybindsContainer" unique_id=1956367968]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="KeybindsContainer/MoveLeftContainer" unique_id=224261424]
+layout_mode = 2
+text = "Move Left"
+
+[node name="MoveLeftButton" type="Button" parent="KeybindsContainer/MoveLeftContainer" unique_id=1805435450]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+
+[node name="MoveRightContainer" type="HBoxContainer" parent="KeybindsContainer" unique_id=386199239]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="KeybindsContainer/MoveRightContainer" unique_id=1004836956]
+layout_mode = 2
+text = "Move Right"
+
+[node name="MoveRightButton" type="Button" parent="KeybindsContainer/MoveRightContainer" unique_id=1487449386]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 10
