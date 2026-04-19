@@ -1,14 +1,5 @@
-using System;
 using System.Collections.Generic;
 using Godot;
-
-public enum ActionType
-{
-	MoveUpKey,
-	MoveDownKey,
-	MoveLeftKey,
-	MoveRightKey
-}
 
 public partial class KeybindsPanel : Control
 {
@@ -17,30 +8,32 @@ public partial class KeybindsPanel : Control
 	[Export] private Button _moveLeftButton;
 	[Export] private Button _moveRightButton;
 
-	private ActionType? WaitingForAction { get; set; } = null;
-	private Godot.Collections.Dictionary<ActionType, Button> _actionButtons;
+	private string WaitingForAction { get; set; } = null;
+	private Godot.Collections.Dictionary<string, Button> _actionButtons;
 
 	public override void _Ready()
 	{
 		_actionButtons = new()
 		{
-			{ ActionType.MoveUpKey, _moveUpButton },
-			{ ActionType.MoveDownKey, _moveDownButton },
-			{ ActionType.MoveLeftKey, _moveLeftButton },
-			{ ActionType.MoveRightKey, _moveRightButton },
+			{ SettingsMap.Keys.MOVE_UP, _moveUpButton },
+			{ SettingsMap.Keys.MOVE_DOWN, _moveDownButton },
+			{ SettingsMap.Keys.MOVE_LEFT, _moveLeftButton },
+			{ SettingsMap.Keys.MOVE_RIGHT, _moveRightButton },
 		};
 
-		foreach (KeyValuePair<ActionType, Button> kvp in _actionButtons)
+		foreach (KeyValuePair<string, Button> kvp in _actionButtons)
 		{
-			ActionType action = kvp.Key;
+			string action = kvp.Key;
 			Button button = kvp.Value;
+
+			button.Text = (string)SettingsManager.Instance.GetSetting(SettingsMap.Section.KEYBINDS, action);
 			button.Pressed += () => StartRebind(action);
 		}
 	}
 
-	private void StartRebind(ActionType action)
+	private void StartRebind(string action)
 	{
-		if (WaitingForAction.HasValue)
+		if (!string.IsNullOrEmpty(WaitingForAction))
 		{
 			return;
 		}
@@ -71,13 +64,13 @@ public partial class KeybindsPanel : Control
 	private void FinishRebind(InputEventKey keyEvent)
 	{
 		string keyName = OS.GetKeycodeString(keyEvent.Keycode);
-		// Save setting
+		SettingsManager.Instance.SetSetting(SettingsMap.Section.KEYBINDS, WaitingForAction, keyName);
 		EndRebind();
 	}
 
 	private void EndRebind()
 	{
-		Button button = _actionButtons[(ActionType)WaitingForAction];
+		Button button = _actionButtons[WaitingForAction];
 		button.Disabled = false;
 
 		WaitingForAction = null;

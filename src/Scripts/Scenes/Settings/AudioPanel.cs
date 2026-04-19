@@ -1,14 +1,13 @@
-using System;
 using Godot;
 
 public partial class AudioPanel : Control
 {
-	public override void _Ready()
-	{
-	}
+	[Export]
+	private HSlider MasterVolumeSlider { get; set; }
 
-	private void OnMasterVolumeChanged(float value)
-	{
-		// SettingsManager.ChangeVolume();
-	}
+	public override void _Ready() =>
+		MasterVolumeSlider.Value = (double)SettingsManager.Instance.GetSetting(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME);
+
+	private static void OnMasterVolumeChanged(float value) =>
+		SettingsManager.Instance.SetSetting(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME, value);
 }

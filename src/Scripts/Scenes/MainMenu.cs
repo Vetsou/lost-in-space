@@ -1,6 +1,3 @@
-using System;
-using Godot;
-
 public partial class MainMenu : Scene
 {
 	private void OnStartPressed()
