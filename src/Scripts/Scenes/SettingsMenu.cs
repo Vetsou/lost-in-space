@@ -42,8 +42,5 @@ public partial class SettingsMenu : Scene
 		_panels[tab].Visible = true;
 	}
 
-	private void OnBackPressed()
-	{
-		ChangeScene(SceneId.MAIN_MENU);
-	}
+	private void OnBackPressed() => ChangeScene(SceneId.MAIN_MENU);
 }

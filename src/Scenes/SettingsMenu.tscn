@@ -57,9 +57,8 @@ layout_mode = 2
 [node name="AudioPanel" parent="OptionsContainer/PanelContainer" unique_id=173584112 instance=ExtResource("3_wqold")]
 layout_mode = 2
 
-[node name="KeybindsPanel" parent="OptionsContainer/PanelContainer" unique_id=270025585 node_paths=PackedStringArray("_actionButtons") instance=ExtResource("4_mjpxk")]
+[node name="KeybindsPanel" parent="OptionsContainer/PanelContainer" unique_id=270025585 instance=ExtResource("4_mjpxk")]
 layout_mode = 2
-_actionButtons = {}
 
 [node name="BackButton" type="Button" parent="OptionsContainer" unique_id=416545207]
 layout_mode = 2

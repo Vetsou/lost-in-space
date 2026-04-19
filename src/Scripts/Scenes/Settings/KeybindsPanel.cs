@@ -7,8 +7,7 @@ public enum ActionType
 	MoveUpKey,
 	MoveDownKey,
 	MoveLeftKey,
-	MoveRightKey,
-	None
+	MoveRightKey
 }
 
 public partial class KeybindsPanel : Control
