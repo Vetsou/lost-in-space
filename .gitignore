@@ -21,7 +21,13 @@ mono_crash.*.json
 .vscode/
 .idea/
 .vs/
+*.user
 
-# dotNET specific ignores
-obj/
-bin/
+# DotNET specific ignores
+[Bb]in/
+[Oo]bj/
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
