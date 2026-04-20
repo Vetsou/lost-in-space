@@ -21,3 +21,7 @@ mono_crash.*.json
 .vscode/
 .idea/
 .vs/
+
+# dotNET specific ignores
+obj/
+bin/
