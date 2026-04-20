@@ -29,6 +29,8 @@ public partial class KeybindsPanel : Control
 			button.Text = (string)SettingsManager.Instance.GetSetting(SettingsMap.Section.KEYBINDS, action);
 			button.Pressed += () => StartRebind(action);
 		}
+
+		SettingsManager.Instance.Connect(SettingsManager.SignalName.SettingChanged, Callable.From<string, string, Variant>(UpdateButtonText));
 	}
 
 	private void StartRebind(string action)
@@ -75,5 +77,20 @@ public partial class KeybindsPanel : Control
 
 		WaitingForAction = null;
 		SetProcessInput(false);
+	}
+
+	private void UpdateButtonText(string section, string key, Variant value)
+	{
+		if (section != SettingsMap.Section.KEYBINDS)
+		{
+			return;
+		}
+
+		if (!_actionButtons.TryGetValue(key, out Button button))
+		{
+			return;
+		}
+
+		button.Text = value.As<string>();
 	}
 }

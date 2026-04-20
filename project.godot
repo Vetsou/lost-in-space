@@ -14,6 +14,10 @@ config/name="LostInSpace"
 run/main_scene="uid://bppdqvl2nvefj"
 config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 
+[autoload]
+
+SettingsManager="*uid://bx77vbmun6u38"
+
 [dotnet]
 
 project/assembly_name="LostInSpace"

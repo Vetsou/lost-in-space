@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c2dabaf0cmwcm"]
 
-[ext_resource type="Script" uid="uid://bvr8w55mg77y8" path="res://src/Scripts/Scenes/Settings/KeybindsPanel.cs" id="1_r42p3"]
+[ext_resource type="Script" uid="uid://bvr8w55mg77y8" path="res://src/Scripts/Scenes/SettingsMenu/KeybindsPanel.cs" id="1_r42p3"]
 
 [node name="KeybindsPanel" type="Control" unique_id=270025585 node_paths=PackedStringArray("_moveUpButton", "_moveDownButton", "_moveLeftButton", "_moveRightButton")]
 layout_mode = 3

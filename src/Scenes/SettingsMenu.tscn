@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://cobi6jrijcisg"]
 
-[ext_resource type="Script" uid="uid://dpgax7cqu6jx3" path="res://src/Scripts/Scenes/SettingsMenu.cs" id="1_e3jmt"]
+[ext_resource type="Script" uid="uid://dpgax7cqu6jx3" path="res://src/Scripts/Scenes/SettingsMenu/SettingsMenu.cs" id="1_e3jmt"]
 [ext_resource type="PackedScene" uid="uid://blqtwagtqn01r" path="res://src/Scenes/Settings/VideoPanel.tscn" id="2_m4dqw"]
-[ext_resource type="Script" uid="uid://bx77vbmun6u38" path="res://src/Scripts/Scenes/Settings/SettingsManager.cs" id="2_mjpxk"]
 [ext_resource type="PackedScene" uid="uid://b0kmy4njoca15" path="res://src/Scenes/Settings/AudioPanel.tscn" id="3_wqold"]
 [ext_resource type="PackedScene" uid="uid://c2dabaf0cmwcm" path="res://src/Scenes/Settings/KeybindsPanel.tscn" id="4_mjpxk"]
 
@@ -32,7 +31,6 @@ offset_right = 200.0
 offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("2_mjpxk")
 
 [node name="CategoryContainer" type="HBoxContainer" parent="OptionsContainer" unique_id=575039179]
 layout_mode = 2

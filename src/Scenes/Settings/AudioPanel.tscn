@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b0kmy4njoca15"]
 
-[ext_resource type="Script" uid="uid://jdg343tpghf3" path="res://src/Scripts/Scenes/Settings/AudioPanel.cs" id="1_dl324"]
+[ext_resource type="Script" uid="uid://jdg343tpghf3" path="res://src/Scripts/Scenes/SettingsMenu/AudioPanel.cs" id="1_dl324"]
 
 [node name="AudioPanel" type="Control" unique_id=173584112 node_paths=PackedStringArray("MasterVolumeSlider")]
 layout_mode = 3

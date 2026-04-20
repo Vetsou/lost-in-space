@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://blqtwagtqn01r"]
 
-[ext_resource type="Script" uid="uid://hgej620hrt70" path="res://src/Scripts/Scenes/Settings/VideoPanel.cs" id="1_6p3as"]
+[ext_resource type="Script" uid="uid://hgej620hrt70" path="res://src/Scripts/Scenes/SettingsMenu/VideoPanel.cs" id="1_6p3as"]
 
 [node name="VideoPanel" type="Control" unique_id=1994329431 node_paths=PackedStringArray("FullscreenToggle")]
 layout_mode = 3

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bppdqvl2nvefj"]
 
-[ext_resource type="Script" uid="uid://ciblrvmfpgnbc" path="res://src/Scripts/SceneManager.cs" id="1_xq6wo"]
+[ext_resource type="Script" uid="uid://ciblrvmfpgnbc" path="res://src/Scripts/Scenes/SceneManager.cs" id="1_xq6wo"]
 [ext_resource type="PackedScene" uid="uid://d1y144o46d51j" path="res://src/Scenes/LevelSelector.tscn" id="2_kc8ui"]
 [ext_resource type="PackedScene" uid="uid://ctsnqtbg2rxqe" path="res://src/Scenes/MainMenu.tscn" id="3_bs6l1"]
 [ext_resource type="PackedScene" uid="uid://cobi6jrijcisg" path="res://src/Scenes/SettingsMenu.tscn" id="4_kc8ui"]

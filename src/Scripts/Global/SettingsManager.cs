@@ -4,13 +4,12 @@ using Godot;
 
 public partial class SettingsManager : Node
 {
-	public static SettingsManager Instance { get; private set; }
-
 	[Signal]
 	public delegate void SettingChangedEventHandler(string section, string key, Variant value);
 
-	private const string SETTINGS_PATH = "user://user_settings.ini";
+	public static SettingsManager Instance { get; private set; }
 
+	private const string SETTINGS_PATH = "user://user_settings.ini";
 	private readonly ConfigFile _config = new();
 	private bool _isDirty = false;
 
