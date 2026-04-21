@@ -13,6 +13,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+        run:
+          working-directory: ./LostInSpace
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -23,10 +27,13 @@ jobs:
           dotnet-version: 8.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore LostInSpace.sln
 
       - name: Check formatting
         run: dotnet format LostInSpace.sln --verify-no-changes --verbosity diagnostic
 
       - name: Build project
         run: dotnet build LostInSpace.sln --configuration ExportRelease --no-restore
+
+      - name: Run tests
+        run: dotnet test LostInSpace.sln
