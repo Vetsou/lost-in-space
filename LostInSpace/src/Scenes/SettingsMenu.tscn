@@ -47,6 +47,11 @@ text = "Audio"
 layout_mode = 2
 text = "Keybinds"
 
+[node name="ResetButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=1278635557]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Reset to default"
+
 [node name="PanelContainer" type="PanelContainer" parent="OptionsContainer" unique_id=890397027]
 layout_mode = 2
 size_flags_vertical = 3
@@ -68,4 +73,5 @@ text = "Back"
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/VideoButton" to="." method="OnVideoCategoryPressed"]
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/AudioButton" to="." method="OnAudioCategoryPressed"]
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/KeybindsButton" to="." method="OnKeybindsCategoryPressed"]
+[connection signal="pressed" from="OptionsContainer/CategoryContainer/ResetButton" to="." method="OnResetButtonPressed"]
 [connection signal="pressed" from="OptionsContainer/BackButton" to="." method="OnBackPressed"]

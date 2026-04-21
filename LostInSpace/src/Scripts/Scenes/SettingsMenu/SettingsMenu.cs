@@ -41,5 +41,12 @@ public partial class SettingsMenu : Scene
 		_panels[tab].Visible = true;
 	}
 
-	private void OnBackPressed() => ChangeScene(SceneId.MAIN_MENU);
+	private static void OnResetButtonPressed() => SettingsManager.Instance.ResetToDefault();
+
+	private void OnBackPressed()
+	{
+		SettingsManager.Instance.SaveSettings();
+		SettingsManager.Instance.ApplySettings();
+		ChangeScene(SceneId.MAIN_MENU);
+	}
 }

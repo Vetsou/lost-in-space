@@ -1,7 +1,6 @@
 using System;
 using Godot;
 
-
 public partial class SettingsManager : Node
 {
 	[Signal]
@@ -18,7 +17,7 @@ public partial class SettingsManager : Node
 	[
 		new(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME, 1.0f),
 
-		new(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, true),
+		new(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, false),
 
 		new(SettingsMap.Section.KEYBINDS, SettingsMap.Keys.MOVE_LEFT, "A"),
 		new(SettingsMap.Section.KEYBINDS, SettingsMap.Keys.MOVE_RIGHT, "D"),
@@ -61,8 +60,8 @@ public partial class SettingsManager : Node
 		_config.SetValue(section, key, value);
 		_isDirty = true;
 
-		EmitSignal(SignalName.SettingChanged, section, key, value);
 		ApplySetting(section, key, value);
+		EmitSignal(SignalName.SettingChanged, section, key, value);
 	}
 
 	public void ResetToDefault()
@@ -70,6 +69,32 @@ public partial class SettingsManager : Node
 		SetDefaultConfig();
 		SaveSettings();
 		ApplySettings();
+	}
+
+	public void SaveSettings()
+	{
+		if (!_isDirty)
+		{
+			return;
+		}
+
+		Error err = _config.Save(SETTINGS_PATH);
+
+		if (err != Error.Ok)
+		{
+			GD.PushError("Failed to save user settings");
+		}
+
+		_isDirty = false;
+	}
+
+	public void ApplySettings()
+	{
+		foreach (SettingEntry entry in _defaultSettings)
+		{
+			Variant value = GetSetting(entry.Section, entry.Key);
+			ApplySetting(entry.Section, entry.Key, value);
+		}
 	}
 
 	private void LoadSettings()
@@ -105,35 +130,10 @@ public partial class SettingsManager : Node
 		foreach (SettingEntry entry in _defaultSettings)
 		{
 			_config.SetValue(entry.Section, entry.Key, entry.DefaultValue);
+			EmitSignal(SignalName.SettingChanged, entry.Section, entry.Key, entry.DefaultValue);
 		}
 
 		_isDirty = true;
-	}
-
-	private void SaveSettings()
-	{
-		if (!_isDirty)
-		{
-			return;
-		}
-
-		Error err = _config.Save(SETTINGS_PATH);
-
-		if (err != Error.Ok)
-		{
-			GD.PushError("Failed to save user settings");
-		}
-
-		_isDirty = false;
-	}
-
-	private void ApplySettings()
-	{
-		foreach (SettingEntry entry in _defaultSettings)
-		{
-			Variant value = GetSetting(entry.Section, entry.Key);
-			ApplySetting(entry.Section, entry.Key, value);
-		}
 	}
 
 	private static void ApplySetting(string section, string key, Variant value)
@@ -171,10 +171,10 @@ public partial class SettingsManager : Node
 		InputMap.ActionAddEvent(action, ev);
 	}
 
-	private struct SettingEntry(string section, string key, Variant value)
+	private readonly struct SettingEntry(string section, string key, Variant value)
 	{
-		public string Section = section;
-		public string Key = key;
-		public Variant DefaultValue = value;
+		public readonly string Section = section;
+		public readonly string Key = key;
+		public readonly Variant DefaultValue = value;
 	}
 }
