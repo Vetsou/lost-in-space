@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 
 [autoload]
 
-SettingsManager="*uid://bx77vbmun6u38"
+ConfigManager="*uid://bx77vbmun6u38"
 
 [dotnet]
 
