@@ -7,12 +7,12 @@ public partial class VideoPanel : Control
 
 	public override void _Ready()
 	{
-		FullscreenToggle.ButtonPressed = (bool)SettingsManager.Instance.GetSetting(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, false);
-		SettingsManager.Instance.Connect(SettingsManager.SignalName.SettingChanged, Callable.From<string, string, Variant>(UpdateVideoSettings));
+		FullscreenToggle.ButtonPressed = (bool)ConfigManager.Instance.GetSetting(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, false);
+		ConfigManager.Instance.Connect(ConfigManager.SignalName.SettingChanged, Callable.From<string, string, Variant>(UpdateVideoSettings));
 	}
 
 	private static void OnFullscreenToggled(bool toggledOn) =>
-		SettingsManager.Instance.SetSetting(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, toggledOn);
+		ConfigManager.Instance.SetSetting(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, toggledOn);
 
 	private void UpdateVideoSettings(string section, string _, Variant value)
 	{

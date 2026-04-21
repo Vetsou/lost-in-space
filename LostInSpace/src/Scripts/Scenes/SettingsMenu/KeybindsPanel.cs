@@ -26,11 +26,11 @@ public partial class KeybindsPanel : Control
 			string action = kvp.Key;
 			Button button = kvp.Value;
 
-			button.Text = (string)SettingsManager.Instance.GetSetting(SettingsMap.Section.KEYBINDS, action);
+			button.Text = (string)ConfigManager.Instance.GetSetting(SettingsMap.Section.KEYBINDS, action);
 			button.Pressed += () => StartRebind(action);
 		}
 
-		SettingsManager.Instance.Connect(SettingsManager.SignalName.SettingChanged, Callable.From<string, string, Variant>(UpdateButtonText));
+		ConfigManager.Instance.Connect(ConfigManager.SignalName.SettingChanged, Callable.From<string, string, Variant>(UpdateButtonText));
 	}
 
 	private void StartRebind(string action)
@@ -66,7 +66,7 @@ public partial class KeybindsPanel : Control
 	private void FinishRebind(InputEventKey keyEvent)
 	{
 		string keyName = OS.GetKeycodeString(keyEvent.Keycode);
-		SettingsManager.Instance.SetSetting(SettingsMap.Section.KEYBINDS, WaitingForAction, keyName);
+		ConfigManager.Instance.SetSetting(SettingsMap.Section.KEYBINDS, WaitingForAction, keyName);
 		EndRebind();
 	}
 
