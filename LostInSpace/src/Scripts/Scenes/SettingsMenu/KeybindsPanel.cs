@@ -57,6 +57,8 @@ public partial class KeybindsPanel : Control
 	{
 		if (@event is InputEventKey keyEvent && keyEvent.Pressed)
 		{
+			SetProcessInput(false);
+
 			if (keyEvent.Keycode == Key.Escape)
 			{
 				EndRebind();
@@ -81,7 +83,6 @@ public partial class KeybindsPanel : Control
 
 		WaitingForAction = null;
 		EmitSignal(SignalName.RebindStateChanged, false);
-		SetProcessInput(false);
 	}
 
 	private void UpdateButtonText(string section, string key, Variant value)
