@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ciblrvmfpgnbc" path="res://src/Scripts/SceneManager.cs" id="1_xq6wo"]
 [ext_resource type="PackedScene" uid="uid://d1y144o46d51j" path="res://src/Scenes/LevelSelector.tscn" id="2_kc8ui"]
 [ext_resource type="PackedScene" uid="uid://ctsnqtbg2rxqe" path="res://src/Scenes/MainMenu.tscn" id="3_bs6l1"]
+[ext_resource type="PackedScene" uid="uid://b8x4ywlchfmob" path="res://src/Scenes/LevelPlayer.tscn" id="4_kc8ui"]
 
 [node name="Game" type="Node2D" unique_id=1343548827]
 
@@ -11,7 +12,8 @@ script = ExtResource("1_xq6wo")
 sceneContainer = NodePath("SceneContainer")
 sceneIds = Dictionary[int, PackedScene]({
 0: ExtResource("3_bs6l1"),
-1: ExtResource("2_kc8ui")
+1: ExtResource("2_kc8ui"),
+2: ExtResource("4_kc8ui")
 })
 
 [node name="SceneContainer" type="Node" parent="SceneManager" unique_id=1830883478]
