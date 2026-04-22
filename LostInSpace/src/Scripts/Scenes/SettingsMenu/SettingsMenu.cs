@@ -9,9 +9,12 @@ public enum SettingsTab
 
 public partial class SettingsMenu : Scene
 {
-	[Export] private Control _audioPanel;
-	[Export] private Control _videoPanel;
-	[Export] private Control _keybindsPanel;
+	[Export] private AudioPanel _audioPanel;
+	[Export] private VideoPanel _videoPanel;
+	[Export] private KeybindsPanel _keybindsPanel;
+
+	[Export]
+	private Godot.Collections.Array<Button> _settingsButtons;
 
 	private Godot.Collections.Dictionary<SettingsTab, Control> _panels;
 
@@ -24,12 +27,14 @@ public partial class SettingsMenu : Scene
 			{ SettingsTab.Keybinds, _keybindsPanel }
 		};
 
+		_keybindsPanel.Connect(KeybindsPanel.SignalName.RebindStateChanged, Callable.From<bool>(OnRebindStateChanged));
 		ChangePanel(SettingsTab.Video);
 	}
 
 	private void OnVideoCategoryPressed() => ChangePanel(SettingsTab.Video);
 	private void OnAudioCategoryPressed() => ChangePanel(SettingsTab.Audio);
 	private void OnKeybindsCategoryPressed() => ChangePanel(SettingsTab.Keybinds);
+	private static void OnResetButtonPressed() => ConfigManager.Instance.ResetToDefault();
 
 	private void ChangePanel(SettingsTab tab)
 	{
@@ -41,12 +46,18 @@ public partial class SettingsMenu : Scene
 		_panels[tab].Visible = true;
 	}
 
-	private static void OnResetButtonPressed() => ConfigManager.Instance.ResetToDefault();
-
 	private void OnBackPressed()
 	{
 		ConfigManager.Instance.SaveSettings();
 		ConfigManager.Instance.ApplySettings();
 		ChangeScene(SceneId.MAIN_MENU);
+	}
+
+	private void OnRebindStateChanged(bool active)
+	{
+		foreach (Button btn in _settingsButtons)
+		{
+			btn.Disabled = active;
+		}
 	}
 }

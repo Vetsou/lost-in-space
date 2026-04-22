@@ -7,7 +7,7 @@ public partial class VideoPanel : Control
 
 	public override void _Ready()
 	{
-		FullscreenToggle.ButtonPressed = (bool)ConfigManager.Instance.GetSetting(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, false);
+		FullscreenToggle.ButtonPressed = ConfigManager.Instance.GetSetting<bool>(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, false);
 		ConfigManager.Instance.Connect(ConfigManager.SignalName.SettingChanged, Callable.From<string, string, Variant>(UpdateVideoSettings));
 	}
 

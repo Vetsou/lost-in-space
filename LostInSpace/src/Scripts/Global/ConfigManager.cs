@@ -15,7 +15,7 @@ public partial class ConfigManager : Node
 	#region DefaultSettings
 	private static readonly SettingEntry[] _defaultSettings =
 	[
-		new(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME, 1.0f),
+		new(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME, 100.0f),
 
 		new(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, false),
 
@@ -54,6 +54,9 @@ public partial class ConfigManager : Node
 
 	public Variant GetSetting(string section, string key, Variant defaultValue = default) =>
 		_config.GetValue(section, key, defaultValue);
+
+	public T GetSetting<[MustBeVariant] T>(string section, string key, Variant defaultValue = default) =>
+		_config.GetValue(section, key, defaultValue).As<T>();
 
 	public void SetSetting(string section, string key, Variant value)
 	{

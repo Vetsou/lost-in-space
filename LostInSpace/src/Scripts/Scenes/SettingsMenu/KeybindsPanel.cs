@@ -3,6 +3,9 @@ using Godot;
 
 public partial class KeybindsPanel : Control
 {
+	[Signal]
+	public delegate void RebindStateChangedEventHandler(bool active);
+
 	[Export] private Button _moveUpButton;
 	[Export] private Button _moveDownButton;
 	[Export] private Button _moveLeftButton;
@@ -26,7 +29,7 @@ public partial class KeybindsPanel : Control
 			string action = kvp.Key;
 			Button button = kvp.Value;
 
-			button.Text = (string)ConfigManager.Instance.GetSetting(SettingsMap.Section.KEYBINDS, action);
+			button.Text = ConfigManager.Instance.GetSetting<string>(SettingsMap.Section.KEYBINDS, action);
 			button.Pressed += () => StartRebind(action);
 		}
 
@@ -41,6 +44,7 @@ public partial class KeybindsPanel : Control
 		}
 
 		WaitingForAction = action;
+		EmitSignal(SignalName.RebindStateChanged, true);
 
 		Button actionButton = _actionButtons[action];
 		actionButton.Text = "Press a key...";
@@ -76,6 +80,7 @@ public partial class KeybindsPanel : Control
 		button.Disabled = false;
 
 		WaitingForAction = null;
+		EmitSignal(SignalName.RebindStateChanged, false);
 		SetProcessInput(false);
 	}
 

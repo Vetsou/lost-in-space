@@ -7,7 +7,7 @@ public partial class AudioPanel : Control
 
 	public override void _Ready()
 	{
-		MasterVolumeSlider.Value = (double)ConfigManager.Instance.GetSetting(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME);
+		MasterVolumeSlider.Value = ConfigManager.Instance.GetSetting<double>(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME);
 		ConfigManager.Instance.Connect(ConfigManager.SignalName.SettingChanged, Callable.From<string, string, Variant>(UpdateAudioSettings));
 	}
 
