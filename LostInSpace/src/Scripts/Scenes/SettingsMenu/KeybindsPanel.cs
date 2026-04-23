@@ -16,6 +16,8 @@ public partial class KeybindsPanel : Control
 
 	public override void _Ready()
 	{
+		SetProcessInput(false);
+
 		_actionButtons = new()
 		{
 			{ SettingsMap.Keys.MOVE_UP, _moveUpButton },
