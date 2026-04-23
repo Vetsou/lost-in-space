@@ -157,7 +157,7 @@ public partial class ConfigManager : Node
 
 	private static void ApplyKeybindsSetting(string action, Variant keyboardKey)
 	{
-		string keyString = keyboardKey.AsString();
+		string keyString = keyboardKey.AsString().Replace(" ", string.Empty);
 		if (!Enum.TryParse(keyString, true, out Key keyCode))
 		{
 			GD.PushError($"Invalid key name: {keyString}");
