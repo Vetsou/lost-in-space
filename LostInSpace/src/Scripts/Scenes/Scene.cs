@@ -5,6 +5,7 @@ public enum SceneId
 	MAIN_MENU,
 	LEVEL_SELECTOR,
 	LEVEL_PLAYER,
+	SETTINGS_MENU,
 }
 
 public partial class Scene : Node
