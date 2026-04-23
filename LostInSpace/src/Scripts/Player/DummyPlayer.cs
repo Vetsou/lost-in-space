@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class DummyPlayer : Node3D
 {
@@ -18,7 +17,7 @@ public partial class DummyPlayer : Node3D
 	{
 		if (@event is InputEventKey keyEvent && keyEvent.Pressed)
 		{
-			Vector2I direction = Vector2I.Zero;
+			Vector2I direction;
 			if (keyEvent.Keycode == Key.W)
 			{
 				direction = Vector2I.Up;

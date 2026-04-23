@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://crbgaktdpfv40"]
 
-[ext_resource type="Script" uid="uid://dp4vjfllvr711" path="res://src/Scripts/RegularPlatform.cs" id="1_h67gp"]
+[ext_resource type="Script" uid="uid://dp4vjfllvr711" path="res://src/Scripts/Platforms/RegularPlatform.cs" id="1_h67gp"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_h67gp"]
 

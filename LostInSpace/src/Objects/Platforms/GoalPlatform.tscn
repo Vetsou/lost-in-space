@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://6etbpnjnpnxx"]
 
-[ext_resource type="Script" uid="uid://b6dr7qs5cqv0p" path="res://src/Scripts/GoalPlatform.cs" id="1_ddot6"]
+[ext_resource type="Script" uid="uid://b6dr7qs5cqv0p" path="res://src/Scripts/Platforms/GoalPlatform.cs" id="1_ddot6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_l08an"]
 

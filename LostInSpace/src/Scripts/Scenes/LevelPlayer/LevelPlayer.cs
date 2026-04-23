@@ -1,6 +1,5 @@
-using Godot;
-using System;
 using System.Collections.Generic;
+using Godot;
 
 public partial class LevelPlayer : Scene
 {
@@ -20,7 +19,7 @@ public partial class LevelPlayer : Scene
 			{1, 0, 1, 1, 1, 1, 0, 1},
 			{1, 1, 1, 0, 0, 1, 1, 1}
 		}; //temporary
-		// 0 - empty, 1 - platform, 2 - goal
+		   // 0 - empty, 1 - platform, 2 - goal
 	private const float spacing = 1;
 	private static float offsetX = (grid.GetLength(1) - 1) / 2.0f;
 	private static float offsetY = (grid.GetLength(0) - 1) / 2.0f;
@@ -45,7 +44,7 @@ public partial class LevelPlayer : Scene
 		{
 			for (int j = 0; j < grid.GetLength(1); j++)
 			{
-				if (grid[i,j] == 0)
+				if (grid[i, j] == 0)
 				{
 					continue;
 				}
