@@ -17,6 +17,7 @@ dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = false
 
 # Var
+csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,override,readonly,volatile,async:suggestion
 csharp_style_var_for_built_in_types = false:warning
 csharp_style_var_when_type_is_apparent = true:warning
 csharp_style_var_elsewhere = false:warning
