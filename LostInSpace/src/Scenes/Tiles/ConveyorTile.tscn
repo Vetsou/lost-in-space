@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://denxwtk6coa5p"]
+
+[ext_resource type="Script" uid="uid://drv6v067aigf5" path="res://src/Scripts/Scenes/Tiles/ConveyorTile.cs" id="1_mwqhm"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_je6gs"]
+size = Vector3(1, 0.1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mwqhm"]
+size = Vector3(1, 0.1, 1)
+
+[node name="ConveyorTile" type="Area3D" unique_id=1998802335]
+script = ExtResource("1_mwqhm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=784065802]
+mesh = SubResource("BoxMesh_je6gs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=503833957]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0015296191, 0)
+shape = SubResource("BoxShape3D_mwqhm")
