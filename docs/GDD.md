@@ -195,13 +195,34 @@ Settings are accessible from both the Main Menu and the Pause Menu. Settings per
 | Category | Assets | Description |
 |---|---|---|
 | UI | Title logo | Game logo displayed on Main Menu and loading screens |
+| UI | Icon set (menu) | Pixel art of menu (hamburger/pause), settings cog, rest (circular arrow) |
+| UI | Icon set (gameplay) | Pixel art of collectible (scrap metal), optional collectible (crystal/data drive) |
+| UI | Button | Generic button texture for menus |
+| UI | Font | Pixel font for text |
+| UI | Rating starts | 1–3 star icons for level completion (both filled and hollow versions) |
 | Character | Player model | Low-poly space explorer/survivor |
+| Character | Player animations | Idling animation, move animation, victory animation |
+| Character | Player VFX | Step dust effect, teleport flash, collectible pickup |
+| Environment | Grid tiles | Standard platform, directional platform, ice/slippery platform, destructible platform (durable with 3 stages), teleporter, finish tile |
+| Environment | Interactive elements | Button (with 2 states), blocking tile (rubble and force field with different colors), bridge tile (2 states on/off) |
+| Environment | Collectibles | Mandatory point (scrap, gear etc.), optimal collectible (alien artifact, crystal, data drive) |
+| Environment | Environmental props | Low-poly rocks, alien flora, wreckage pieces scattered and space ship model |
 
 ### Audio Assets
 
 | Category | Assets | Description |
 |---|---|---|
 | Music | Menu music | Calm, looping track for Main Menu and settings screens |
+| Music | Level completion | Short 3–5 second uplifting melody |
+| SFX | Movement | Footstep sounds for default platforms |
+| SFX | Collectible pickup | Sound for picking up a collectible |
+| SFX | Teleport | Sound after stepping on teleport |
+| SFX | Button press | Mechanical click for button press |
+| SFX | Durable destructible tile crack | Cracked sound when player steps off durable platform |
+| SFX | Destructible tile break | Shatter sound when destructible platform is destroyed |
+| SFX | Directional tile push | Short sound when directional platform pushes player |
+| SFX | UI confirm | Click sound for menu buttons |
+| SFX | Level reset | Rewind / reverse sound effect |
 
 ### Technical Requirements
 
