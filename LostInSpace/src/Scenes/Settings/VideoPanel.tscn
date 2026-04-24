@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://blqtwagtqn01r"]
+
+[ext_resource type="Script" uid="uid://hgej620hrt70" path="res://src/Scripts/Scenes/SettingsMenu/VideoPanel.cs" id="1_6p3as"]
+
+[node name="VideoPanel" type="Control" unique_id=1994329431 node_paths=PackedStringArray("FullscreenToggle")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6p3as")
+FullscreenToggle = NodePath("VideoContainer/FullscreenToggle")
+
+[node name="VideoContainer" type="VBoxContainer" parent="." unique_id=985538565]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FullscreenToggle" type="CheckBox" parent="VideoContainer" unique_id=1739118942]
+layout_mode = 2
+text = "Fullscreen"
+
+[connection signal="toggled" from="VideoContainer/FullscreenToggle" to="." method="OnFullscreenToggled"]

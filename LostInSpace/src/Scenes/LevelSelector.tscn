@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://d1y144o46d51j"]
 
-[ext_resource type="Script" uid="uid://c70raa2vqubpy" path="res://src/Scripts/LevelSelector.cs" id="1_ampnh"]
+[ext_resource type="Script" uid="uid://c70raa2vqubpy" path="res://src/Scripts/Scenes/LevelSelector/LevelSelector.cs" id="1_ampnh"]
 
-[node name="LevelSelector" type="Node2D" unique_id=1615324740]
+[node name="LevelSelector" type="Control" unique_id=1346314526]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_ampnh")

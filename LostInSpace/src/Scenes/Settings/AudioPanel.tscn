@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://b0kmy4njoca15"]
+
+[ext_resource type="Script" uid="uid://jdg343tpghf3" path="res://src/Scripts/Scenes/SettingsMenu/AudioPanel.cs" id="1_dl324"]
+
+[node name="AudioPanel" type="Control" unique_id=173584112 node_paths=PackedStringArray("MasterVolumeSlider")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dl324")
+MasterVolumeSlider = NodePath("AudioContainer/MVolumeContainer/MVolumeSlider")
+
+[node name="AudioContainer" type="VBoxContainer" parent="." unique_id=1107211280]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+
+[node name="MVolumeContainer" type="HBoxContainer" parent="AudioContainer" unique_id=1992038833]
+layout_mode = 2
+
+[node name="MVolumeLabel" type="Label" parent="AudioContainer/MVolumeContainer" unique_id=898042341]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Volume"
+
+[node name="MVolumeSlider" type="HSlider" parent="AudioContainer/MVolumeContainer" unique_id=169414737]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[connection signal="value_changed" from="AudioContainer/MVolumeContainer/MVolumeSlider" to="." method="OnMasterVolumeChanged"]
