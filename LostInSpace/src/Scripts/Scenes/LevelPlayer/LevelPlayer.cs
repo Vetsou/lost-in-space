@@ -8,7 +8,7 @@ public partial class LevelPlayer : Scene
 
 	private static Dictionary<Vector2I, IPlatform> tileMap = [];
 
-	[Export] private DummyPlayer player;
+	[Export] private Player player;
 	private static int[,] grid = {
 			{1, 0, 1, 1, 1, 1, 0, 2},
 			{1, 1, 1, 1, 0, 1, 1, 1},

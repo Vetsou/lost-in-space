@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cvov4lwoal6h8" path="res://src/Scripts/Scenes/LevelPlayer/LevelPlayer.cs" id="1_eh4pv"]
 [ext_resource type="PackedScene" uid="uid://crbgaktdpfv40" path="res://src/Objects/Platforms/RegularPlatform.tscn" id="2_jctdr"]
 [ext_resource type="PackedScene" uid="uid://6etbpnjnpnxx" path="res://src/Objects/Platforms/GoalPlatform.tscn" id="3_avkng"]
-[ext_resource type="PackedScene" uid="uid://d2mpou7qc41mn" path="res://src/Objects/DummyPlayer.tscn" id="4_sxngl"]
+[ext_resource type="PackedScene" uid="uid://d2mpou7qc41mn" path="res://src/Objects/Player.tscn" id="4_sxngl"]
 
 [sub_resource type="Environment" id="Environment_avkng"]
 

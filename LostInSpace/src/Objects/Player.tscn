@@ -1,13 +1,13 @@
 [gd_scene format=3 uid="uid://d2mpou7qc41mn"]
 
-[ext_resource type="Script" uid="uid://dcnc7ryx507xb" path="res://src/Scripts/Player/DummyPlayer.cs" id="1_t2qwa"]
+[ext_resource type="Script" uid="uid://dcnc7ryx507xb" path="res://src/Scripts/Player/Player.cs" id="1_t2qwa"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_t3so4"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t2qwa"]
 albedo_color = Color(0.3328762, 0.25196436, 0.797902, 1)
 
-[node name="DummyPlayer" type="Node3D" unique_id=1574507954]
+[node name="Player" type="Node3D" unique_id=1574507954]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
 script = ExtResource("1_t2qwa")
 
