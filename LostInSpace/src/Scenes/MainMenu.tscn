@@ -7,30 +7,37 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_tt5f1")
 
-[node name="StartButton" type="Button" parent="." unique_id=2133388026]
+[node name="ButtonsContainer" type="VBoxContainer" parent="." unique_id=1245721942]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 56.0
-offset_bottom = 41.0
-text = "Start"
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="SettingsButton" type="Button" parent="." unique_id=1471047026]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 50.0
-offset_right = 80.0
-offset_bottom = 81.0
+[node name="PlayButton" type="Button" parent="ButtonsContainer" unique_id=2133388026]
+layout_mode = 2
+text = "Play"
+
+[node name="CreateLevelButton" type="Button" parent="ButtonsContainer" unique_id=56628457]
+layout_mode = 2
+text = "Create Level"
+
+[node name="WorkshopButton" type="Button" parent="ButtonsContainer" unique_id=1402275541]
+layout_mode = 2
+text = "Workshop"
+
+[node name="AchievementsButton" type="Button" parent="ButtonsContainer" unique_id=1399085429]
+layout_mode = 2
+text = "Achievements"
+
+[node name="SettingsButton" type="Button" parent="ButtonsContainer" unique_id=1471047026]
+layout_mode = 2
 text = "Settings"
 
-[node name="ExitButton" type="Button" parent="." unique_id=670867117]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 90.0
-offset_right = 56.0
-offset_bottom = 121.0
+[node name="ExitButton" type="Button" parent="ButtonsContainer" unique_id=670867117]
+layout_mode = 2
 text = "Exit"
 
-[connection signal="pressed" from="StartButton" to="." method="OnStartPressed"]
-[connection signal="pressed" from="SettingsButton" to="." method="OnSettingsPressed"]
-[connection signal="pressed" from="ExitButton" to="." method="OnExitPressed"]
+[connection signal="pressed" from="ButtonsContainer/PlayButton" to="." method="OnMenuButtonPressed" binds= [1]]
+[connection signal="pressed" from="ButtonsContainer/CreateLevelButton" to="." method="OnMenuButtonPressed" binds= [3]]
+[connection signal="pressed" from="ButtonsContainer/AchievementsButton" to="." method="OnMenuButtonPressed" binds= [4]]
+[connection signal="pressed" from="ButtonsContainer/SettingsButton" to="." method="OnMenuButtonPressed" binds= [2]]
+[connection signal="pressed" from="ButtonsContainer/ExitButton" to="." method="OnExitPressed"]
