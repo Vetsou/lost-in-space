@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using Godot;
 
-public partial class LevelPlayer : Scene
+public partial class Level : Scene
 {
 	[Export] private Node PlatformContainer;
 	[Export] private Godot.Collections.Dictionary<int, PackedScene> platformTypes;
-
-	private static Dictionary<Vector2I, IPlatform> tileMap = [];
-
 	[Export] private Player player;
-	private static int[,] grid = {
+
+	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
+
+	// TODO: Temporary, change when implementing level loading.
+	//  0 - empty, 1 - platform, 2 - goal
+	private static readonly int[,] grid = {
 			{1, 0, 1, 1, 1, 1, 0, 2},
 			{1, 1, 1, 1, 0, 1, 1, 1},
 			{1, 1, 0, 1, 1, 0, 1, 0},
@@ -18,11 +20,10 @@ public partial class LevelPlayer : Scene
 			{1, 1, 1, 0, 1, 1, 0, 1},
 			{1, 0, 1, 1, 1, 1, 0, 1},
 			{1, 1, 1, 0, 0, 1, 1, 1}
-		}; //temporary
-		   // 0 - empty, 1 - platform, 2 - goal
+		};
 	private const float spacing = 1;
-	private static float offsetX = (grid.GetLength(1) - 1) / 2.0f;
-	private static float offsetY = (grid.GetLength(0) - 1) / 2.0f;
+	private static float offsetX = (GridWidth - 1) / 2.0f;
+	private static float offsetY = (GridHeight - 1) / 2.0f;
 
 	public override void _Ready()
 	{
@@ -34,15 +35,15 @@ public partial class LevelPlayer : Scene
 	{
 	}
 
+	// TODO: Temporary, change when implementing level loading.
 	private void LoadLevel()
 	{
-		//this will be change when we decide how levels are stored
-		offsetX = (grid.GetLength(1) - 1) / 2.0f;
-		offsetY = (grid.GetLength(0) - 1) / 2.0f;
+		offsetX = (GridWidth - 1) / 2.0f;
+		offsetY = (GridHeight - 1) / 2.0f;
 
-		for (int i = 0; i < grid.GetLength(0); i++)
+		for (int i = 0; i < GridHeight; i++)
 		{
-			for (int j = 0; j < grid.GetLength(1); j++)
+			for (int j = 0; j < GridWidth; j++)
 			{
 				if (grid[i, j] == 0)
 				{
@@ -68,9 +69,12 @@ public partial class LevelPlayer : Scene
 
 	public static Vector3 GridToWorld(Vector2I pos) => new Vector3((pos.X - offsetX) * spacing, 0, (pos.Y - offsetY) * spacing);
 
-	//temporary - guess we should just make a UI for level completion
+	// TODO: Temporary, should make win UI
 	public void Win()
 	{
 		ChangeScene(SceneId.MAIN_MENU);
 	}
+
+	private static int GridWidth => grid.GetLength(1);
+	private static int GridHeight => grid.GetLength(0);
 }

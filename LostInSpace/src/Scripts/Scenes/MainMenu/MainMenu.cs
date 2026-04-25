@@ -3,7 +3,7 @@ public partial class MainMenu : Scene
 	private void OnStartPressed()
 	{
 		//ChangeScene(SceneId.LEVEL_SELECTOR);
-		ChangeScene(SceneId.LEVEL_PLAYER);
+		ChangeScene(SceneId.LEVEL);
 	}
 
 	private void OnSettingsPressed()

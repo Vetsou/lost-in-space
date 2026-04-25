@@ -1,49 +1,33 @@
+using System.Runtime.CompilerServices;
 using Godot;
 
 public partial class Player : Node3D
 {
-	private Vector2I position = Vector2I.Zero;
+	private Vector2I GridPosition { get; set; } = Vector2I.Zero;
 	private IPlatform currentTile;
-	private LevelPlayer level;
+	private Level level;
 
-	public void Init(LevelPlayer level)
+	public void Init(Level level)
 	{
 		this.level = level;
-		Position = LevelPlayer.GridToWorld(position);
-		currentTile = LevelPlayer.GetTile(position);
+		Position = Level.GridToWorld(GridPosition);
+		currentTile = Level.GetTile(GridPosition);
 	}
 
 	public override void _Input(InputEvent @event)
 	{
-		Vector2I direction;
-		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_UP))
-		{
-			direction = Vector2I.Up;
-		}
-		else if (@event.IsActionPressed(SettingsMap.Keys.MOVE_DOWN))
-		{
-			direction = Vector2I.Down;
-		}
-		else if (@event.IsActionPressed(SettingsMap.Keys.MOVE_LEFT))
-		{
-			direction = Vector2I.Left;
-		}
-		else if (@event.IsActionPressed(SettingsMap.Keys.MOVE_RIGHT))
-		{
-			direction = Vector2I.Right;
-		}
-		else
+		if (!TryGetDirection(@event, out Vector2I direction))
 		{
 			return;
 		}
 
-		IPlatform nextTile = LevelPlayer.GetTile(position + direction);
+		IPlatform nextTile = Level.GetTile(GridPosition + direction);
 		if (nextTile == null)
 		{
 			return;
 		}
 
-		position += direction;
+		GridPosition += direction;
 
 		var context = new TileContext
 		{
@@ -53,7 +37,38 @@ public partial class Player : Node3D
 		currentTile?.OnExit(context);
 		currentTile = nextTile;
 
-		Position = LevelPlayer.GridToWorld(position);
+		Position = Level.GridToWorld(GridPosition);
 		currentTile?.OnEnter(context);
 	}
+
+	private bool TryGetDirection(InputEvent @event, out Vector2I direction)
+	{
+		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_UP))
+		{
+			direction = Vector2I.Up;
+			return true;
+		}
+
+		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_DOWN))
+		{
+			direction = Vector2I.Down;
+			return true;
+		}
+
+		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_LEFT))
+		{
+			direction = Vector2I.Left;
+			return true;
+		}
+
+		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_RIGHT))
+		{
+			direction = Vector2I.Right;
+			return true;
+		}
+
+		direction = default;
+		return false;
+	}
 }
+

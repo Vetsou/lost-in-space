@@ -4,7 +4,7 @@ public enum SceneId
 {
 	MAIN_MENU,
 	LEVEL_SELECTOR,
-	LEVEL_PLAYER,
+	LEVEL,
 	SETTINGS_MENU,
 }
 
