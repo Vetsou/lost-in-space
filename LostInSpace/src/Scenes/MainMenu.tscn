@@ -61,7 +61,7 @@ text = "Settings"
 layout_mode = 2
 text = "Exit"
 
-[node name="Label" type="Label" parent="." unique_id=528209320]
+[node name="VersionLabel" type="Label" parent="." unique_id=528209320]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -72,7 +72,7 @@ offset_left = -40.0
 offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_colors/font_color = Color(1, 0.8509804, 0.4, 1)
+theme_override_colors/font_color = Color(0.73333335, 0.73333335, 0.73333335, 1)
 text = "alpha-0.0.1v"
 
 [connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/PlayButton" to="." method="OnMenuButtonPressed" binds= [1]]
