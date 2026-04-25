@@ -50,7 +50,7 @@ public partial class SettingsMenu : Scene
 	{
 		ConfigManager.Instance.SaveSettings();
 		ConfigManager.Instance.ApplySettings();
-		ChangeScene(SceneId.MAIN_MENU);
+		ChangeScene(SceneId.MainMenu);
 	}
 
 	private void OnRebindStateChanged(bool active)
