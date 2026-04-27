@@ -74,7 +74,7 @@ public partial class Level : Scene
 	// TODO: Temporary, should make win UI
 	public void Win()
 	{
-		ChangeScene(SceneId.MAIN_MENU);
+		ChangeScene(SceneId.MainMenu);
 	}
 
 	private static int GridWidth => grid.GetLength(1);

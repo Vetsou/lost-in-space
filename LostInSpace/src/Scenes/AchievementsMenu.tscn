@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cf3cdxb8omhoa"]
+
+[ext_resource type="Script" uid="uid://6bukdm1konkv" path="res://src/Scripts/Scenes/AchievementsMenu/AchievementsMenu.cs" id="1_suhmw"]
+
+[node name="AchievementsMenu" type="Node" unique_id=898893658]
+script = ExtResource("1_suhmw")
+
+[node name="Label" type="Label" parent="." unique_id=733373225]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Achievements"

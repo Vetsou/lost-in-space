@@ -1,18 +1,5 @@
 public partial class MainMenu : Scene
 {
-	private void OnStartPressed()
-	{
-		//ChangeScene(SceneId.LEVEL_SELECTOR);
-		ChangeScene(SceneId.LEVEL);
-	}
-
-	private void OnSettingsPressed()
-	{
-		ChangeScene(SceneId.SETTINGS_MENU);
-	}
-
-	private void OnExitPressed()
-	{
-		GetTree().Quit();
-	}
+	private void OnMenuButtonPressed(SceneId id) => ChangeScene(id);
+	private void OnExitPressed() => GetTree().Quit();
 }
