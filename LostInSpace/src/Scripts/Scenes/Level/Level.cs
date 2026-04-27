@@ -22,8 +22,13 @@ public partial class Level : Scene
 			{1, 1, 1, 0, 0, 1, 1, 1}
 		};
 	private const float spacing = 1;
-	private static float offsetX = (GridWidth - 1) / 2.0f;
-	private static float offsetY = (GridHeight - 1) / 2.0f;
+	private static Vector2 Offset
+	{
+		get
+		{
+			return new Vector2((GridWidth - 1) / 2.0f, (GridHeight - 1) / 2.0f);
+		}
+	}
 
 	public override void _Ready()
 	{
@@ -38,9 +43,6 @@ public partial class Level : Scene
 	// TODO: Temporary, change when implementing level loading.
 	private void LoadLevel()
 	{
-		offsetX = (GridWidth - 1) / 2.0f;
-		offsetY = (GridHeight - 1) / 2.0f;
-
 		for (int i = 0; i < GridHeight; i++)
 		{
 			for (int j = 0; j < GridWidth; j++)
@@ -53,7 +55,7 @@ public partial class Level : Scene
 				PackedScene platform = platformTypes[grid[i, j]];
 				Node3D instance = platform.Instantiate<Node3D>();
 
-				instance.Position = new Vector3((j - offsetX) * spacing, 0, (i - offsetY) * spacing);
+				instance.Position = new Vector3((j - Offset.X) * spacing, 0, (i - Offset.Y) * spacing);
 				PlatformContainer.AddChild(instance);
 
 				if (instance is IPlatform tile)
@@ -67,7 +69,7 @@ public partial class Level : Scene
 
 	public static IPlatform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out IPlatform tile) ? tile : null;
 
-	public static Vector3 GridToWorld(Vector2I pos) => new Vector3((pos.X - offsetX) * spacing, 0, (pos.Y - offsetY) * spacing);
+	public static Vector3 GridToWorld(Vector2I pos) => new Vector3((pos.X - Offset.X) * spacing, 0, (pos.Y - Offset.Y) * spacing);
 
 	// TODO: Temporary, should make win UI
 	public void Win()

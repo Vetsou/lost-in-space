@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Godot;
 
 public partial class Player : Node3D
@@ -21,24 +20,7 @@ public partial class Player : Node3D
 			return;
 		}
 
-		IPlatform nextTile = Level.GetTile(GridPosition + direction);
-		if (nextTile == null)
-		{
-			return;
-		}
-
-		GridPosition += direction;
-
-		var context = new TileContext
-		{
-			Level = level
-		};
-
-		currentTile?.OnExit(context);
-		currentTile = nextTile;
-
-		Position = Level.GridToWorld(GridPosition);
-		currentTile?.OnEnter(context);
+		Move(direction);
 	}
 
 	private bool TryGetDirection(InputEvent @event, out Vector2I direction)
@@ -70,5 +52,31 @@ public partial class Player : Node3D
 		direction = default;
 		return false;
 	}
-}
 
+	private void Move(Vector2I direction)
+	{
+		IPlatform nextTile = Level.GetTile(GridPosition + direction);
+		if (nextTile == null)
+		{
+			return;
+		}
+
+		GridPosition += direction;
+
+		TileContext context = GetTileContext();
+
+		currentTile?.OnExit(context);
+		currentTile = nextTile;
+
+		Position = Level.GridToWorld(GridPosition);
+		currentTile?.OnEnter(context);
+	}
+
+	private TileContext GetTileContext()
+	{
+		return new TileContext
+		{
+			Level = level
+		};
+	}
+}
