@@ -13,7 +13,7 @@ public partial class SceneManager : Node
 		ValidateScenes();
 #endif
 
-		await ChangeScene(SceneId.MAIN_MENU);
+		await ChangeScene(SceneId.MainMenu);
 	}
 
 	// this will be async and await transitions when we need them
@@ -35,13 +35,6 @@ public partial class SceneManager : Node
 	{
 		foreach (SceneId key in sceneIds.Keys)
 		{
-			if (!sceneIds.TryGetValue(key, out PackedScene scene))
-			{
-				GD.PushError($"Scene '{key}' not found");
-				GetTree().Quit();
-				return;
-			}
-
 			Node tempInstance = sceneIds[key].Instantiate();
 
 			if (tempInstance is not Scene)
@@ -57,8 +50,5 @@ public partial class SceneManager : Node
 	}
 #endif
 
-	private async void OnSceneChangeRequested(SceneId sceneId)
-	{
-		await ChangeScene(sceneId);
-	}
+	private async void OnSceneChangeRequested(SceneId sceneId) => await ChangeScene(sceneId);
 }

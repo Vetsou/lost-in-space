@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://2m1q8m2bcexg"]
+
+[ext_resource type="Script" uid="uid://dtn7kdgk1nm0m" path="res://src/Scripts/Scenes/LevelCreator/LevelCreator.cs" id="1_wk5ty"]
+
+[node name="LevelCreator" type="Node" unique_id=128889708]
+script = ExtResource("1_wk5ty")
+
+[node name="Label" type="Label" parent="." unique_id=1230679127]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Level Creator"

@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://d1y144o46d51j" path="res://src/Scenes/LevelSelector.tscn" id="2_kc8ui"]
 [ext_resource type="PackedScene" uid="uid://ctsnqtbg2rxqe" path="res://src/Scenes/MainMenu.tscn" id="3_bs6l1"]
 [ext_resource type="PackedScene" uid="uid://cobi6jrijcisg" path="res://src/Scenes/SettingsMenu.tscn" id="4_kc8ui"]
+[ext_resource type="PackedScene" uid="uid://2m1q8m2bcexg" path="res://src/Scenes/LevelCreator.tscn" id="5_pk08u"]
+[ext_resource type="PackedScene" uid="uid://cf3cdxb8omhoa" path="res://src/Scenes/AchievementsMenu.tscn" id="6_wqvko"]
 
 [node name="Game" type="Node2D" unique_id=1343548827]
 
@@ -13,7 +15,9 @@ sceneContainer = NodePath("SceneContainer")
 sceneIds = Dictionary[int, PackedScene]({
 0: ExtResource("3_bs6l1"),
 1: ExtResource("2_kc8ui"),
-2: ExtResource("4_kc8ui")
+2: ExtResource("4_kc8ui"),
+3: ExtResource("5_pk08u"),
+4: ExtResource("6_wqvko")
 })
 
 [node name="SceneContainer" type="Node" parent="SceneManager" unique_id=1830883478]

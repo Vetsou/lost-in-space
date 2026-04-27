@@ -4,33 +4,79 @@
 
 [node name="MainMenu" type="Control" unique_id=1377923584]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_tt5f1")
 
-[node name="StartButton" type="Button" parent="." unique_id=2133388026]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 56.0
-offset_bottom = 41.0
-text = "Start"
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1964248354]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="SettingsButton" type="Button" parent="." unique_id=1471047026]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 50.0
-offset_right = 80.0
-offset_bottom = 81.0
+[node name="MainMenuLayout" type="VBoxContainer" parent="CenterContainer" unique_id=896865504]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="Title" type="Label" parent="CenterContainer/MainMenuLayout" unique_id=165485741]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "LOST IN SPACE"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/MainMenuLayout" unique_id=1288560412]
+layout_mode = 2
+theme_override_constants/margin_right = 500
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="CenterContainer/MainMenuLayout/MarginContainer" unique_id=1245721942]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="PlayButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=2133388026]
+layout_mode = 2
+text = "Play"
+
+[node name="CreateLevelButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=56628457]
+layout_mode = 2
+text = "Create Level"
+
+[node name="WorkshopButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1402275541]
+layout_mode = 2
+text = "Workshop"
+
+[node name="AchievementsButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1399085429]
+layout_mode = 2
+text = "Achievements"
+
+[node name="SettingsButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1471047026]
+layout_mode = 2
 text = "Settings"
 
-[node name="ExitButton" type="Button" parent="." unique_id=670867117]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 90.0
-offset_right = 56.0
-offset_bottom = 121.0
+[node name="ExitButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=670867117]
+layout_mode = 2
 text = "Exit"
 
-[connection signal="pressed" from="StartButton" to="." method="OnStartPressed"]
-[connection signal="pressed" from="SettingsButton" to="." method="OnSettingsPressed"]
-[connection signal="pressed" from="ExitButton" to="." method="OnExitPressed"]
+[node name="VersionLabel" type="Label" parent="." unique_id=528209320]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.73333335, 0.73333335, 0.73333335, 1)
+text = "alpha-0.0.1v"
+
+[connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/PlayButton" to="." method="OnMenuButtonPressed" binds= [1]]
+[connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/CreateLevelButton" to="." method="OnMenuButtonPressed" binds= [3]]
+[connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/AchievementsButton" to="." method="OnMenuButtonPressed" binds= [4]]
+[connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/SettingsButton" to="." method="OnMenuButtonPressed" binds= [2]]
+[connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/ExitButton" to="." method="OnExitPressed"]
