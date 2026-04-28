@@ -2,7 +2,7 @@ using Godot;
 
 public partial class Player : Node3D
 {
-	private Vector2I GridPosition { get; set; } = Vector2I.Zero;
+	public Vector2I GridPosition { get; private set; } = Vector2I.Zero;
 	private IPlatform currentTile;
 	private Level level;
 

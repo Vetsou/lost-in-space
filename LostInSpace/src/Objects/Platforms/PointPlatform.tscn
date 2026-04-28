@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://obifw1hjyx8w"]
+
+[ext_resource type="Script" uid="uid://dxs2lxs5smyjc" path="res://src/Scripts/Platforms/PointPlatform.cs" id="1_iiy8p"]
+[ext_resource type="PackedScene" uid="uid://c0gp0eoqbhphl" path="res://src/Scenes/Point.tscn" id="2_iiy8p"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_h67gp"]
+
+[node name="PointPlatform" type="Node3D" unique_id=1933317673 node_paths=PackedStringArray("tilePath")]
+script = ExtResource("1_iiy8p")
+tilePath = NodePath("Point")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1592064197]
+transform = Transform3D(0.95, 0, 0, 0, 0.05, 0, 0, 0, 0.95, 0, 0, 0)
+mesh = SubResource("BoxMesh_h67gp")
+
+[node name="Point" parent="." unique_id=1068656970 instance=ExtResource("2_iiy8p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.22795615, 0)

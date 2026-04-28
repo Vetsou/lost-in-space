@@ -11,4 +11,6 @@ public partial class GoalPlatform : Node3D, IPlatform
 	{
 		GD.Print("Goal Left");
 	}
+
+	public bool HasPoint { get; set; }
 }
