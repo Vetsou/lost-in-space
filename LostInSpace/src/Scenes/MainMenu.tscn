@@ -75,7 +75,7 @@ grow_vertical = 0
 theme_override_colors/font_color = Color(0.73333335, 0.73333335, 0.73333335, 1)
 text = "alpha-0.0.1v"
 
-[connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/PlayButton" to="." method="OnMenuButtonPressed" binds= [1]]
+[connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/PlayButton" to="." method="OnMenuButtonPressed" binds= [5]]
 [connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/CreateLevelButton" to="." method="OnMenuButtonPressed" binds= [3]]
 [connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/AchievementsButton" to="." method="OnMenuButtonPressed" binds= [4]]
 [connection signal="pressed" from="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer/SettingsButton" to="." method="OnMenuButtonPressed" binds= [2]]
