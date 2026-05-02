@@ -4,5 +4,119 @@
 
 [node name="LevelSelector" type="Control" unique_id=1346314526]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_ampnh")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=472100588]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1377924933]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer" unique_id=1371184488]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 80.0
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer" unique_id=100275717]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 6
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=1554169802]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+
+[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=202293249]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2"
+
+[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=1581009708]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3"
+
+[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=1796649325]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "4"
+
+[node name="Button5" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=287124108]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "5"
+
+[node name="Button6" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=582382237]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "6"
+
+[node name="Button7" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=1544473166]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "7"
+
+[node name="Button8" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=12529091]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "8"
+
+[node name="Button9" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=47020430]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "9"
+
+[node name="Button10" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=792530272]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "10"
+
+[node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer" unique_id=913026832]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/Panel" unique_id=1865659651]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/Panel/VBoxContainer" unique_id=1866618477]
+layout_mode = 2
+horizontal_alignment = 1
+clip_text = true
+uppercase = true
+
+[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/Panel/VBoxContainer" unique_id=1923218177]
+layout_mode = 2
+size_flags_vertical = 10
+text = "Play"
