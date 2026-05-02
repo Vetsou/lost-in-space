@@ -8,17 +8,18 @@ public partial class Level : Scene
 	[Export] private Player player;
 
 	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
+	private int pointCounter;
 
 	// TODO: Temporary, change when implementing level loading.
-	//  0 - empty, 1 - platform, 2 - goal
+	//  0 - empty, 1 - platform, 2 - platform with point, 3 - goal
 	private static readonly int[,] grid = {
-			{1, 0, 1, 1, 1, 1, 0, 2},
-			{1, 1, 1, 1, 0, 1, 1, 1},
+			{1, 0, 1, 1, 1, 2, 0, 3},
+			{1, 2, 1, 1, 0, 1, 1, 1},
 			{1, 1, 0, 1, 1, 0, 1, 0},
-			{0, 1, 0, 1, 1, 0, 1, 0},
+			{0, 1, 0, 1, 2, 0, 1, 0},
 			{0, 1, 1, 1, 1, 0, 1, 1},
 			{1, 1, 1, 0, 1, 1, 0, 1},
-			{1, 0, 1, 1, 1, 1, 0, 1},
+			{1, 0, 2, 1, 1, 1, 0, 1},
 			{1, 1, 1, 0, 0, 1, 1, 1}
 		};
 	private const float spacing = 1;
@@ -62,6 +63,11 @@ public partial class Level : Scene
 				{
 					var gridPos = new Vector2I(j, i);
 					tileMap[gridPos] = tile;
+					if (tile.HasPoint)
+					{
+						pointCounter++;
+						tile.HasPoint = true;
+					}
 				}
 			}
 		}
@@ -74,7 +80,27 @@ public partial class Level : Scene
 	// TODO: Temporary, should make win UI
 	public void Win()
 	{
+		if (pointCounter != 0)
+		{
+			return;
+		}
 		ChangeScene(SceneId.MainMenu);
+	}
+
+	public void AddPoint(Node3D tilePath)
+	{
+		IPlatform tile = GetTile(player.GridPosition);
+		if (tile == null)
+		{
+			return;
+		}
+
+		if (tile.HasPoint)
+		{
+			pointCounter--;
+			tilePath.QueueFree();
+		}
+		tile.HasPoint = false;
 	}
 
 	private static int GridWidth => grid.GetLength(1);
