@@ -8,7 +8,7 @@ public partial class Level : Scene
 	[Export] private Player player;
 
 	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
-	public int pointCounter = 0;
+	private int pointCounter;
 
 	// TODO: Temporary, change when implementing level loading.
 	//  0 - empty, 1 - platform, 2 - platform with point, 3 - goal
@@ -66,6 +66,7 @@ public partial class Level : Scene
 					if (tile.HasPoint)
 					{
 						pointCounter++;
+						tile.HasPoint = true;
 					}
 				}
 			}
@@ -79,16 +80,25 @@ public partial class Level : Scene
 	// TODO: Temporary, should make win UI
 	public void Win()
 	{
-		if (pointCounter != 0) { return; }
+		if (pointCounter != 0)
+		{
+			return;
+		}
 		ChangeScene(SceneId.MainMenu);
 	}
 
-	public void AddPoint()
+	public void AddPoint(Node3D tilePath)
 	{
 		IPlatform tile = GetTile(player.GridPosition);
+		if (tile == null)
+		{
+			return;
+		}
+
 		if (tile.HasPoint)
 		{
 			pointCounter--;
+			tilePath.QueueFree();
 		}
 		tile.HasPoint = false;
 	}

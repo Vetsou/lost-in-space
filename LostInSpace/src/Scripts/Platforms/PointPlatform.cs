@@ -6,11 +6,7 @@ public partial class PointPlatform : Node3D, IPlatform
 
 	public void OnEnter(TileContext context)
 	{
-		if (HasPoint)
-		{
-			tilePath.QueueFree();
-		}
-		context.Level.AddPoint();
+		context.Level.AddPoint(tilePath);
 	}
 
 	public void OnExit(TileContext context)
