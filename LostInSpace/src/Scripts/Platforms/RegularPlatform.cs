@@ -1,7 +1,9 @@
 using Godot;
 
-public partial class RegularPlatform : Node3D, IPlatform
+public class RegularPlatform : IPlatform
 {
+	public PlatformVisualData VisualData { get; } = ResourceLoader.Load<PlatformVisualData>("res://src/Objects/Platforms/RegularPlatformVisualData.tres");
+
 	public void OnEnter(TileContext context)
 	{
 
@@ -11,4 +13,6 @@ public partial class RegularPlatform : Node3D, IPlatform
 	{
 
 	}
+
+	public void SetPosition(Vector3 pos) => VisualData.transform.Origin = pos;
 }

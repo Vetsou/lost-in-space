@@ -3,8 +3,7 @@ using Godot;
 
 public partial class Level : Scene
 {
-	[Export] private Node PlatformContainer;
-	[Export] private Godot.Collections.Dictionary<int, PackedScene> platformTypes;
+	[Export] private PlatformRenderingServer platformRenderingServer;
 	[Export] private Player player;
 
 	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
@@ -52,17 +51,13 @@ public partial class Level : Scene
 					continue;
 				}
 
-				PackedScene platform = platformTypes[grid[i, j]];
-				Node3D instance = platform.Instantiate<Node3D>();
+				IPlatform platform = PlatformRegistry.CreatePlaform(grid[i, j]);
+				platform.SetPosition(new Vector3((j - Offset.X) * spacing, 0, (i - Offset.Y) * spacing));
 
-				instance.Position = new Vector3((j - Offset.X) * spacing, 0, (i - Offset.Y) * spacing);
-				PlatformContainer.AddChild(instance);
+				var gridPos = new Vector2I(j, i);
+				tileMap[gridPos] = platform;
 
-				if (instance is IPlatform tile)
-				{
-					var gridPos = new Vector2I(j, i);
-					tileMap[gridPos] = tile;
-				}
+				platformRenderingServer.RenderPlatform(platform);
 			}
 		}
 	}
@@ -74,6 +69,7 @@ public partial class Level : Scene
 	// TODO: Temporary, should make win UI
 	public void Win()
 	{
+		platformRenderingServer.ClearLevel();
 		ChangeScene(SceneId.MainMenu);
 	}
 

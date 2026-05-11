@@ -1,7 +1,9 @@
 using Godot;
 
-public partial class GoalPlatform : Node3D, IPlatform
+public class GoalPlatform : IPlatform
 {
+	public PlatformVisualData VisualData { get; } = ResourceLoader.Load<PlatformVisualData>("res://src/Objects/Platforms/GoalPlatformVisualData.tres");
+
 	public void OnEnter(TileContext context)
 	{
 		context.Level.Win();
@@ -11,4 +13,6 @@ public partial class GoalPlatform : Node3D, IPlatform
 	{
 		GD.Print("Goal Left");
 	}
+
+	public void SetPosition(Vector3 pos) => VisualData.transform.Origin = pos;
 }
