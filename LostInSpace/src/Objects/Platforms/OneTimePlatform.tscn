@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://b1bv6i00algxf"]
+
+[ext_resource type="Script" uid="uid://c2xjolcvtcm8d" path="res://src/Scripts/Platforms/OneTimePlatform.cs" id="1_yajg3"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_8j8mb"]
+
+[node name="OneTimePlatform" type="Node3D" unique_id=502667373]
+script = ExtResource("1_yajg3")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1626556054]
+transform = Transform3D(0.95, 0, 0, 0, 0.05, 0, 0, 0, 0.95, 0, 0, 0)
+mesh = SubResource("BoxMesh_8j8mb")
