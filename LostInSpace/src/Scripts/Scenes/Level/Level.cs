@@ -69,6 +69,30 @@ public partial class Level : Scene
 
 	public static IPlatform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out IPlatform tile) ? tile : null;
 
+	public void RemoveTile(IPlatform platform)
+	{
+		Vector2I tilePosition = default;
+		bool foundTile = false;
+		foreach (KeyValuePair <Vector2I, IPlatform> tile in tileMap)
+		{
+			if (ReferenceEquals(tile.Value, platform))
+			{
+				tilePosition = tile.Key;
+				foundTile = true;
+				break
+			}
+		}
+		if (!foundTile)
+		{
+			return;
+		}
+		tileMap.Remove(tilePosition);
+		if (platform is Node node)
+		{
+			node.QueueFree();
+		}
+	}
+
 	public static Vector3 GridToWorld(Vector2I pos) => new Vector3((pos.X - Offset.X) * spacing, 0, (pos.Y - Offset.Y) * spacing);
 
 	// TODO: Temporary, should make win UI

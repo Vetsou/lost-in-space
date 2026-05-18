@@ -9,5 +9,6 @@ public partial class OneTimePlatform : Node3D, IPlatform
 
 	public void OnExit(TileContext context)
 	{
+		context.Level.RemoveTile(this);
 	}
 }
