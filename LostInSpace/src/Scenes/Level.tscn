@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://6etbpnjnpnxx" path="res://src/Objects/Platforms/GoalPlatform.tscn" id="3_avkng"]
 [ext_resource type="PackedScene" uid="uid://d2mpou7qc41mn" path="res://src/Objects/Player.tscn" id="4_sxngl"]
 [ext_resource type="PackedScene" uid="uid://b1bv6i00algxf" path="res://src/Objects/Platforms/OneTimePlatform.tscn" id="4_xr8ud"]
+[ext_resource type="PackedScene" uid="uid://dk0n1gsmduv3d" path="res://src/Objects/Platforms/DirectionMovePlatform.tscn" id="5_m4o5r"]
 
 [sub_resource type="Environment" id="Environment_avkng"]
 
@@ -14,7 +15,8 @@ PlatformContainer = NodePath("PlatformContainer")
 platformTypes = Dictionary[int, PackedScene]({
 1: ExtResource("2_jctdr"),
 2: ExtResource("3_avkng"),
-3: ExtResource("4_xr8ud")
+3: ExtResource("4_xr8ud"),
+4: ExtResource("5_m4o5r")
 })
 player = NodePath("DummyPlayer")
 
