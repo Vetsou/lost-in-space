@@ -63,7 +63,7 @@ public partial class Player : Node3D
 
 		GridPosition += direction;
 
-		TileContext context = GetTileContext();
+		TileContext context = GetTileContext(direction);
 
 		currentTile?.OnExit(context);
 		currentTile = nextTile;
@@ -72,12 +72,13 @@ public partial class Player : Node3D
 		currentTile?.OnEnter(context);
 	}
 
-	private TileContext GetTileContext()
+	private TileContext GetTileContext(Vector2I direction)
 	{
 		return new TileContext
 		{
 			Level = level,
-			Player = this
+			Player = this,
+			MoveDirection = direction
 		};
 	}
 }

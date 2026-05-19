@@ -10,17 +10,17 @@ public partial class Level : Scene
 	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
 
 	// TODO: Temporary, change when implementing level loading.
-	//  0 - empty, 1 - platform, 2 - goal, 3 - breakable
+	//  0 - empty, 1 - platform, 2 - goal, 3 - breakable, 8 - slip
 	// conveyors: 4 - up, 5 - down, 6 - left, 7 - right
 	private static readonly int[,] grid = {
-			{1, 0, 1, 1, 1, 1, 0, 2},
+			{1, 0, 1, 8, 1, 1, 0, 2},
 			{1, 1, 1, 1, 0, 1, 1, 1},
-			{1, 3, 0, 4, 1, 0, 1, 0},
-			{0, 1, 0, 1, 1, 0, 1, 0},
+			{1, 3, 0, 1, 1, 0, 1, 0},
+			{0, 1, 0, 4, 1, 0, 1, 0},
 			{0, 1, 1, 1, 1, 0, 1, 1},
 			{1, 6, 1, 0, 1, 1, 0, 1},
 			{1, 0, 1, 1, 1, 1, 0, 1},
-			{1, 1, 1, 0, 0, 1, 7, 1}
+			{1, 1, 1, 0, 7, 1, 1, 1}
 		};
 	private const float spacing = 1;
 	private static Vector2 Offset
