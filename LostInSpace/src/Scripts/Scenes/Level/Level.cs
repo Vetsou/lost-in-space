@@ -14,7 +14,7 @@ public partial class Level : Scene
 	private static readonly int[,] grid = {
 			{1, 0, 1, 1, 1, 1, 0, 2},
 			{1, 1, 1, 1, 0, 1, 1, 1},
-			{1, 1, 0, 1, 1, 0, 1, 0},
+			{1, 3, 0, 1, 1, 0, 1, 0},
 			{0, 1, 0, 1, 1, 0, 1, 0},
 			{0, 1, 1, 1, 1, 0, 1, 1},
 			{1, 1, 1, 0, 1, 1, 0, 1},
@@ -79,7 +79,7 @@ public partial class Level : Scene
 			{
 				tilePosition = tile.Key;
 				foundTile = true;
-				break
+				break;
 			}
 		}
 		if (!foundTile)
