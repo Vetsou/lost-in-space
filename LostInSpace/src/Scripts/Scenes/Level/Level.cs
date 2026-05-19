@@ -10,16 +10,17 @@ public partial class Level : Scene
 	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
 
 	// TODO: Temporary, change when implementing level loading.
-	//  0 - empty, 1 - platform, 2 - goal
+	//  0 - empty, 1 - platform, 2 - goal, 3 - breakable
+	// conveyors: 4 - up, 5 - down, 6 - left, 7 - right
 	private static readonly int[,] grid = {
 			{1, 0, 1, 1, 1, 1, 0, 2},
 			{1, 1, 1, 1, 0, 1, 1, 1},
-			{1, 3, 0, 1, 1, 0, 1, 0},
-			{0, 1, 0, 4, 1, 0, 1, 0},
+			{1, 3, 0, 4, 1, 0, 1, 0},
+			{0, 1, 0, 1, 1, 0, 1, 0},
 			{0, 1, 1, 1, 1, 0, 1, 1},
-			{1, 4, 1, 0, 1, 1, 0, 1},
+			{1, 6, 1, 0, 1, 1, 0, 1},
 			{1, 0, 1, 1, 1, 1, 0, 1},
-			{1, 1, 1, 0, 0, 1, 1, 1}
+			{1, 1, 1, 0, 0, 1, 7, 1}
 		};
 	private const float spacing = 1;
 	private static Vector2 Offset
@@ -43,6 +44,7 @@ public partial class Level : Scene
 	// TODO: Temporary, change when implementing level loading.
 	private void LoadLevel()
 	{
+		PlatformFactory platformFactory = new PlatformFactory(platformTypes);
 		for (int i = 0; i < GridHeight; i++)
 		{
 			for (int j = 0; j < GridWidth; j++)
@@ -51,10 +53,7 @@ public partial class Level : Scene
 				{
 					continue;
 				}
-
-				PackedScene platform = platformTypes[grid[i, j]];
-				Node3D instance = platform.Instantiate<Node3D>();
-
+				Node3D instance = platformFactory.CreatePlatform(grid[i, j]);
 				instance.Position = new Vector3((j - Offset.X) * spacing, 0, (i - Offset.Y) * spacing);
 				PlatformContainer.AddChild(instance);
 
