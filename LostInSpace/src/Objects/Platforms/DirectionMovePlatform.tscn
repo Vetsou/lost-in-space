@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dk0n1gsmduv3d"]
+
+[ext_resource type="Script" uid="uid://bjp6nyn0ll4lw" path="res://src/Scripts/Platforms/DirectionMovePlatform.cs" id="1_2gcua"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_h67gp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2gcua"]
+albedo_color = Color(0.33381814, 0.44741815, 0.78770655, 1)
+
+[node name="DirectionMovePlatform" type="Node3D" unique_id=1933317673]
+script = ExtResource("1_2gcua")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1592064197]
+transform = Transform3D(0.95, 0, 0, 0, 0.05, 0, 0, 0, 0.95, 0, 0, 0)
+mesh = SubResource("BoxMesh_h67gp")
+surface_material_override/0 = SubResource("StandardMaterial3D_2gcua")

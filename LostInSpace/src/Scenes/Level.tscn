@@ -4,16 +4,22 @@
 [ext_resource type="PackedScene" uid="uid://crbgaktdpfv40" path="res://src/Objects/Platforms/RegularPlatform.tscn" id="2_jctdr"]
 [ext_resource type="PackedScene" uid="uid://6etbpnjnpnxx" path="res://src/Objects/Platforms/GoalPlatform.tscn" id="3_avkng"]
 [ext_resource type="PackedScene" uid="uid://d2mpou7qc41mn" path="res://src/Objects/Player.tscn" id="4_sxngl"]
+[ext_resource type="PackedScene" uid="uid://b1bv6i00algxf" path="res://src/Objects/Platforms/OneTimePlatform.tscn" id="4_xr8ud"]
+[ext_resource type="PackedScene" uid="uid://dk0n1gsmduv3d" path="res://src/Objects/Platforms/DirectionMovePlatform.tscn" id="5_m4o5r"]
+[ext_resource type="PackedScene" uid="uid://yqyeaii2m4or" path="res://src/Objects/Platforms/SlipperyPlatform.tscn" id="6_msa8e"]
 
 [sub_resource type="Environment" id="Environment_avkng"]
 
 [node name="Level" type="Node" unique_id=1083322683 node_paths=PackedStringArray("PlatformContainer", "player")]
 script = ExtResource("1_eh4pv")
+PlatformContainer = NodePath("PlatformContainer")
 platformTypes = Dictionary[int, PackedScene]({
 1: ExtResource("2_jctdr"),
-2: ExtResource("3_avkng")
+2: ExtResource("3_avkng"),
+3: ExtResource("4_xr8ud"),
+4: ExtResource("5_m4o5r"),
+8: ExtResource("6_msa8e")
 })
-PlatformContainer = NodePath("PlatformContainer")
 player = NodePath("DummyPlayer")
 
 [node name="Camera" type="Camera3D" parent="." unique_id=200911215]
