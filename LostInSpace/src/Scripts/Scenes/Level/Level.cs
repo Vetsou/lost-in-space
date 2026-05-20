@@ -79,6 +79,8 @@ public partial class Level : Scene
 		tileMap.Remove(pos);
 	}
 
+	public void UpdatePlatformShader(Platform instance, string param, Variant value) => platformRenderingServer.UpdatePlatformShader(instance, param, value);
+
 	private static int GridWidth => grid.GetLength(1);
 	private static int GridHeight => grid.GetLength(0);
 }

@@ -21,6 +21,9 @@ public partial class PlatformRenderingServer : Node3D
 		RenderingServer.InstanceSetScenario(instance, scenario);
 		RenderingServer.InstanceSetBase(instance, data.mesh.GetRid());
 
+		RenderingServer.InstanceGeometrySetMaterialOverride(instance, data.material.GetRid());
+		RenderingServer.InstanceGeometrySetShaderParameter(instance, "tint", data.albedo);
+
 		RenderingServer.InstanceSetTransform(instance, data.transform);
 	}
 
@@ -34,6 +37,8 @@ public partial class PlatformRenderingServer : Node3D
 		RenderingServer.FreeRid(instance);
 		instances.Remove(platform);
 	}
+
+	public void UpdatePlatformShader(Platform instance, string param, Variant value) => RenderingServer.InstanceGeometrySetShaderParameter(instances[instance], param, value);
 
 	public void ClearLevel()
 	{
