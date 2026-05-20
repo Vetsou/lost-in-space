@@ -6,7 +6,7 @@ public partial class Level : Scene
 	[Export] private PlatformRenderingServer platformRenderingServer;
 	[Export] private Player player;
 
-	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
+	private static readonly Dictionary<Vector2I, Platform> tileMap = [];
 
 	// TODO: Temporary, change when implementing level loading.
 	//  0 - empty, 1 - platform, 2 - goal
@@ -51,7 +51,7 @@ public partial class Level : Scene
 					continue;
 				}
 
-				IPlatform platform = PlatformRegistry.CreatePlaform(grid[i, j]);
+				Platform platform = PlatformRegistry.CreatePlaform(grid[i, j]);
 				platform.SetPosition(new Vector3((j - Offset.X) * spacing, 0, (i - Offset.Y) * spacing));
 
 				var gridPos = new Vector2I(j, i);
@@ -62,7 +62,7 @@ public partial class Level : Scene
 		}
 	}
 
-	public static IPlatform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out IPlatform tile) ? tile : null;
+	public static Platform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out Platform tile) ? tile : null;
 
 	public static Vector3 GridToWorld(Vector2I pos) => new Vector3((pos.X - Offset.X) * spacing, 0, (pos.Y - Offset.Y) * spacing);
 

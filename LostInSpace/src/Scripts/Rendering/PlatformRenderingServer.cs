@@ -1,16 +1,20 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 
 public partial class PlatformRenderingServer : Node3D
 {
-	private readonly List<Rid> instances = [];
-	public void RenderPlatform(IPlatform platform)
+	private readonly Dictionary<Platform, Rid> instances = [];
+	public void RenderPlatform(Platform platform)
 	{
+		if (instances.ContainsKey(platform))
+		{
+			return;
+		}
+
 		PlatformVisualData data = platform.VisualData;
 
 		Rid instance = RenderingServer.InstanceCreate();
-		instances.Add(instance);
+		instances[platform] = instance;
 
 		Rid scenario = GetWorld3D().Scenario;
 
@@ -18,12 +22,22 @@ public partial class PlatformRenderingServer : Node3D
 		RenderingServer.InstanceSetBase(instance, data.mesh.GetRid());
 
 		RenderingServer.InstanceSetTransform(instance, data.transform);
+	}
 
+	public void FreePlatform(Platform platform)
+	{
+		if (!instances.TryGetValue(platform, out Rid instance))
+		{
+			return;
+		}
+
+		RenderingServer.FreeRid(instance);
+		instances.Remove(platform);
 	}
 
 	public void ClearLevel()
 	{
-		foreach (Rid instance in instances)
+		foreach (Rid instance in instances.Values)
 		{
 			RenderingServer.FreeRid(instance);
 		}
