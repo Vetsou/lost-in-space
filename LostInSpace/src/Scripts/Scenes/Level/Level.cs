@@ -20,8 +20,8 @@ public partial class Level : Scene
 			{1, 0, 1, 1, 1, 1, 0, 1},
 			{1, 1, 1, 0, 0, 1, 1, 1}
 		};
-	private const float spacing = 1;
-	private static Vector2 Offset
+	public const float spacing = 1;
+	public static Vector2 Offset
 	{
 		get
 		{
@@ -52,9 +52,9 @@ public partial class Level : Scene
 				}
 
 				Platform platform = PlatformRegistry.CreatePlaform(grid[i, j]);
-				platform.SetPosition(new Vector3((j - Offset.X) * spacing, 0, (i - Offset.Y) * spacing));
 
 				var gridPos = new Vector2I(j, i);
+				platform.SetPosition(gridPos);
 				tileMap[gridPos] = platform;
 
 				platformRenderingServer.RenderPlatform(platform);
@@ -71,6 +71,12 @@ public partial class Level : Scene
 	{
 		platformRenderingServer.ClearLevel();
 		ChangeScene(SceneId.MainMenu);
+	}
+
+	public void RemovePlatform(Vector2I pos)
+	{
+		platformRenderingServer.FreePlatform(tileMap[pos]);
+		tileMap.Remove(pos);
 	}
 
 	private static int GridWidth => grid.GetLength(1);
