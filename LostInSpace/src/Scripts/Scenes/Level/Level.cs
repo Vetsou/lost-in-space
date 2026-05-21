@@ -6,22 +6,11 @@ public partial class Level : Scene
 	[Export] private Node PlatformContainer;
 	[Export] private Godot.Collections.Dictionary<int, PackedScene> platformTypes;
 	[Export] private Player player;
+	[Export] private LevelData levelData;
 
 	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
 	private int pointCounter;
 
-	// TODO: Temporary, change when implementing level loading.
-	//  0 - empty, 1 - platform, 2 - platform with point, 3 - goal
-	private static readonly int[,] grid = {
-			{1, 0, 1, 1, 1, 2, 0, 3},
-			{1, 2, 1, 1, 0, 1, 1, 1},
-			{1, 1, 0, 1, 1, 0, 1, 0},
-			{0, 1, 0, 1, 2, 0, 1, 0},
-			{0, 1, 1, 1, 1, 0, 1, 1},
-			{1, 1, 1, 0, 1, 1, 0, 1},
-			{1, 0, 2, 1, 1, 1, 0, 1},
-			{1, 1, 1, 0, 0, 1, 1, 1}
-		};
 	private const float spacing = 1;
 	private static Vector2 Offset
 	{
@@ -33,7 +22,6 @@ public partial class Level : Scene
 
 	public override void _Ready()
 	{
-		LoadLevel();
 		player.Init(this);
 	}
 
@@ -41,41 +29,9 @@ public partial class Level : Scene
 	{
 	}
 
-	// TODO: Temporary, change when implementing level loading.
-	private void LoadLevel()
-	{
-		for (int i = 0; i < GridHeight; i++)
-		{
-			for (int j = 0; j < GridWidth; j++)
-			{
-				if (grid[i, j] == 0)
-				{
-					continue;
-				}
-
-				PackedScene platform = platformTypes[grid[i, j]];
-				Node3D instance = platform.Instantiate<Node3D>();
-
-				instance.Position = new Vector3((j - Offset.X) * spacing, 0, (i - Offset.Y) * spacing);
-				PlatformContainer.AddChild(instance);
-
-				if (instance is IPlatform tile)
-				{
-					var gridPos = new Vector2I(j, i);
-					tileMap[gridPos] = tile;
-					if (tile.HasPoint)
-					{
-						pointCounter++;
-						tile.HasPoint = true;
-					}
-				}
-			}
-		}
-	}
-
 	public static IPlatform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out IPlatform tile) ? tile : null;
 
-	public static Vector3 GridToWorld(Vector2I pos) => new Vector3((pos.X - Offset.X) * spacing, 0, (pos.Y - Offset.Y) * spacing);
+	public static Vector3 GridToWorld(Vector2I pos) => new ((pos.X - Offset.X) * spacing, 0, (pos.Y - Offset.Y) * spacing);
 
 	// TODO: Temporary, should make win UI
 	public void Win()
