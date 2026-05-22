@@ -1,6 +1,4 @@
-﻿namespace LostInSpace.Scripts.Level;
-
-public enum PlatformType
+﻿public enum PlatformType
 {
 	Empty = 0,
 	Regular = 1,
