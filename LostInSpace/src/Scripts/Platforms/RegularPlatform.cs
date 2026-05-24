@@ -1,14 +1,6 @@
 using Godot;
 
-public partial class RegularPlatform : Node3D, IPlatform
+public class RegularPlatform : Platform
 {
-	public void OnEnter(TileContext context)
-	{
-
-	}
-
-	public void OnExit(TileContext context)
-	{
-
-	}
+	public override PlatformVisualData VisualData { get; } = ResourceLoader.Load<PlatformVisualData>("res://src/Objects/Platforms/RegularPlatformVisualData.tres");
 }

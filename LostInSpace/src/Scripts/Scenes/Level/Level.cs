@@ -3,11 +3,10 @@ using Godot;
 
 public partial class Level : Scene
 {
-	[Export] private Node PlatformContainer;
-	[Export] private Godot.Collections.Dictionary<int, PackedScene> platformTypes;
+	[Export] private PlatformRenderingServer platformRenderingServer;
 	[Export] private Player player;
 
-	private static readonly Dictionary<Vector2I, IPlatform> tileMap = [];
+	private static readonly Dictionary<Vector2I, Platform> tileMap = [];
 
 	// TODO: Temporary, change when implementing level loading.
 	//  0 - empty, 1 - platform, 2 - goal
@@ -21,14 +20,7 @@ public partial class Level : Scene
 			{1, 0, 1, 1, 1, 1, 0, 1},
 			{1, 1, 1, 0, 0, 1, 1, 1}
 		};
-	private const float spacing = 1;
-	private static Vector2 Offset
-	{
-		get
-		{
-			return new Vector2((GridWidth - 1) / 2.0f, (GridHeight - 1) / 2.0f);
-		}
-	}
+	public const float spacing = 1;
 
 	public override void _Ready()
 	{
@@ -39,6 +31,8 @@ public partial class Level : Scene
 	public override void _Process(double delta)
 	{
 	}
+
+	public override void _ExitTree() => ClearLevel();
 
 	// TODO: Temporary, change when implementing level loading.
 	private void LoadLevel()
@@ -52,30 +46,48 @@ public partial class Level : Scene
 					continue;
 				}
 
-				PackedScene platform = platformTypes[grid[i, j]];
-				Node3D instance = platform.Instantiate<Node3D>();
+				Platform platform = PlatformRegistry.CreatePlatform(grid[i, j]);
+				platform.OnRemovalRequested += RemovePlatform;
 
-				instance.Position = new Vector3((j - Offset.X) * spacing, 0, (i - Offset.Y) * spacing);
-				PlatformContainer.AddChild(instance);
+				var gridPos = new Vector2I(j, i);
+				platform.SetPosition(gridPos);
+				tileMap[gridPos] = platform;
 
-				if (instance is IPlatform tile)
-				{
-					var gridPos = new Vector2I(j, i);
-					tileMap[gridPos] = tile;
-				}
+				platformRenderingServer.RenderPlatform(platform);
 			}
 		}
 	}
 
-	public static IPlatform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out IPlatform tile) ? tile : null;
+	public static Platform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out Platform tile) ? tile : null;
 
-	public static Vector3 GridToWorld(Vector2I pos) => new Vector3((pos.X - Offset.X) * spacing, 0, (pos.Y - Offset.Y) * spacing);
+	public static Vector3 GridToWorld(Vector2I pos) => new(pos.X * spacing, 0, pos.Y * spacing);
 
 	// TODO: Temporary, should make win UI
 	public void Win()
 	{
+		ClearLevel();
 		ChangeScene(SceneId.MainMenu);
 	}
+
+	public void RemovePlatform(Vector2I pos)
+	{
+		tileMap[pos].OnRemovalRequested -= RemovePlatform;
+		platformRenderingServer.FreePlatform(tileMap[pos]);
+		tileMap.Remove(pos);
+	}
+
+	private void ClearLevel()
+	{
+		foreach (Platform platform in tileMap.Values)
+		{
+			platform.OnRemovalRequested -= RemovePlatform;
+		}
+
+		platformRenderingServer.ClearLevel();
+		tileMap.Clear();
+	}
+
+	public void UpdatePlatformShader(Platform instance, string param, Variant value) => platformRenderingServer.UpdatePlatformShader(instance, param, value);
 
 	private static int GridWidth => grid.GetLength(1);
 	private static int GridHeight => grid.GetLength(0);
