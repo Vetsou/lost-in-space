@@ -44,7 +44,7 @@ public partial class Level : Scene
 					continue;
 				}
 
-				Platform platform = PlatformRegistry.CreatePlaform(grid[i, j]);
+				Platform platform = PlatformRegistry.CreatePlatform(grid[i, j]);
 				platform.OnRemovalRequested += RemovePlatform;
 
 				var gridPos = new Vector2I(j, i);
@@ -63,7 +63,7 @@ public partial class Level : Scene
 	// TODO: Temporary, should make win UI
 	public void Win()
 	{
-		platformRenderingServer.ClearLevel();
+		ClearLevel();
 		ChangeScene(SceneId.MainMenu);
 	}
 
@@ -72,6 +72,17 @@ public partial class Level : Scene
 		tileMap[pos].OnRemovalRequested -= RemovePlatform;
 		platformRenderingServer.FreePlatform(tileMap[pos]);
 		tileMap.Remove(pos);
+	}
+
+	private void ClearLevel()
+	{
+		foreach (Platform platform in tileMap.Values)
+		{
+			platform.OnRemovalRequested -= RemovePlatform;
+		}
+
+		platformRenderingServer.ClearLevel();
+		tileMap.Clear();
 	}
 
 	public void UpdatePlatformShader(Platform instance, string param, Variant value) => platformRenderingServer.UpdatePlatformShader(instance, param, value);
