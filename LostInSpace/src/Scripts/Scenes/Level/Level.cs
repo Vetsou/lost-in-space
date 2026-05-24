@@ -32,6 +32,8 @@ public partial class Level : Scene
 	{
 	}
 
+	public override void _ExitTree() => ClearLevel();
+
 	// TODO: Temporary, change when implementing level loading.
 	private void LoadLevel()
 	{
