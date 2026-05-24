@@ -59,7 +59,7 @@ public partial class Level : Scene
 
 				if (instance is IPlatform tile)
 				{
-					var gridPos = new Vector2I(j, i);
+					Vector2I gridPos = new Vector2I(j, i);
 					tileMap[gridPos] = tile;
 				}
 			}
