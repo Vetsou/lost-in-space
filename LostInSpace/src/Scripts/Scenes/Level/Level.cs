@@ -21,13 +21,6 @@ public partial class Level : Scene
 			{1, 1, 1, 0, 0, 1, 1, 1}
 		};
 	public const float spacing = 1;
-	public static Vector2 Offset
-	{
-		get
-		{
-			return new Vector2((GridWidth - 1) / 2.0f, (GridHeight - 1) / 2.0f);
-		}
-	}
 
 	public override void _Ready()
 	{
@@ -52,6 +45,7 @@ public partial class Level : Scene
 				}
 
 				Platform platform = PlatformRegistry.CreatePlaform(grid[i, j]);
+				platform.OnRemovalRequested += RemovePlatform;
 
 				var gridPos = new Vector2I(j, i);
 				platform.SetPosition(gridPos);
@@ -64,7 +58,7 @@ public partial class Level : Scene
 
 	public static Platform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out Platform tile) ? tile : null;
 
-	public static Vector3 GridToWorld(Vector2I pos) => new Vector3((pos.X - Offset.X) * spacing, 0, (pos.Y - Offset.Y) * spacing);
+	public static Vector3 GridToWorld(Vector2I pos) => new(pos.X * spacing, 0, pos.Y * spacing);
 
 	// TODO: Temporary, should make win UI
 	public void Win()
@@ -75,6 +69,7 @@ public partial class Level : Scene
 
 	public void RemovePlatform(Vector2I pos)
 	{
+		tileMap[pos].OnRemovalRequested -= RemovePlatform;
 		platformRenderingServer.FreePlatform(tileMap[pos]);
 		tileMap.Remove(pos);
 	}
