@@ -6,6 +6,9 @@ public partial class Level : Scene
 	[Export] private Player Player;
 	[Export] private PackedScene PointScene;
 	[Export] public string LevelPath;
+	[Export] private PlatformRenderingServer platformRenderingServer;
+
+	private static readonly Dictionary<Vector2I, Platform> tileMap = [];
 
 	public override void _Ready()
 	{
@@ -22,6 +25,30 @@ public partial class Level : Scene
 	// TODO: Temporary, should make win UI
 	public void Win()
 	{
+		ClearLevel();
 		ChangeScene(SceneId.MainMenu);
 	}
+
+	public void RemovePlatform(Vector2I pos)
+	{
+		tileMap[pos].OnRemovalRequested -= RemovePlatform;
+		platformRenderingServer.FreePlatform(tileMap[pos]);
+		tileMap.Remove(pos);
+	}
+
+	private void ClearLevel()
+	{
+		foreach (Platform platform in tileMap.Values)
+		{
+			platform.OnRemovalRequested -= RemovePlatform;
+		}
+
+		platformRenderingServer.ClearLevel();
+		tileMap.Clear();
+	}
+
+	public void UpdatePlatformShader(Platform instance, string param, Variant value) => platformRenderingServer.UpdatePlatformShader(instance, param, value);
+
+	private static int GridWidth => grid.GetLength(1);
+	private static int GridHeight => grid.GetLength(0);
 }

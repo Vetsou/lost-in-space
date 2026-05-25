@@ -55,7 +55,7 @@ public partial class Player : Node3D
 
 	private void Move(Vector2I direction)
 	{
-		IPlatform nextTile = Level.GetTile(GridPosition + direction);
+		Platform nextTile = Level.GetTile(GridPosition + direction);
 		if (nextTile == null)
 		{
 			return;
