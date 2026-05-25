@@ -53,7 +53,7 @@ public partial class Player : Node3D
 		return false;
 	}
 
-	private void Move(Vector2I direction)
+	public void Move(Vector2I direction)
 	{
 		Platform nextTile = Level.GetTile(GridPosition + direction);
 		if (nextTile == null)
@@ -72,11 +72,9 @@ public partial class Player : Node3D
 		currentTile?.OnEnter(context);
 	}
 
-	private TileContext GetTileContext()
+	private TileContext GetTileContext() => new()
 	{
-		return new TileContext
-		{
-			Level = level
-		};
-	}
+		Level = level,
+		Player = this
+	};
 }
