@@ -40,4 +40,5 @@ jobs:
           version: 'v6.1.3'
           project_dir: './LostInSpace.Tests/'
           paths: 'res://tests'
+          publish-report: false
           upload-report: false
