@@ -32,7 +32,7 @@ jobs:
         run: dotnet build LostInSpace.sln --configuration ExportRelease --no-restore
 
       - name: Run tests
-        uses: godot-gdunit-labs/gdUnit4-action@v1.0.2
+        uses: godot-gdunit-labs/gdUnit4-action@v1
         with:
           godot-version: '4.6.2'
           dotnet-version: 'net9.0'
