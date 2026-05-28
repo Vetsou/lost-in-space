@@ -37,6 +37,6 @@ jobs:
           godot-version: '4.6.2'
           dotnet-version: 'net9.0'
           godot-net: true
-          version: '5.1.0-rc4'
+          version: '6.1.3'
           project_dir: './LostInSpace.Tests/'
           paths: 'res://tests'
