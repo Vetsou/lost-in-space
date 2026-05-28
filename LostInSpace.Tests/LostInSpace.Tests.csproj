@@ -20,7 +20,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
-        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc3"/>
+        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc4"/>
         <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0"/>
     </ItemGroup>
 
