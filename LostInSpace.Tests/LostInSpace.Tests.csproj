@@ -1,28 +1,51 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Godot.NET.Sdk/4.6.2" InitialTargets="CreateSymlinks">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <!-- Disable Central Package Management for Godot projects -->
+        <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+        <TargetFramework>net9.0</TargetFramework>
 
+        <ImplicitUsings>enable</ImplicitUsings>
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+
+        <RootNamespace>LostInSpace</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- Ensures all dependencies are copied to output for test execution -->
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <TestFramework>GdUnit4</TestFramework>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="coverlet.collector" Version="6.0.0"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
-        <PackageReference Include="NUnit" Version="3.14.0"/>
-        <PackageReference Include="NUnit.Analyzers" Version="3.9.0"/>
-        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
+        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc3"/>
+        <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Using Include="NUnit.Framework"/>
-    </ItemGroup>
+    <Target Name="CreateSymlinks">
+        <PropertyGroup>
+            <!-- Define source and target paths for both symlinks -->
+            <SrcSource>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../LostInSpace/src'))</SrcSource>
+            <SrcTarget>$(MSBuildProjectDirectory)/src</SrcTarget>
+        </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\LostInSpace\LostInSpace.csproj" />
-    </ItemGroup>
+        <!-- Windows: Create symlinks -->
+        <Exec Command="if not exist &quot;$(SrcTarget)&quot; mklink /D &quot;$(SrcTarget)&quot; &quot;$(SrcSource)&quot;"
+            Condition="'$(OS)' == 'Windows_NT'"
+            ContinueOnError="true"/>
 
+        <!-- Unix/Linux/Mac: Create symlinks -->
+        <Exec Command="[ ! -L '$(SrcTarget)' ] &amp;&amp; ln -s '$(SrcSource)' '$(SrcTarget)' || true"
+            Condition="'$(OS)' != 'Windows_NT'"
+            ContinueOnError="true"/>
+
+        <!-- Verify symlink exists and is accessible -->
+        <Error Condition="!Exists('$(SrcTarget)')"
+            Text="Failed to create symlink at $(SrcTarget). On Windows, try running as Administrator or enabling Developer Mode."/>
+
+        <!-- Log confirmation -->
+        <Message Text="✓ Symlink verified: $(SrcTarget) -> $(SrcSource)" Importance="high"/>
+    </Target>
 </Project>
