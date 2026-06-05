@@ -1,6 +1,11 @@
 {
-	"name": "level name",
-	"platform_grid": [
-
-	]
+	"Width": 3,
+	"Height": 3,
+	"Platforms": [
+		[1, 1, 1],
+		[0, 0, 1],
+		[2, 1, 1],
+	],
+	"PlayerPositionX": 0,
+	"PlayerPositionY": 0
 }
