@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using Godot;
 using LostInSpace.Scripts.Scenes.Level;
 using Newtonsoft.Json;
+using FileAccess = Godot.FileAccess;
 
 public partial class Level : Scene
 {
