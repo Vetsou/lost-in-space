@@ -1,7 +1,3 @@
-using System;
-
-namespace LostInSpace.Scripts.Scenes.Level;
-
 public struct LevelData
 {
 	public required ushort Width { get; init; }
