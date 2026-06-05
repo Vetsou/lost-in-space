@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
 
 public partial class Level : Scene
@@ -22,21 +23,15 @@ public partial class Level : Scene
 		};
 	public const float spacing = 1;
 
-	public override void _Ready()
-	{
-		LoadLevel();
-		player.Init(this);
-	}
-
 	public override void _Process(double delta)
 	{
 	}
 
 	public override void _ExitTree() => ClearLevel();
 
-	// TODO: Temporary, change when implementing level loading.
-	private void LoadLevel()
+	public void LoadLevel(string levelFilePath)
 	{
+		GD.Print(levelFilePath);
 		for (int i = 0; i < GridHeight; i++)
 		{
 			for (int j = 0; j < GridWidth; j++)
@@ -56,6 +51,8 @@ public partial class Level : Scene
 				platformRenderingServer.RenderPlatform(platform);
 			}
 		}
+
+		player.Init(this);
 	}
 
 	public static Platform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out Platform tile) ? tile : null;

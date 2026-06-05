@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c70raa2vqubpy" path="res://src/Scripts/Scenes/LevelSelector/LevelSelector.cs" id="1_ampnh"]
 
-[node name="LevelSelector" type="Control" unique_id=1346314526]
+[node name="LevelSelector" type="Control" unique_id=1346314526 node_paths=PackedStringArray("_buttonsContainer", "_levelNameLabel")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,6 +10,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ampnh")
+_buttonsContainer = NodePath("MarginContainer/HBoxContainer/ScrollContainer/LevelButtonsContainer")
+_levelNameLabel = NodePath("MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/LevelName")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=472100588]
 layout_mode = 1
@@ -32,70 +34,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 80.0
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer" unique_id=100275717]
+[node name="LevelButtonsContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer" unique_id=100275717]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 6
-
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=1554169802]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "1"
-
-[node name="Button2" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=202293249]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "2"
-
-[node name="Button3" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=1581009708]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "3"
-
-[node name="Button4" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=1796649325]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "4"
-
-[node name="Button5" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=287124108]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "5"
-
-[node name="Button6" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=582382237]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "6"
-
-[node name="Button7" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=1544473166]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "7"
-
-[node name="Button8" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=12529091]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "8"
-
-[node name="Button9" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=47020430]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "9"
-
-[node name="Button10" type="Button" parent="MarginContainer/HBoxContainer/ScrollContainer/GridContainer" unique_id=792530272]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-size_flags_horizontal = 3
-text = "10"
 
 [node name="SideContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1453113337]
 layout_mode = 2
