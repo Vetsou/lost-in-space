@@ -31,3 +31,7 @@ mono_crash.*.json
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Ignore test symlinks files
+# This symlink is created during build/test and should not be committed
+LostInSpace.Tests/src

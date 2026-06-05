@@ -13,10 +13,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-        run:
-          working-directory: ./LostInSpace
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -24,7 +20,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       - name: Restore dependencies
         run: dotnet restore LostInSpace.sln
@@ -36,4 +32,13 @@ jobs:
         run: dotnet build LostInSpace.sln --configuration ExportRelease --no-restore
 
       - name: Run tests
-        run: dotnet test LostInSpace.sln
+        uses: godot-gdunit-labs/gdUnit4-action@v1
+        with:
+          godot-version: '4.6.2'
+          dotnet-version: 'net9.0'
+          godot-net: true
+          version: 'v6.1.3'
+          project_dir: './LostInSpace.Tests/'
+          paths: 'res://tests'
+          publish-report: false
+          upload-report: false
