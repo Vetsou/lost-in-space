@@ -1,5 +1,8 @@
+using Godot;
+
 public readonly struct TileContext
 {
 	public required Level Level { get; init; }
-	//this can be used to pass movedirection etc. into the tile
+	public required Player Player { get; init; }
+	public required Vector2I MoveDirection { get; init; }
 }
