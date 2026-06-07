@@ -3,7 +3,7 @@ using Godot;
 public partial class Player : Node3D
 {
 	private Vector2I GridPosition { get; set; } = Vector2I.Zero;
-	private Platform? _currentTile;
+	private Platform _currentTile;
 	private Level _level;
 
 	public void Init(Level level, Vector2I gridPosition)
@@ -56,7 +56,7 @@ public partial class Player : Node3D
 
 	private void Move(Vector2I direction)
 	{
-		Platform? nextTile = _level.GetTile(GridPosition + direction);
+		Platform nextTile = _level.GetTile(GridPosition + direction);
 		if (nextTile == null)
 		{
 			return;

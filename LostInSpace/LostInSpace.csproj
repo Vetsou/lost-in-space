@@ -6,7 +6,6 @@
         <TargetFramework>net9.0</TargetFramework>
         <EnableDynamicLoading>true</EnableDynamicLoading>
         <ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
         <RootNamespace>LostInSpace</RootNamespace>
     </PropertyGroup>
 

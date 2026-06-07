@@ -12,7 +12,7 @@ public partial class Level : Scene
 
 	private int _width;
 	private int _height;
-	private Platform?[] _platforms;
+	private Platform[] _platforms;
 
 	public override void _Process(double delta)
 	{
@@ -27,7 +27,7 @@ public partial class Level : Scene
 
 		_width = levelData.Width;
 		_height = levelData.Height;
-		_platforms = new Platform?[_width * _height];
+		_platforms = new Platform[_width * _height];
 
 		for (int i = 0; i < _width; i++)
 		{
@@ -52,7 +52,7 @@ public partial class Level : Scene
 		player.Init(this, new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
 	}
 
-	public Platform? GetTile(Vector2I pos)
+	public Platform GetTile(Vector2I pos)
 	{
 		int index = GridToIndex(pos);
 		if (index < 0 || index >= _platforms.Length)
@@ -79,7 +79,7 @@ public partial class Level : Scene
 
 	public void RemovePlatform(Vector2I pos)
 	{
-		Platform? platform = _platforms[GridToIndex(pos)];
+		Platform platform = _platforms[GridToIndex(pos)];
 		if (platform == null)
 		{
 			return;
@@ -94,7 +94,7 @@ public partial class Level : Scene
 	{
 		for (int i = 0; i < _platforms.Length; i++)
 		{
-			Platform? platform = _platforms[i];
+			Platform platform = _platforms[i];
 			if (platform == null)
 			{
 				continue;
