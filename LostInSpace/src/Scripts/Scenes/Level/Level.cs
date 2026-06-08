@@ -1,32 +1,18 @@
-using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Godot;
+using Newtonsoft.Json;
+using FileAccess = Godot.FileAccess;
 
 public partial class Level : Scene
 {
+	public const float SPACING = 1;
+
 	[Export] private PlatformRenderingServer platformRenderingServer;
 	[Export] private Player player;
 
-	private static readonly Dictionary<Vector2I, Platform> tileMap = [];
-
-	// TODO: Temporary, change when implementing level loading.
-	//  0 - empty, 1 - platform, 2 - goal
-	private static readonly int[,] grid = {
-			{1, 0, 1, 7, 1, 1, 0, 2},
-			{3, 1, 1, 1, 0, 1, 1, 7},
-			{3, 4, 0, 1, 4, 1, 1, 0},
-			{0, 1, 0, 0, 0, 1, 4, 0},
-			{0, 1, 1, 1, 6, 0, 7, 1},
-			{1, 1, 1, 1, 5, 5, 7, 1},
-			{1, 0, 1, 8, 8, 1, 3, 1},
-			{3, 1, 6, 1, 0, 1, 1, 1}
-		};
-	public const float spacing = 1;
-
-	public override void _Ready()
-	{
-		LoadLevel();
-		player.Init(this);
-	}
+	private int _width;
+	private int _height;
+	private Platform[] _platforms;
 
 	public override void _Process(double delta)
 	{
@@ -34,33 +20,55 @@ public partial class Level : Scene
 
 	public override void _ExitTree() => ClearLevel();
 
-	// TODO: Temporary, change when implementing level loading.
-	private void LoadLevel()
+	public void LoadLevel(string levelFilePath)
 	{
-		for (int i = 0; i < GridHeight; i++)
+		LevelData levelData = JsonConvert.DeserializeObject<LevelData>(FileAccess.GetFileAsString(levelFilePath));
+		levelData.Validate();
+
+		_width = levelData.Width;
+		_height = levelData.Height;
+		_platforms = new Platform[_width * _height];
+
+		for (int i = 0; i < _width; i++)
 		{
-			for (int j = 0; j < GridWidth; j++)
+			for (int j = 0; j < _height; j++)
 			{
-				if (grid[i, j] == 0)
+				if (levelData.Platforms[j, i] == 0)
 				{
 					continue;
 				}
 
-				Platform platform = PlatformRegistry.CreatePlatform(grid[i, j]);
+				Platform platform = PlatformRegistry.CreatePlatform(levelData.Platforms[j, i]);
 				platform.OnRemovalRequested += RemovePlatform;
 
-				var gridPos = new Vector2I(j, i);
+				var gridPos = new Vector2I(i, j);
 				platform.SetPosition(gridPos);
-				tileMap[gridPos] = platform;
+				_platforms[GridToIndex(gridPos)] = platform;
 
 				platformRenderingServer.RenderPlatform(platform);
 			}
 		}
+
+		player.Init(this, new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
 	}
 
-	public static Platform GetTile(Vector2I pos) => tileMap.TryGetValue(pos, out Platform tile) ? tile : null;
+	public Platform GetTile(Vector2I pos)
+	{
+		int index = GridToIndex(pos);
+		if (index < 0 || index >= _platforms.Length)
+		{
+			return null;
+		}
+		return _platforms[index];
+	}
 
-	public static Vector3 GridToWorld(Vector2I pos) => new(pos.X * spacing, 0, pos.Y * spacing);
+	public Vector3 GridToWorld(Vector2I pos) => new(pos.X * SPACING, 0, pos.Y * SPACING);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private int GridToIndex(Vector2I pos) => pos.Y * _width + pos.X;
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private Vector2I IndexToGrid(int index) => new Vector2I(index % _width, index / _width);
 
 	// TODO: Temporary, should make win UI
 	public void Win()
@@ -71,24 +79,34 @@ public partial class Level : Scene
 
 	public void RemovePlatform(Vector2I pos)
 	{
-		tileMap[pos].OnRemovalRequested -= RemovePlatform;
-		platformRenderingServer.FreePlatform(tileMap[pos]);
-		tileMap.Remove(pos);
+		Platform platform = _platforms[GridToIndex(pos)];
+		if (platform == null)
+		{
+			return;
+		}
+
+		platform.OnRemovalRequested -= RemovePlatform;
+		platformRenderingServer.FreePlatform(platform);
+		_platforms[GridToIndex(pos)] = null;
 	}
 
 	private void ClearLevel()
 	{
-		foreach (Platform platform in tileMap.Values)
+		for (int i = 0; i < _platforms.Length; i++)
 		{
+			Platform platform = _platforms[i];
+			if (platform == null)
+			{
+				continue;
+			}
+
 			platform.OnRemovalRequested -= RemovePlatform;
+			_platforms[i] = null;
 		}
 
 		platformRenderingServer.ClearLevel();
-		tileMap.Clear();
 	}
 
-	public void UpdatePlatformShader(Platform instance, string param, Variant value) => platformRenderingServer.UpdatePlatformShader(instance, param, value);
-
-	private static int GridWidth => grid.GetLength(1);
-	private static int GridHeight => grid.GetLength(0);
+	public void UpdatePlatformShader(Platform instance, string param, Variant value) =>
+		platformRenderingServer.UpdatePlatformShader(instance, param, value);
 }

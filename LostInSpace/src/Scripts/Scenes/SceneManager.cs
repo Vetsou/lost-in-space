@@ -13,11 +13,18 @@ public partial class SceneManager : Node
 		ValidateScenes();
 #endif
 
-		await ChangeScene(SceneId.MainMenu);
+		ChangeScene(SceneId.MainMenu);
 	}
 
-	// this will be async and await transitions when we need them
-	private Task ChangeScene(SceneId sceneId)
+	private void ChangeScene(SceneId sceneId) => ChangeSceneInternal(sceneId);
+
+	private void ChangeLevelScene(string levelFilePath)
+	{
+		var level = (Level)ChangeSceneInternal(SceneId.Level);
+		level.LoadLevel(levelFilePath);
+	}
+
+	private Scene ChangeSceneInternal(SceneId sceneId)
 	{
 		foreach (Node child in sceneContainer.GetChildren())
 		{
@@ -26,8 +33,9 @@ public partial class SceneManager : Node
 
 		var newScene = (Scene)sceneIds[sceneId].Instantiate();
 		newScene.Connect(Scene.SignalName.RequestSceneChange, Callable.From<SceneId>(OnSceneChangeRequested));
+		newScene.Connect(Scene.SignalName.RequestLevelSceneChange, Callable.From<string>(OnLevelSceneChangeRequested));
 		sceneContainer.AddChild(newScene);
-		return Task.CompletedTask;
+		return newScene;
 	}
 
 #if TOOLS
@@ -50,5 +58,6 @@ public partial class SceneManager : Node
 	}
 #endif
 
-	private async void OnSceneChangeRequested(SceneId sceneId) => await ChangeScene(sceneId);
+	private async void OnSceneChangeRequested(SceneId sceneId) => ChangeScene(sceneId);
+	private async void OnLevelSceneChangeRequested(string levelFilePath) => ChangeLevelScene(levelFilePath);
 }

@@ -3,14 +3,15 @@ using Godot;
 public partial class Player : Node3D
 {
 	private Vector2I GridPosition { get; set; } = Vector2I.Zero;
-	private Platform currentTile;
-	private Level level;
+	private Platform _currentTile;
+	private Level _level;
 
-	public void Init(Level level)
+	public void Init(Level level, Vector2I gridPosition)
 	{
-		this.level = level;
-		Position = Level.GridToWorld(GridPosition);
-		currentTile = Level.GetTile(GridPosition);
+		_level = level;
+		GridPosition = gridPosition;
+		Position = level.GridToWorld(GridPosition);
+		_currentTile = level.GetTile(GridPosition);
 	}
 
 	public override void _Input(InputEvent @event)
@@ -55,7 +56,7 @@ public partial class Player : Node3D
 
 	public void Move(Vector2I direction)
 	{
-		Platform nextTile = Level.GetTile(GridPosition + direction);
+		Platform nextTile = _level.GetTile(GridPosition + direction);
 		if (nextTile == null)
 		{
 			return;
@@ -65,16 +66,16 @@ public partial class Player : Node3D
 
 		TileContext context = GetTileContext(direction);
 
-		currentTile?.OnExit(context);
-		currentTile = nextTile;
+		_currentTile?.OnExit(context);
+		_currentTile = nextTile;
 
-		Position = Level.GridToWorld(GridPosition);
-		currentTile?.OnEnter(context);
+		Position = _level.GridToWorld(GridPosition);
+		_currentTile?.OnEnter(context);
 	}
 
 	private TileContext GetTileContext(Vector2I direction) => new()
 	{
-		Level = level,
+		Level = _level,
 		Player = this,
 		MoveDirection = direction,
 	};

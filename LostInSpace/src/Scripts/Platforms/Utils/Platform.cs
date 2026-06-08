@@ -10,7 +10,7 @@ public abstract class Platform
 	public void SetPosition(Vector2I pos)
 	{
 		this.pos = pos;
-		VisualData.transform.Origin = new Vector3(pos.X * Level.spacing, 0, pos.Y * Level.spacing);
+		VisualData.transform.Origin = new Vector3(pos.X * Level.SPACING, 0, pos.Y * Level.SPACING);
 	}
 
 	public virtual void OnEnter(TileContext context) { }
