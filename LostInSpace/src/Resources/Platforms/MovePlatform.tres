@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PlatformVisualData" format=3 uid="uid://bt7fcql1et6em"]
 
-[ext_resource type="Material" uid="uid://cyu7m68i6lh30" path="res://src/Materials/BasePlatformShader.tres" id="1_yr8kl"]
+[ext_resource type="Material" uid="uid://cyu7m68i6lh30" path="res://src/Resources/Materials/BasePlatformShader.tres" id="1_yr8kl"]
 [ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://src/Scripts/Rendering/PlatformVisualData.cs" id="2_c0rlk"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_tacjw"]

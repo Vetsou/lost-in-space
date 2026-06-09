@@ -7,7 +7,7 @@ public partial class SceneManager : Node
 
 	[Export] private Godot.Collections.Dictionary<SceneId, PackedScene> sceneIds;
 
-	public override async void _Ready()
+	public override void _Ready()
 	{
 #if TOOLS
 		ValidateScenes();
@@ -58,6 +58,6 @@ public partial class SceneManager : Node
 	}
 #endif
 
-	private async void OnSceneChangeRequested(SceneId sceneId) => ChangeScene(sceneId);
-	private async void OnLevelSceneChangeRequested(string levelFilePath) => ChangeLevelScene(levelFilePath);
+	private void OnSceneChangeRequested(SceneId sceneId) => ChangeScene(sceneId);
+	private void OnLevelSceneChangeRequested(string levelFilePath) => ChangeLevelScene(levelFilePath);
 }

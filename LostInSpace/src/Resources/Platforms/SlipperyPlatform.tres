@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="PlatformVisualData" format=3 uid="uid://dtyk1rdnwg8ui"]
 
-[ext_resource type="Shader" uid="uid://ocfu1yli1px7" path="res://src/Shaders/BasePlatformShader.gdshader" id="1_8o3q2"]
+[ext_resource type="Shader" uid="uid://ocfu1yli1px7" path="res://src/Resources/Shaders/BasePlatformShader.gdshader" id="1_8o3q2"]
 [ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://src/Scripts/Rendering/PlatformVisualData.cs" id="1_oubxk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dl3h4"]
