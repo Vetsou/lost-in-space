@@ -66,7 +66,7 @@ horizontal_alignment = 1
 clip_text = true
 uppercase = true
 
-[node name="Button" type="Button" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer" unique_id=1923218177]
+[node name="PlayButton" type="Button" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer" unique_id=1923218177]
 layout_mode = 2
 size_flags_vertical = 10
 text = "Play"
@@ -75,5 +75,5 @@ text = "Play"
 layout_mode = 2
 text = "Return to Menu"
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/Button" to="." method="OnPlayButtonPressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/SideContainer/ReturnButton" to="." method="OnReturnButtonPressed"]
