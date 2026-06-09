@@ -3,8 +3,8 @@ using Godot;
 [GlobalClass]
 public partial class PlatformVisualData : Resource
 {
-	[Export] public Mesh mesh;
-	[Export] public Material material;
-	[Export] public Color albedo;
-	public Transform3D transform = Transform3D.Identity;
+	[Export] public Mesh Mesh;
+	[Export] public Material Material;
+	[Export] public Color Albedo;
+	public Transform3D Transform = Transform3D.Identity;
 }

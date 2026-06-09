@@ -5,8 +5,6 @@ using FileAccess = Godot.FileAccess;
 
 public partial class Level : Scene
 {
-	public const float SPACING = 1;
-
 	[Export] private PlatformRenderingServer platformRenderingServer;
 	[Export] private Player player;
 
@@ -62,15 +60,12 @@ public partial class Level : Scene
 		return _platforms[index];
 	}
 
-	public Vector3 GridToWorld(Vector2I pos) => new(pos.X * SPACING, 0, pos.Y * SPACING);
-
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private int GridToIndex(Vector2I pos) => pos.Y * _width + pos.X;
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private Vector2I IndexToGrid(int index) => new Vector2I(index % _width, index / _width);
+	private Vector2I IndexToGrid(int index) => new(index % _width, index / _width);
 
-	// TODO: Temporary, should make win UI
 	public void Win()
 	{
 		ClearLevel();
@@ -106,7 +101,4 @@ public partial class Level : Scene
 
 		platformRenderingServer.ClearLevel();
 	}
-
-	public void UpdatePlatformShader(Platform instance, string param, Variant value) =>
-		platformRenderingServer.UpdatePlatformShader(instance, param, value);
 }

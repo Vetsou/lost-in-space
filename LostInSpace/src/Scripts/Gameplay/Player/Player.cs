@@ -10,7 +10,7 @@ public partial class Player : Node3D
 	{
 		_level = level;
 		GridPosition = gridPosition;
-		Position = level.GridToWorld(GridPosition);
+		Position = GridPosition.GridToWorldPosition();
 		_currentTile = level.GetTile(GridPosition);
 	}
 
@@ -69,7 +69,7 @@ public partial class Player : Node3D
 		_currentTile?.OnExit(context);
 		_currentTile = nextTile;
 
-		Position = _level.GridToWorld(GridPosition);
+		Position = GridPosition.GridToWorldPosition();
 		_currentTile?.OnEnter(context);
 	}
 

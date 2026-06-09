@@ -6,7 +6,7 @@ public struct LevelData
 	public required ushort PlayerPositionX { get; init; }
 	public required ushort PlayerPositionY { get; init; }
 
-	public void Validate()
+	public readonly void Validate()
 	{
 		if (Platforms == null)
 		{

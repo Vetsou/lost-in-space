@@ -2,13 +2,11 @@
 
 [ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://src/Scripts/Rendering/PlatformVisualData.cs" id="1_cfh2y"]
 [ext_resource type="Material" uid="uid://cyu7m68i6lh30" path="res://src/Resources/Materials/BasePlatformShader.tres" id="1_gpkbs"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_cfh2y"]
-size = Vector3(0.9, 0.1, 0.9)
+[ext_resource type="BoxMesh" uid="uid://bprlkag5hvi34" path="res://src/Resources/Models/BasePlatform.tres" id="2_ili3h"]
 
 [resource]
 script = ExtResource("1_cfh2y")
-mesh = SubResource("BoxMesh_cfh2y")
-material = ExtResource("1_gpkbs")
-albedo = Color(0.41, 0.41, 0.41, 1)
+Mesh = ExtResource("2_ili3h")
+Material = ExtResource("1_gpkbs")
+Albedo = Color(0.32915825, 0.32915843, 0.3291583, 1)
 metadata/_custom_type_script = "uid://dqts3j7yxr6o8"
