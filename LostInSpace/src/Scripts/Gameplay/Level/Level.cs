@@ -5,49 +5,79 @@ using FileAccess = Godot.FileAccess;
 
 public partial class Level : Scene
 {
-	[Export] private PlatformRenderingServer platformRenderingServer;
-	[Export] private Player player;
+	[Export] private PlatformRenderingServer _platformRenderingServer;
+	[Export] private Player _player;
 
-	private int _width;
-	private int _height;
+	private Vector2I MapSize { get; set; }
 	private Platform[] _platforms;
 
-	public override void _Process(double delta)
-	{
-	}
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private int GridToIndex(Vector2I pos) => pos.Y * MapSize.X + pos.X;
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private Vector2I IndexToGrid(int index) => new(index % MapSize.X, index / MapSize.X);
 
 	public override void _ExitTree() => ClearLevel();
+
+	public override void _Input(InputEvent @event)
+	{
+		if (!InputManager.GetPlayerMovementDirection(@event, out Vector2I direction))
+		{
+			return;
+		}
+
+		HandlePlayerMovement(direction);
+	}
+
+	public void HandlePlayerMovement(Vector2I direction)
+	{
+		Platform nextTile = GetTile(_player.GridPosition + direction);
+		if (nextTile == null)
+		{
+			return;
+		}
+
+		var context = new TileContext
+		{
+			Level = this,
+			MoveDirection = direction
+		};
+
+		Platform currPlatform = GetTile(_player.GridPosition);
+		currPlatform.OnExit(context);
+
+		_player.SetPosition(_player.GridPosition + direction);
+
+		Platform newPlatform = GetTile(_player.GridPosition);
+		newPlatform?.OnEnter(context);
+	}
 
 	public void LoadLevel(string levelFilePath)
 	{
 		LevelData levelData = JsonConvert.DeserializeObject<LevelData>(FileAccess.GetFileAsString(levelFilePath));
 		levelData.Validate();
 
-		_width = levelData.Width;
-		_height = levelData.Height;
-		_platforms = new Platform[_width * _height];
+		MapSize = new Vector2I(levelData.Width, levelData.Height);
+		_platforms = new Platform[MapSize.X * MapSize.Y];
 
-		for (int i = 0; i < _width; i++)
+		for (int i = 0; i < MapSize.X; i++)
 		{
-			for (int j = 0; j < _height; j++)
+			for (int j = 0; j < MapSize.Y; j++)
 			{
 				if (levelData.Platforms[j, i] == 0)
 				{
 					continue;
 				}
 
-				Platform platform = PlatformRegistry.CreatePlatform(levelData.Platforms[j, i]);
-				platform.OnRemovalRequested += RemovePlatform;
-
 				var gridPos = new Vector2I(i, j);
-				platform.SetPosition(gridPos);
-				_platforms[GridToIndex(gridPos)] = platform;
 
-				platformRenderingServer.RenderPlatform(platform);
+				Platform platform = PlatformRegistry.CreatePlatform(levelData.Platforms[j, i], gridPos);
+				_platforms[GridToIndex(gridPos)] = platform;
+				_platformRenderingServer.RenderPlatform(platform);
 			}
 		}
 
-		player.Init(this, new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
+		_player.SetPosition(new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
 	}
 
 	public Platform GetTile(Vector2I pos)
@@ -59,12 +89,6 @@ public partial class Level : Scene
 		}
 		return _platforms[index];
 	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private int GridToIndex(Vector2I pos) => pos.Y * _width + pos.X;
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private Vector2I IndexToGrid(int index) => new(index % _width, index / _width);
 
 	public void Win()
 	{
@@ -80,8 +104,7 @@ public partial class Level : Scene
 			return;
 		}
 
-		platform.OnRemovalRequested -= RemovePlatform;
-		platformRenderingServer.FreePlatform(platform);
+		_platformRenderingServer.FreePlatform(platform);
 		_platforms[GridToIndex(pos)] = null;
 	}
 
@@ -95,10 +118,9 @@ public partial class Level : Scene
 				continue;
 			}
 
-			platform.OnRemovalRequested -= RemovePlatform;
 			_platforms[i] = null;
 		}
 
-		platformRenderingServer.ClearLevel();
+		_platformRenderingServer.ClearLevel();
 	}
 }

@@ -2,17 +2,15 @@ using Godot;
 
 public abstract class Platform
 {
-	public event Action<Vector2I> OnRemovalRequested;
 	public abstract PlatformVisualData VisualData { get; }
-	private Vector2I _position;
+	protected Vector2I Position { get; }
 
-	public void SetPosition(Vector2I pos)
+	public Platform(Vector2I position)
 	{
-		_position = pos;
-		VisualData.Transform.Origin = pos.GridToWorldPosition();
+		Position = position;
+		VisualData.Transform.Origin = position.GridToWorldPosition();
 	}
 
 	public virtual void OnEnter(TileContext context) { }
 	public virtual void OnExit(TileContext context) { }
-	protected void RemovePlatform() => OnRemovalRequested?.Invoke(_position);
 }

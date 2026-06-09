@@ -1,16 +1,16 @@
 using Godot;
 
-public class BreakablePlatform(int health = 1) : Platform
+public class BreakablePlatform(Vector2I pos, int health = 1) : Platform(pos)
 {
-	private int Health { get; set; } = health;
 	public override PlatformVisualData VisualData { get; } = ResourceLoader.Load<PlatformVisualData>("uid://cbne4iex327jv");
+	private int Health { get; set; } = health;
 
 	public override void OnExit(TileContext context)
 	{
 		Health--;
 		if (Health == 0)
 		{
-			RemovePlatform();
+			context.Level.RemovePlatform(Position);
 		}
 	}
 }
