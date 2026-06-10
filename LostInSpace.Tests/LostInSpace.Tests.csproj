@@ -27,8 +27,8 @@
     <Target Name="CreateSymlinks">
         <PropertyGroup>
             <!-- Define source and target paths for both symlinks -->
-            <SrcSource>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../LostInSpace/src'))</SrcSource>
-            <SrcTarget>$(MSBuildProjectDirectory)/src</SrcTarget>
+            <SrcSource>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../LostInSpace/Scripts'))</SrcSource>
+            <SrcTarget>$(MSBuildProjectDirectory)/Scripts</SrcTarget>
         </PropertyGroup>
 
         <!-- Windows: Create symlinks -->
