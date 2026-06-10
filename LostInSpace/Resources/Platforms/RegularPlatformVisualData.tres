@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PlatformVisualData" format=3 uid="uid://b686csrmwec88"]
+
+[ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://Scripts/Rendering/PlatformVisualData.cs" id="1_cfh2y"]
+[ext_resource type="Material" uid="uid://cyu7m68i6lh30" path="res://Resources/Materials/BasePlatformShader.tres" id="1_gpkbs"]
+[ext_resource type="BoxMesh" uid="uid://bprlkag5hvi34" path="res://Resources/Models/BasePlatform.tres" id="2_ili3h"]
+
+[resource]
+script = ExtResource("1_cfh2y")
+Mesh = ExtResource("2_ili3h")
+Material = ExtResource("1_gpkbs")
+Albedo = Color(0.32915825, 0.32915843, 0.3291583, 1)
+metadata/_custom_type_script = "uid://dqts3j7yxr6o8"
