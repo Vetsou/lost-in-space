@@ -17,12 +17,23 @@ public partial class Level : Scene, ILevelHandler
 
 	private MovementSystem MovementSystem { get; set; }
 
-	private Vector2I MapSize { get; set; }
+	public static Vector2I MapSize { get; set; }
 	private Platform[] _platforms;
 
 	public override void _Ready() => MovementSystem = new MovementSystem(this);
 	public override void _ExitTree() => ClearLevel();
 	public override void _Input(InputEvent @event) => MovementSystem.HandlePlayerMovement(_player, @event);
+
+	public override void _Process(double delta)
+	{
+		if (Engine.GetFramesDrawn() % 20 == 0)
+		{
+			GD.Print("FPS: ", Performance.GetMonitor(Performance.Monitor.TimeFps));
+			GD.Print("Memory static: ", Performance.GetMonitor(Performance.Monitor.MemoryStatic));
+			GD.Print("Draw Calls: ", Performance.GetMonitor(Performance.Monitor.RenderTotalDrawCallsInFrame));
+			GD.Print("Video Mem: ", Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed));
+		}
+	}
 
 	public void LoadLevel(string levelFilePath)
 	{
@@ -103,4 +114,8 @@ public partial class Level : Scene, ILevelHandler
 
 		_platformRenderingServer.ClearLevel();
 	}
+
+	public void UpdatePlatformColor(Platform instance, Color color) => _platformRenderingServer.UpdatePlatformColor(instance, color);
+
+	public void UpdatePlatformRenderData(Platform instance, Color color) => _platformRenderingServer.UpdatePlatformData(instance, color);
 }

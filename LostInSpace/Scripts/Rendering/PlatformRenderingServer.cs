@@ -1,56 +1,120 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay;
+using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
 
 namespace LostInSpace.Scripts.Rendering;
 
 public partial class PlatformRenderingServer : Node3D
 {
-	private readonly Dictionary<Platform, Rid> _instances = [];
+	private class BatchData
+	{
+		public Rid rid;
+		public Rid instanceRid;
+		public int count = 0;
+		public List<Platform> reverseLookup = [];
+	}
+	private readonly Dictionary<PlatformVisualData, BatchData> multimeshBatches = [];
+	private readonly Dictionary<Platform, (BatchData batch, int index)> batchLookup = [];
 
 	public void RenderPlatform(Platform platform)
 	{
-		if (_instances.ContainsKey(platform))
-		{
-			return;
-		}
-
 		PlatformVisualData data = platform.VisualData;
 
-		Rid instance = RenderingServer.InstanceCreate();
-		_instances[platform] = instance;
+		if (!multimeshBatches.TryGetValue(data, out BatchData batch))
+		{
+			batch = CreateBatch(data);
+		}
 
-		Rid scenario = GetWorld3D().Scenario;
+		int index = batch.count;
 
-		RenderingServer.InstanceSetScenario(instance, scenario);
-		RenderingServer.InstanceSetBase(instance, data.Mesh.GetRid());
+		batchLookup.Add(platform, (batch, index));
+		batch.reverseLookup.Add(platform);
+		batch.count++;
+		RenderingServer.MultimeshSetVisibleInstances(batch.rid, batch.count);
 
-		RenderingServer.InstanceGeometrySetMaterialOverride(instance, data.Material.GetRid());
-		RenderingServer.InstanceGeometrySetShaderParameter(instance, "tint", data.Albedo);
+		Transform3D transform = Transform3D.Identity;
+		transform.Origin = new Vector3(platform.Position.X * LevelConstants.SPACING, 0, platform.Position.Y * LevelConstants.SPACING);
 
-		RenderingServer.InstanceSetTransform(instance, data.Transform);
+		UpdatePlatformColor(platform, data.Albedo);
+
+		RenderingServer.MultimeshInstanceSetTransform(batch.rid, index, transform);
+	}
+
+	private BatchData CreateBatch(PlatformVisualData data)
+	{
+		BatchData batch = new()
+		{
+			rid = RenderingServer.MultimeshCreate(),
+			instanceRid = RenderingServer.InstanceCreate()
+		};
+
+		RenderingServer.MultimeshAllocateData(batch.rid, Level.MapSize.X*Level.MapSize.Y, RenderingServer.MultimeshTransformFormat.Transform3D, true, true);
+		RenderingServer.MultimeshSetMesh(batch.rid, data.Mesh.GetRid());
+		RenderingServer.MultimeshSetVisibleInstances(batch.rid, 0);
+
+		RenderingServer.InstanceSetBase(batch.instanceRid, batch.rid);
+		RenderingServer.InstanceSetScenario(batch.instanceRid, GetWorld3D().Scenario);
+
+		RenderingServer.InstanceGeometrySetMaterialOverride(batch.instanceRid, data.Material.GetRid());
+
+		multimeshBatches.Add(data, batch);
+
+		return batch;
 	}
 
 	public void FreePlatform(Platform platform)
 	{
-		if (!_instances.TryGetValue(platform, out Rid instance))
+		(BatchData batch, int index) = batchLookup[platform];
+		int lastIndex = batch.count - 1;
+
+		if (index != lastIndex)
 		{
-			return;
+			RenderingServer.MultimeshInstanceSetTransform(batch.rid, index, RenderingServer.MultimeshInstanceGetTransform(batch.rid, lastIndex));
+			RenderingServer.MultimeshInstanceSetColor(batch.rid, index, RenderingServer.MultimeshInstanceGetColor(batch.rid, lastIndex));
+			RenderingServer.MultimeshInstanceSetCustomData(batch.rid, index, RenderingServer.MultimeshInstanceGetCustomData(batch.rid, lastIndex));
+
+			Platform movedPlatform = batch.reverseLookup[lastIndex];
+			batchLookup[movedPlatform] = (batch, index);
+			batch.reverseLookup[index] = movedPlatform;
+
+			batchLookup.Remove(platform);
+			batch.reverseLookup.RemoveAt(lastIndex);
 		}
 
-		RenderingServer.FreeRid(instance);
-		_instances.Remove(platform);
-	}
+		batch.count--;
+		RenderingServer.MultimeshSetVisibleInstances(batch.rid, batch.count);
 
-	public void UpdatePlatformShader(Platform instance, string param, Variant value) =>
-		RenderingServer.InstanceGeometrySetShaderParameter(_instances[instance], param, value);
+		if (batch.count == 0)
+		{
+			multimeshBatches.Remove(platform.VisualData);
+			RenderingServer.FreeRid(batch.instanceRid);
+			RenderingServer.FreeRid(batch.rid);
+		}
+	}
 
 	public void ClearLevel()
 	{
-		foreach (Rid instance in _instances.Values)
+		foreach (BatchData batch in multimeshBatches.Values)
 		{
-			RenderingServer.FreeRid(instance);
+			RenderingServer.FreeRid(batch.instanceRid);
+			RenderingServer.FreeRid(batch.rid);
 		}
-		_instances.Clear();
+
+		multimeshBatches.Clear();
+		batchLookup.Clear();
+	}
+
+	public void UpdatePlatformColor(Platform platform, Color color)
+	{
+		(BatchData batch, int index) = batchLookup[platform];
+		RenderingServer.MultimeshInstanceSetColor(batch.rid, index, color);
+	}
+
+	public void UpdatePlatformData(Platform platform, Color color)
+	{
+		(BatchData batch, int index) = batchLookup[platform];
+		RenderingServer.MultimeshInstanceSetCustomData(batch.rid, index, color);
 	}
 
 	public override void _ExitTree() => ClearLevel();
