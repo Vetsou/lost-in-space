@@ -12,25 +12,25 @@ namespace LostInSpace.Tests.UI;
 public class MainMenuTests
 {
 	private ISceneRunner runner = null!;
-    private MainMenu mainScene = null!;
+	private MainMenu mainScene = null!;
 
 	[Before]
-    public void Before()
-    {
-        runner = ISceneRunner.Load("res://Resources/Scenes/UI/MainMenu.tscn", true);
-        mainScene = runner.Scene() as MainMenu
+	public void Before()
+	{
+		runner = ISceneRunner.Load("res://Resources/Scenes/UI/MainMenu.tscn", true);
+		mainScene = runner.Scene() as MainMenu
 				?? throw new InvalidOperationException("Could not cast scene");
-    }
+	}
 
 	[TestCase("PlayButton", SceneId.LevelSelector)]
-    [TestCase("CreateLevelButton", SceneId.CreateLevel)]
-    [TestCase("AchievementsButton", SceneId.Achievements)]
-    [TestCase("SettingsButton", SceneId.SettingsMenu)]
-    public async Task MainMenu_OnButtonClick_ShouldInvokeCorrectSignal(string btnName, SceneId sceneId)
-    {
+	[TestCase("CreateLevelButton", SceneId.CreateLevel)]
+	[TestCase("AchievementsButton", SceneId.Achievements)]
+	[TestCase("SettingsButton", SceneId.SettingsMenu)]
+	public async Task MainMenu_OnButtonClick_ShouldInvokeCorrectSignal(string btnName, SceneId sceneId)
+	{
 		// Arrange
-        Button btn = runner.FindChild(btnName) as Button
-                ?? throw new InvalidOperationException("Could not find PlayButton");
+		Button btn = runner.FindChild(btnName) as Button
+				?? throw new InvalidOperationException($"Could not find {btnName}");
 		ISignalConstraint monitor = AssertSignal(mainScene).StartMonitoring();
 
 		// Act
@@ -40,6 +40,6 @@ public class MainMenuTests
 		await runner.AwaitInputProcessed();
 
 		// Assert
-		await monitor.IsEmitted(MainMenu.SignalName.RequestSceneChange, (int)sceneId).WithTimeout(100);
-    }
+		await monitor.IsEmitted(MainMenu.SignalName.RequestSceneChange, (int)sceneId).WithTimeout(60);
+	}
 }
