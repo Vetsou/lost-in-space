@@ -41,7 +41,7 @@ public partial class PlatformRenderingServer : Node3D
 		_instances.Remove(platform);
 	}
 
-	public void UpdatePlatformShader(Platform instance, string param, Variant value) => 
+	public void UpdatePlatformShader(Platform instance, string param, Variant value) =>
 		RenderingServer.InstanceGeometrySetShaderParameter(_instances[instance], param, value);
 
 	public void ClearLevel()
