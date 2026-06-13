@@ -1,4 +1,7 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay.Data;
+
+namespace LostInSpace.Scripts.Gameplay;
 
 public static class GridExtensions
 {

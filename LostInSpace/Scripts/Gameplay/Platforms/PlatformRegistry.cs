@@ -1,4 +1,7 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay.Platforms.Variants;
+
+namespace LostInSpace.Scripts.Gameplay.Platforms;
 
 public static class PlatformRegistry
 {

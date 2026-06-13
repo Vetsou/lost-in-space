@@ -1,5 +1,7 @@
 using Godot;
 
+namespace LostInSpace.Scripts.UI.Scenes.Settings;
+
 public partial class VideoPanel : Control
 {
 	[Export]

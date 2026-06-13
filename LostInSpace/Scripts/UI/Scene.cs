@@ -1,5 +1,7 @@
 using Godot;
 
+namespace LostInSpace.Scripts.UI;
+
 public partial class Scene : Node
 {
 	[Signal]

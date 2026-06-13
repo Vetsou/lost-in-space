@@ -1,3 +1,5 @@
+namespace LostInSpace.Scripts.UI.Scenes.Settings;
+
 public static class SettingsMap
 {
 	public static class Section

@@ -1,3 +1,5 @@
+namespace LostInSpace.Scripts.UI;
+
 public enum SceneId
 {
 	MainMenu,

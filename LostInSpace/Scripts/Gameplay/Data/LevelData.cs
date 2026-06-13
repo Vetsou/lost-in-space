@@ -1,3 +1,5 @@
+namespace LostInSpace.Scripts.Gameplay.Data;
+
 public readonly struct LevelData
 {
 	public required ushort Width { get; init; }

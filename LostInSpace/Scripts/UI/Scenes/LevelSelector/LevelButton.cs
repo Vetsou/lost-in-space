@@ -1,5 +1,7 @@
 using Godot;
 
+namespace LostInSpace.Scripts.UI.Scenes.LevelSelector;
+
 public partial class LevelButton : Button
 {
 	public LevelButton(string levelFileName, Action<string> onClickCallback)

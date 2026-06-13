@@ -1,4 +1,7 @@
 using Godot;
+using LostInSpace.Scripts.UI.Scenes.Settings;
+
+namespace LostInSpace.Scripts.Gameplay.Managers;
 
 public static class InputManager
 {

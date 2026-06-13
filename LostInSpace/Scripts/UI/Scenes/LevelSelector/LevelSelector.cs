@@ -1,6 +1,6 @@
-using System;
-using System.Linq;
 using Godot;
+
+namespace LostInSpace.Scripts.UI.Scenes.LevelSelector;
 
 public partial class LevelSelector : Scene
 {

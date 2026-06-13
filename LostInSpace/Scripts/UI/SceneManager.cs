@@ -1,4 +1,7 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay;
+
+namespace LostInSpace.Scripts.UI;
 
 public partial class SceneManager : Node
 {

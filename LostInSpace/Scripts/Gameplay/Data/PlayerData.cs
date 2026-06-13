@@ -1,5 +1,7 @@
 using Godot;
 
+namespace LostInSpace.Scripts.Gameplay.Data;
+
 public partial class PlayerData : Node3D
 {
 	public Vector2I GridPosition { get; private set; }

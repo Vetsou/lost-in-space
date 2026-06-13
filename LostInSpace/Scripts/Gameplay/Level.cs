@@ -1,7 +1,14 @@
 using System.Runtime.CompilerServices;
+using LostInSpace.Scripts.Gameplay.Data;
 using Godot;
 using Newtonsoft.Json;
 using FileAccess = Godot.FileAccess;
+using LostInSpace.Scripts.Gameplay.Platforms;
+using LostInSpace.Scripts.Gameplay.Managers;
+using LostInSpace.Scripts.Rendering;
+using LostInSpace.Scripts.UI;
+
+namespace LostInSpace.Scripts.Gameplay;
 
 public partial class Level : Scene
 {

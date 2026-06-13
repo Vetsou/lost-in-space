@@ -1,5 +1,7 @@
 using Godot;
 
+namespace LostInSpace.Scripts.Gameplay.Data;
+
 public readonly struct TileContext
 {
 	public required Level Level { get; init; }

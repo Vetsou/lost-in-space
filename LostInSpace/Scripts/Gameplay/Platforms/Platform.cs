@@ -1,4 +1,8 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay.Data;
+using LostInSpace.Scripts.Rendering;
+
+namespace LostInSpace.Scripts.Gameplay.Platforms;
 
 public abstract class Platform
 {

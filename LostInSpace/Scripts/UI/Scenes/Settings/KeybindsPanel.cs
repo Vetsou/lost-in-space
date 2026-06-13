@@ -1,5 +1,6 @@
-using System.Collections.Generic;
 using Godot;
+
+namespace LostInSpace.Scripts.UI.Scenes.Settings;
 
 public partial class KeybindsPanel : Control
 {

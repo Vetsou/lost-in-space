@@ -1,4 +1,7 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay.Platforms;
+
+namespace LostInSpace.Scripts.Rendering;
 
 public partial class PlatformRenderingServer : Node3D
 {
