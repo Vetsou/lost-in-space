@@ -4,14 +4,14 @@ namespace LostInSpace.Scripts.UI.Scenes.LevelSelector;
 
 public partial class LevelSelector : Scene
 {
-	private const string LEVELS_PATH = "res://Levels/";
+	private const string _LEVELS_PATH = "res://Levels/";
 	[Export] private Container _buttonsContainer;
 	[Export] private Label _levelNameLabel;
 	private string _selectedLevelFileName;
 
 	public override void _Ready()
 	{
-		string[] files = DirAccess.GetFilesAt(LEVELS_PATH)
+		string[] files = DirAccess.GetFilesAt(_LEVELS_PATH)
 			.Where(f => f.EndsWith(".json"))
 			.Select(f => f.TrimSuffix(".json"))
 			.ToArray();
@@ -35,6 +35,6 @@ public partial class LevelSelector : Scene
 		_selectedLevelFileName = levelFileName;
 	}
 
-	private void OnPlayButtonPressed() => ChangeLevelScene(LEVELS_PATH + _selectedLevelFileName + ".json");
+	private void OnPlayButtonPressed() => ChangeLevelScene(_LEVELS_PATH + _selectedLevelFileName + ".json");
 	private void OnReturnButtonPressed() => ChangeScene(SceneId.MainMenu);
 }

@@ -14,7 +14,7 @@ public class BreakablePlatform(Vector2I pos, int health = 1) : Platform(pos)
 		Health--;
 		if (Health == 0)
 		{
-			context.Level.RemovePlatform(Position);
+			context.LevelHandler.RemovePlatform(Position);
 		}
 	}
 }

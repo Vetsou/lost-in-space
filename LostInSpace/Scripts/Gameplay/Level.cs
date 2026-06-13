@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
-using LostInSpace.Scripts.Gameplay.Managers;
+using LostInSpace.Scripts.Gameplay.Systems;
 using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Rendering;
 using LostInSpace.Scripts.UI;
@@ -10,54 +10,19 @@ using FileAccess = Godot.FileAccess;
 
 namespace LostInSpace.Scripts.Gameplay;
 
-public partial class Level : Scene
+public partial class Level : Scene, ILevelHandler
 {
 	[Export] private PlatformRenderingServer _platformRenderingServer;
 	[Export] private PlayerData _player;
 
+	private MovementSystem MovementManager { get; set; }
+
 	private Vector2I MapSize { get; set; }
 	private Platform[] _platforms;
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private int GridToIndex(Vector2I pos) => pos.Y * MapSize.X + pos.X;
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private Vector2I IndexToGrid(int index) => new(index % MapSize.X, index / MapSize.X);
-
+	public override void _Ready() => MovementManager = new MovementSystem(this);
 	public override void _ExitTree() => ClearLevel();
-
-	public override void _Input(InputEvent @event)
-	{
-		if (!InputManager.GetPlayerMovementDirection(@event, out Vector2I direction))
-		{
-			return;
-		}
-
-		HandlePlayerMovement(direction);
-	}
-
-	public void HandlePlayerMovement(Vector2I direction)
-	{
-		Platform nextTile = GetTile(_player.GridPosition + direction);
-		if (nextTile == null)
-		{
-			return;
-		}
-
-		var context = new TileContext
-		{
-			Level = this,
-			MoveDirection = direction
-		};
-
-		Platform currPlatform = GetTile(_player.GridPosition);
-		currPlatform.OnExit(context);
-
-		_player.SetPosition(_player.GridPosition + direction);
-
-		Platform newPlatform = GetTile(_player.GridPosition);
-		newPlatform?.OnEnter(context);
-	}
+	public override void _Input(InputEvent @event) => MovementManager.HandlePlayerMovement(_player, @event);
 
 	public void LoadLevel(string levelFilePath)
 	{
@@ -97,7 +62,7 @@ public partial class Level : Scene
 		return _platforms[index];
 	}
 
-	public void Win()
+	public void CompleteLevel()
 	{
 		ClearLevel();
 		ChangeScene(SceneId.MainMenu);
@@ -114,6 +79,14 @@ public partial class Level : Scene
 		_platformRenderingServer.FreePlatform(platform);
 		_platforms[GridToIndex(pos)] = null;
 	}
+
+	public void MovePlayer(Vector2I direction) => MovementManager.MovePlayer(_player, direction);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private int GridToIndex(Vector2I pos) => pos.Y * MapSize.X + pos.X;
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private Vector2I IndexToGrid(int index) => new(index % MapSize.X, index / MapSize.X);
 
 	private void ClearLevel()
 	{
