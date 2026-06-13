@@ -4,7 +4,7 @@ namespace LostInSpace.Scripts.UI.Scenes.LevelSelector;
 
 public partial class LevelSelector : Scene
 {
-	private const string _LEVELS_PATH = "res://Levels/";
+	private const string _LEVELS_PATH = "res://Resources/Levels/";
 	[Export] private Container _buttonsContainer;
 	[Export] private Label _levelNameLabel;
 	private string _selectedLevelFileName;
