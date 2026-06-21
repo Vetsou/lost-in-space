@@ -39,7 +39,7 @@ public class MovementSystem(ILevelHandler level)
 		newPlatform?.OnEnter(context);
 	}
 
-	public static bool GetPlayerMovementDirection(InputEvent @event, out Vector2I direction)
+	private static bool GetPlayerMovementDirection(InputEvent @event, out Vector2I direction)
 	{
 		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_UP))
 		{

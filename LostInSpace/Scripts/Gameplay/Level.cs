@@ -15,14 +15,14 @@ public partial class Level : Scene, ILevelHandler
 	[Export] private PlatformRenderingServer _platformRenderingServer;
 	[Export] private PlayerData _player;
 
-	private MovementSystem MovementManager { get; set; }
+	private MovementSystem MovementSystem { get; set; }
 
 	private Vector2I MapSize { get; set; }
 	private Platform[] _platforms;
 
-	public override void _Ready() => MovementManager = new MovementSystem(this);
+	public override void _Ready() => MovementSystem = new MovementSystem(this);
 	public override void _ExitTree() => ClearLevel();
-	public override void _Input(InputEvent @event) => MovementManager.HandlePlayerMovement(_player, @event);
+	public override void _Input(InputEvent @event) => MovementSystem.HandlePlayerMovement(_player, @event);
 
 	public void LoadLevel(string levelFilePath)
 	{
@@ -80,7 +80,7 @@ public partial class Level : Scene, ILevelHandler
 		_platforms[GridToIndex(pos)] = null;
 	}
 
-	public void MovePlayer(Vector2I direction) => MovementManager.MovePlayer(_player, direction);
+	public void MovePlayer(Vector2I direction) => MovementSystem.MovePlayer(_player, direction);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private int GridToIndex(Vector2I pos) => pos.Y * MapSize.X + pos.X;
