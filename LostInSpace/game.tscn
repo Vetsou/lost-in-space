@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cpvqj17edxl8f"]
+
+[ext_resource type="Script" uid="uid://ciblrvmfpgnbc" path="res://Scripts/UI/SceneManager.cs" id="1_xq6wo"]
+[ext_resource type="PackedScene" uid="uid://d1y144o46d51j" path="res://Resources/Scenes/UI/LevelSelector.tscn" id="2_kc8ui"]
+[ext_resource type="PackedScene" uid="uid://ctsnqtbg2rxqe" path="res://Resources/Scenes/UI/MainMenu.tscn" id="3_bs6l1"]
+[ext_resource type="PackedScene" uid="uid://cobi6jrijcisg" path="res://Resources/Scenes/UI/Settings/SettingsMenu.tscn" id="4_kc8ui"]
+[ext_resource type="PackedScene" uid="uid://2m1q8m2bcexg" path="res://Resources/Scenes/UI/LevelCreator.tscn" id="5_pk08u"]
+[ext_resource type="PackedScene" uid="uid://cf3cdxb8omhoa" path="res://Resources/Scenes/UI/AchievementsMenu.tscn" id="6_wqvko"]
+[ext_resource type="PackedScene" uid="uid://b8x4ywlchfmob" path="res://Resources/Scenes/Gameplay/Level.tscn" id="7_wqvko"]
+
+[node name="Game" type="Node2D" unique_id=1343548827]
+
+[node name="SceneManager" type="Node" parent="." unique_id=1552336108 node_paths=PackedStringArray("sceneContainer")]
+script = ExtResource("1_xq6wo")
+sceneContainer = NodePath("SceneContainer")
+sceneIds = Dictionary[int, PackedScene]({
+0: ExtResource("3_bs6l1"),
+1: ExtResource("2_kc8ui"),
+2: ExtResource("4_kc8ui"),
+3: ExtResource("5_pk08u"),
+4: ExtResource("6_wqvko"),
+5: ExtResource("7_wqvko")
+})
+
+[node name="SceneContainer" type="Node" parent="SceneManager" unique_id=1830883478]

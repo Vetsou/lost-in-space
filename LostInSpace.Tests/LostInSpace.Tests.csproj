@@ -27,25 +27,38 @@
     <Target Name="CreateSymlinks">
         <PropertyGroup>
             <!-- Define source and target paths for both symlinks -->
-            <SrcSource>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../LostInSpace/src'))</SrcSource>
-            <SrcTarget>$(MSBuildProjectDirectory)/src</SrcTarget>
+            <ScriptSource>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../LostInSpace/Scripts'))</ScriptSource>
+            <ScriptTarget>$(MSBuildProjectDirectory)/Scripts</ScriptTarget>
+            <ResourcesSource>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/../LostInSpace/Resources'))</ResourcesSource>
+            <ResourcesTarget>$(MSBuildProjectDirectory)/Resources</ResourcesTarget>
         </PropertyGroup>
 
         <!-- Windows: Create symlinks -->
-        <Exec Command="if not exist &quot;$(SrcTarget)&quot; mklink /D &quot;$(SrcTarget)&quot; &quot;$(SrcSource)&quot;"
+        <Exec Command="if not exist &quot;$(ScriptTarget)&quot; mklink /D &quot;$(ScriptTarget)&quot; &quot;$(ScriptSource)&quot;"
+            Condition="'$(OS)' == 'Windows_NT'"
+            ContinueOnError="true"/>
+
+        <Exec Command="if not exist &quot;$(ResourcesTarget)&quot; mklink /D &quot;$(ResourcesTarget)&quot; &quot;$(ResourcesSource)&quot;"
             Condition="'$(OS)' == 'Windows_NT'"
             ContinueOnError="true"/>
 
         <!-- Unix/Linux/Mac: Create symlinks -->
-        <Exec Command="[ ! -L '$(SrcTarget)' ] &amp;&amp; ln -s '$(SrcSource)' '$(SrcTarget)' || true"
+        <Exec Command="[ ! -L '$(ScriptTarget)' ] &amp;&amp; ln -s '$(ScriptSource)' '$(ScriptTarget)' || true"
+            Condition="'$(OS)' != 'Windows_NT'"
+            ContinueOnError="true"/>
+
+        <Exec Command="[ ! -L '$(ResourcesTarget)' ] &amp;&amp; ln -s '$(ResourcesSource)' '$(ResourcesTarget)' || true"
             Condition="'$(OS)' != 'Windows_NT'"
             ContinueOnError="true"/>
 
         <!-- Verify symlink exists and is accessible -->
-        <Error Condition="!Exists('$(SrcTarget)')"
-            Text="Failed to create symlink at $(SrcTarget). On Windows, try running as Administrator or enabling Developer Mode."/>
+        <Error Condition="!Exists('$(ScriptTarget)')"
+            Text="Failed to create symlink at $(ScriptTarget). On Windows, try running as Administrator or enabling Developer Mode."/>
+
+        <Error Condition="!Exists('$(ResourcesTarget)')"
+            Text="Failed to create symlink at $(ResourcesTarget). On Windows, try running as Administrator or enabling Developer Mode."/>
 
         <!-- Log confirmation -->
-        <Message Text="✓ Symlink verified: $(SrcTarget) -> $(SrcSource)" Importance="high"/>
+        <Message Text="✓ Symlink verified: $(ScriptTarget) -> $(ScriptSource) AND $(ResourcesTarget) -> $(ResourcesSource)" Importance="high"/>
     </Target>
 </Project>

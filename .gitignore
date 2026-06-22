@@ -35,4 +35,8 @@ nunit-*.xml
 
 # Ignore test symlinks files
 # This symlink is created during build/test and should not be committed
-LostInSpace.Tests/src
+LostInSpace.Tests/Scripts
+LostInSpace.Tests/Resources
+
+# Test temporary files
+LostInSpace.Tests/gdunit4_testadapter_v5

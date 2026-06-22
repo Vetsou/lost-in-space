@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="LostInSpace"
-run/main_scene="uid://bppdqvl2nvefj"
+run/main_scene="uid://cpvqj17edxl8f"
 config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 
 [autoload]
