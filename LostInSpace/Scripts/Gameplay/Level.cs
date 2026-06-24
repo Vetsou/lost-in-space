@@ -17,7 +17,7 @@ public partial class Level : Scene, ILevelHandler
 
 	private MovementSystem MovementSystem { get; set; }
 
-	public static Vector2I MapSize { get; set; }
+	private Vector2I MapSize { get; set; }
 	private Platform[] _platforms;
 
 	public override void _Ready() => MovementSystem = new MovementSystem(this);
@@ -41,6 +41,7 @@ public partial class Level : Scene, ILevelHandler
 		levelData.Validate();
 
 		MapSize = new Vector2I(levelData.Width, levelData.Height);
+		_platformRenderingServer.SetBatchSize(MapSize.X * MapSize.Y);
 		_platforms = new Platform[MapSize.X * MapSize.Y];
 
 		for (int i = 0; i < MapSize.X; i++)

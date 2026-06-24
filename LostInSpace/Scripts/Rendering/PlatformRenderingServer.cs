@@ -1,5 +1,4 @@
 using Godot;
-using LostInSpace.Scripts.Gameplay;
 using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
 
@@ -16,6 +15,9 @@ public partial class PlatformRenderingServer : Node3D
 	}
 	private readonly Dictionary<PlatformVisualData, BatchData> multimeshBatches = [];
 	private readonly Dictionary<Platform, (BatchData batch, int index)> batchLookup = [];
+	private int batchSize = 0;
+
+	public void SetBatchSize(int size) => batchSize = size;
 
 	public void RenderPlatform(Platform platform)
 	{
@@ -49,7 +51,7 @@ public partial class PlatformRenderingServer : Node3D
 			instanceRid = RenderingServer.InstanceCreate()
 		};
 
-		RenderingServer.MultimeshAllocateData(batch.rid, Level.MapSize.X*Level.MapSize.Y, RenderingServer.MultimeshTransformFormat.Transform3D, true, true);
+		RenderingServer.MultimeshAllocateData(batch.rid, batchSize, RenderingServer.MultimeshTransformFormat.Transform3D, true, true);
 		RenderingServer.MultimeshSetMesh(batch.rid, data.Mesh.GetRid());
 		RenderingServer.MultimeshSetVisibleInstances(batch.rid, 0);
 
