@@ -5,5 +5,5 @@ namespace LostInSpace.Scripts.Gameplay.Platforms.Variants;
 
 public class RegularPlatform(Vector2I pos) : Platform(pos)
 {
-	public override PlatformVisualData VisualData { get; } = ResourceLoader.Load<PlatformVisualData>("uid://b686csrmwec88");
+	public override VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://b686csrmwec88");
 }

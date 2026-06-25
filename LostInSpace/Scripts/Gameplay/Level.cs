@@ -12,7 +12,7 @@ namespace LostInSpace.Scripts.Gameplay;
 
 public partial class Level : Scene, ILevelHandler
 {
-	[Export] private PlatformRenderingServer _platformRenderingServer;
+	[Export] private LevelRenderingServer _levelRenderingServer;
 	[Export] private PlayerData _player;
 
 	private MovementSystem MovementSystem { get; set; }
@@ -41,7 +41,7 @@ public partial class Level : Scene, ILevelHandler
 		levelData.Validate();
 
 		MapSize = new Vector2I(levelData.Width, levelData.Height);
-		_platformRenderingServer.SetBatchSize(MapSize.X * MapSize.Y);
+		_levelRenderingServer.SetBatchSize(MapSize.X * MapSize.Y);
 		_platforms = new Platform[MapSize.X * MapSize.Y];
 
 		for (int i = 0; i < MapSize.X; i++)
@@ -57,7 +57,7 @@ public partial class Level : Scene, ILevelHandler
 
 				Platform platform = PlatformRegistry.CreatePlatform(levelData.Platforms[j, i], gridPos);
 				_platforms[GridToIndex(gridPos)] = platform;
-				_platformRenderingServer.RenderPlatform(platform);
+				_levelRenderingServer.RenderPlatform(platform);
 			}
 		}
 
@@ -88,7 +88,7 @@ public partial class Level : Scene, ILevelHandler
 			return;
 		}
 
-		_platformRenderingServer.FreePlatform(platform);
+		_levelRenderingServer.FreePlatform(platform);
 		_platforms[GridToIndex(pos)] = null;
 	}
 
@@ -113,10 +113,10 @@ public partial class Level : Scene, ILevelHandler
 			_platforms[i] = null;
 		}
 
-		_platformRenderingServer.ClearLevel();
+		_levelRenderingServer.ClearLevel();
 	}
 
-	public void UpdatePlatformColor(Platform instance, Color color) => _platformRenderingServer.UpdatePlatformColor(instance, color);
+	public void UpdatePlatformColor(Platform instance, Color color) => _levelRenderingServer.UpdatePlatformColor(instance, color);
 
-	public void UpdatePlatformRenderData(Platform instance, Color color) => _platformRenderingServer.UpdatePlatformData(instance, color);
+	public void UpdatePlatformRenderData(Platform instance, Color color) => _levelRenderingServer.UpdatePlatformData(instance, color);
 }

@@ -6,7 +6,7 @@ namespace LostInSpace.Scripts.Gameplay.Platforms;
 
 public abstract class Platform(Vector2I position)
 {
-	public abstract PlatformVisualData VisualData { get; }
+	public abstract VisualData VisualData { get; }
 	public Vector2I Position { get; } = position;
 
 	public virtual void OnEnter(TileContext context) { }

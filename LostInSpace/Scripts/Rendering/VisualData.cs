@@ -3,7 +3,7 @@ using Godot;
 namespace LostInSpace.Scripts.Rendering;
 
 [GlobalClass]
-public partial class PlatformVisualData : Resource
+public partial class VisualData : Resource
 {
 	[Export] public Mesh Mesh;
 	[Export] public Material Material;
