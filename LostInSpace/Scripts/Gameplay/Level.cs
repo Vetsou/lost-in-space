@@ -57,7 +57,7 @@ public partial class Level : Scene, ILevelHandler
 
 				Platform platform = PlatformRegistry.CreatePlatform(levelData.Platforms[j, i], gridPos);
 				_platforms[GridToIndex(gridPos)] = platform;
-				_levelRenderingServer.RenderPlatform(platform);
+				_levelRenderingServer.RenderPlatform(gridPos, platform.VisualData);
 			}
 		}
 
@@ -88,7 +88,7 @@ public partial class Level : Scene, ILevelHandler
 			return;
 		}
 
-		_levelRenderingServer.FreePlatform(platform);
+		_levelRenderingServer.FreePlatform(pos);
 		_platforms[GridToIndex(pos)] = null;
 	}
 
@@ -116,7 +116,7 @@ public partial class Level : Scene, ILevelHandler
 		_levelRenderingServer.ClearLevel();
 	}
 
-	public void UpdatePlatformColor(Platform instance, Color color) => _levelRenderingServer.UpdatePlatformColor(instance, color);
+	public void UpdatePlatformColor(Vector2I pos, Color color) => _levelRenderingServer.UpdatePlatformColor(pos, color);
 
-	public void UpdatePlatformRenderData(Platform instance, Color color) => _levelRenderingServer.UpdatePlatformData(instance, color);
+	public void UpdatePlatformRenderData(Vector2I pos, Color color) => _levelRenderingServer.UpdatePlatformData(pos, color);
 }
