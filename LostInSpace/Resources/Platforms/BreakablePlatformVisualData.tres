@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="PlatformVisualData" format=3 uid="uid://cbne4iex327jv"]
+[gd_resource type="Resource" script_class="VisualData" format=3 uid="uid://cbne4iex327jv"]
 
-[ext_resource type="Material" uid="uid://cyu7m68i6lh30" path="res://Resources/Materials/BasePlatformShader.tres" id="1_roetb"]
+[ext_resource type="Material" uid="uid://cyu7m68i6lh30" path="res://Resources/Materials/BaseShader.tres" id="1_roetb"]
 [ext_resource type="BoxMesh" uid="uid://bprlkag5hvi34" path="res://Resources/Models/BasePlatform.tres" id="2_j6hmn"]
-[ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://Scripts/Rendering/PlatformVisualData.cs" id="2_mjbc2"]
+[ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://Scripts/Rendering/VisualData.cs" id="2_mjbc2"]
 
 [resource]
 script = ExtResource("2_mjbc2")

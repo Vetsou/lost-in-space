@@ -4,16 +4,10 @@ using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay.Platforms;
 
-public abstract class Platform
+public abstract class Platform(Vector2I position)
 {
-	public abstract PlatformVisualData VisualData { get; }
-	protected Vector2I Position { get; }
-
-	public Platform(Vector2I position)
-	{
-		Position = position;
-		VisualData.Transform.Origin = position.GridToWorldPosition();
-	}
+	public abstract VisualData VisualData { get; }
+	public Vector2I Position { get; } = position;
 
 	public virtual void OnEnter(TileContext context) { }
 	public virtual void OnExit(TileContext context) { }

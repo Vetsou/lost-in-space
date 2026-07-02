@@ -12,7 +12,7 @@ namespace LostInSpace.Scripts.Gameplay;
 
 public partial class Level : Scene, ILevelHandler
 {
-	[Export] private PlatformRenderingServer _platformRenderingServer;
+	[Export] private LevelRenderingServer _levelRenderingServer;
 	[Export] private PlayerData _player;
 
 	private MovementSystem MovementSystem { get; set; }
@@ -24,12 +24,24 @@ public partial class Level : Scene, ILevelHandler
 	public override void _ExitTree() => ClearLevel();
 	public override void _Input(InputEvent @event) => MovementSystem.HandlePlayerMovement(_player, @event);
 
+	public override void _Process(double delta)
+	{
+		if (Engine.GetFramesDrawn() % 20 == 0)
+		{
+			GD.Print("FPS: ", Performance.GetMonitor(Performance.Monitor.TimeFps));
+			GD.Print("Memory static: ", Performance.GetMonitor(Performance.Monitor.MemoryStatic));
+			GD.Print("Draw Calls: ", Performance.GetMonitor(Performance.Monitor.RenderTotalDrawCallsInFrame));
+			GD.Print("Video Mem: ", Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed));
+		}
+	}
+
 	public void LoadLevel(string levelFilePath)
 	{
 		LevelData levelData = JsonConvert.DeserializeObject<LevelData>(FileAccess.GetFileAsString(levelFilePath));
 		levelData.Validate();
 
 		MapSize = new Vector2I(levelData.Width, levelData.Height);
+		_levelRenderingServer.SetBatchSize(MapSize.X * MapSize.Y);
 		_platforms = new Platform[MapSize.X * MapSize.Y];
 
 		for (int i = 0; i < MapSize.X; i++)
@@ -45,7 +57,7 @@ public partial class Level : Scene, ILevelHandler
 
 				Platform platform = PlatformRegistry.CreatePlatform(levelData.Platforms[j, i], gridPos);
 				_platforms[GridToIndex(gridPos)] = platform;
-				_platformRenderingServer.RenderPlatform(platform);
+				_levelRenderingServer.RenderPlatform(gridPos, platform.VisualData);
 			}
 		}
 
@@ -76,7 +88,7 @@ public partial class Level : Scene, ILevelHandler
 			return;
 		}
 
-		_platformRenderingServer.FreePlatform(platform);
+		_levelRenderingServer.FreePlatform(pos);
 		_platforms[GridToIndex(pos)] = null;
 	}
 
@@ -101,6 +113,10 @@ public partial class Level : Scene, ILevelHandler
 			_platforms[i] = null;
 		}
 
-		_platformRenderingServer.ClearLevel();
+		_levelRenderingServer.ClearLevel();
 	}
+
+	public void UpdatePlatformColor(Vector2I pos, Color color) => _levelRenderingServer.UpdatePlatformColor(pos, color);
+
+	public void UpdatePlatformRenderData(Vector2I pos, Color color) => _levelRenderingServer.UpdatePlatformData(pos, color);
 }
