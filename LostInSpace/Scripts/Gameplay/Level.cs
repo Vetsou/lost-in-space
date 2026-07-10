@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Godot;
+using LostInSpace.Scripts.Gameplay.Collectibles;
 using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Gameplay.Systems;
@@ -18,7 +19,9 @@ public partial class Level : Scene, ILevelHandler
 	private MovementSystem MovementSystem { get; set; }
 
 	private Vector2I MapSize { get; set; }
-	private Platform[] _platforms;
+	private IPlatform[] _platforms;
+	private Collectible[] _collectibles;
+	private ushort[] _pickedUpCollectibles = new ushort[(int)Collectible.Count];
 
 	public override void _Ready() => MovementSystem = new MovementSystem(this);
 	public override void _ExitTree() => ClearLevel();
@@ -42,36 +45,63 @@ public partial class Level : Scene, ILevelHandler
 
 		MapSize = new Vector2I(levelData.Width, levelData.Height);
 		_levelRenderingServer.SetBatchSize(MapSize.X * MapSize.Y);
-		_platforms = new Platform[MapSize.X * MapSize.Y];
+		_platforms = new IPlatform[MapSize.X * MapSize.Y];
+		_collectibles = new Collectible[MapSize.X * MapSize.Y];
 
 		for (int i = 0; i < MapSize.X; i++)
 		{
 			for (int j = 0; j < MapSize.Y; j++)
 			{
-				if (levelData.Platforms[j, i] == 0)
+				var gridPos = new Vector2I(i, j);
+				if (levelData.Platforms[j, i] != 0)
 				{
-					continue;
+					IPlatform platform = PlatformFactory.CreatePlatform(levelData.Platforms[j, i]);
+					_platforms[GridToIndex(gridPos)] = platform;
+					_levelRenderingServer.RenderPlatform(gridPos, platform.VisualData);
 				}
 
-				var gridPos = new Vector2I(i, j);
-
-				Platform platform = PlatformRegistry.CreatePlatform(levelData.Platforms[j, i], gridPos);
-				_platforms[GridToIndex(gridPos)] = platform;
-				_levelRenderingServer.RenderPlatform(gridPos, platform.VisualData);
+				var collectible = (Collectible)levelData.Collectibles[j, i];
+				_collectibles[GridToIndex(gridPos)] = collectible;
+				if (collectible != Collectible.None)
+				{
+					_levelRenderingServer.RenderCollectible(gridPos, collectible);
+				}
 			}
 		}
 
 		_player.SetPosition(new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
 	}
 
-	public Platform GetTile(Vector2I pos)
+	private bool IsPositionValid(Vector2I pos) => pos.X >= 0 && pos.Y >= 0 && pos.X < MapSize.X && pos.Y < MapSize.Y;
+
+	public IPlatform GetPlatform(Vector2I pos) => IsPositionValid(pos) ? _platforms[GridToIndex(pos)] : null;
+	private Collectible GetCollectible(Vector2I pos) => IsPositionValid(pos) ? _collectibles[GridToIndex(pos)] : 0;
+
+	public void PickUpCollectible(Vector2I pos)
 	{
-		int index = GridToIndex(pos);
-		if (index < 0 || index >= _platforms.Length)
+		Collectible collectible = GetCollectible(pos);
+		if (collectible >= Collectible.Count)
 		{
-			return null;
+			throw new Exception($"Invalid collectible id {(int)collectible} at position x={pos.X}, y={pos.Y}");
 		}
-		return _platforms[index];
+		if (collectible <= Collectible.None)
+		{
+			return;
+		}
+
+		_pickedUpCollectibles[(int)collectible]++;
+		_levelRenderingServer.FreeCollectible(pos);
+		_collectibles[GridToIndex(pos)] = Collectible.None;
+	}
+
+	public ushort GetCollectiblePickedUpCount(Collectible collectible)
+	{
+		if (collectible == Collectible.None || collectible >= Collectible.Count)
+		{
+			throw new Exception($"Invalid collectible id {(int)collectible}");
+		}
+
+		return _pickedUpCollectibles[(int)collectible];
 	}
 
 	public void CompleteLevel()
@@ -82,7 +112,7 @@ public partial class Level : Scene, ILevelHandler
 
 	public void RemovePlatform(Vector2I pos)
 	{
-		Platform platform = _platforms[GridToIndex(pos)];
+		IPlatform platform = GetPlatform(pos);
 		if (platform == null)
 		{
 			return;
@@ -104,13 +134,8 @@ public partial class Level : Scene, ILevelHandler
 	{
 		for (int i = 0; i < _platforms.Length; i++)
 		{
-			Platform platform = _platforms[i];
-			if (platform == null)
-			{
-				continue;
-			}
-
 			_platforms[i] = null;
+			_collectibles[i] = Collectible.None;
 		}
 
 		_levelRenderingServer.ClearLevel();
