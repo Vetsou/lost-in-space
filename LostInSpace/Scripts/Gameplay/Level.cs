@@ -21,7 +21,8 @@ public partial class Level : Scene, ILevelHandler
 	private Vector2I MapSize { get; set; }
 	private IPlatform[] _platforms;
 	private Collectible[] _collectibles;
-	private ushort[] _pickedUpCollectibles = new ushort[(int)Collectible.Count];
+	private ushort[] _pickedUpCollectibleCounts = new ushort[(int)Collectible.Count];
+	private ushort[] _startCollectibleCounts = new ushort[(int)Collectible.Count];
 
 	public override void _Ready() => MovementSystem = new MovementSystem(this);
 	public override void _ExitTree() => ClearLevel();
@@ -29,13 +30,13 @@ public partial class Level : Scene, ILevelHandler
 
 	public override void _Process(double delta)
 	{
-		if (Engine.GetFramesDrawn() % 20 == 0)
-		{
-			GD.Print("FPS: ", Performance.GetMonitor(Performance.Monitor.TimeFps));
-			GD.Print("Memory static: ", Performance.GetMonitor(Performance.Monitor.MemoryStatic));
-			GD.Print("Draw Calls: ", Performance.GetMonitor(Performance.Monitor.RenderTotalDrawCallsInFrame));
-			GD.Print("Video Mem: ", Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed));
-		}
+		// if (Engine.GetFramesDrawn() % 20 == 0)
+		// {
+		// 	GD.Print("FPS: ", Performance.GetMonitor(Performance.Monitor.TimeFps));
+		// 	GD.Print("Memory static: ", Performance.GetMonitor(Performance.Monitor.MemoryStatic));
+		// 	GD.Print("Draw Calls: ", Performance.GetMonitor(Performance.Monitor.RenderTotalDrawCallsInFrame));
+		// 	GD.Print("Video Mem: ", Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed));
+		// }
 	}
 
 	public void LoadLevel(string levelFilePath)
@@ -62,6 +63,7 @@ public partial class Level : Scene, ILevelHandler
 
 				var collectible = (Collectible)levelData.Collectibles[j, i];
 				_collectibles[GridToIndex(gridPos)] = collectible;
+				_startCollectibleCounts[(ushort)collectible]++;
 				if (collectible != Collectible.None)
 				{
 					_levelRenderingServer.RenderCollectible(gridPos, collectible);
@@ -75,7 +77,7 @@ public partial class Level : Scene, ILevelHandler
 	private bool IsPositionValid(Vector2I pos) => pos.X >= 0 && pos.Y >= 0 && pos.X < MapSize.X && pos.Y < MapSize.Y;
 
 	public IPlatform GetPlatform(Vector2I pos) => IsPositionValid(pos) ? _platforms[GridToIndex(pos)] : null;
-	private Collectible GetCollectible(Vector2I pos) => IsPositionValid(pos) ? _collectibles[GridToIndex(pos)] : 0;
+	private Collectible GetCollectible(Vector2I pos) => IsPositionValid(pos) ? _collectibles[GridToIndex(pos)] : Collectible.None;
 
 	public void PickUpCollectible(Vector2I pos)
 	{
@@ -89,19 +91,29 @@ public partial class Level : Scene, ILevelHandler
 			return;
 		}
 
-		_pickedUpCollectibles[(int)collectible]++;
+		_pickedUpCollectibleCounts[(int)collectible]++;
 		_levelRenderingServer.FreeCollectible(pos);
 		_collectibles[GridToIndex(pos)] = Collectible.None;
 	}
 
 	public ushort GetCollectiblePickedUpCount(Collectible collectible)
 	{
-		if (collectible == Collectible.None || collectible >= Collectible.Count)
+		if (collectible <= Collectible.None || collectible >= Collectible.Count)
 		{
 			throw new Exception($"Invalid collectible id {(int)collectible}");
 		}
 
-		return _pickedUpCollectibles[(int)collectible];
+		return _pickedUpCollectibleCounts[(int)collectible];
+	}
+
+	public ushort GetCollectibleStartCount(Collectible collectible)
+	{
+		if (collectible <= Collectible.None || collectible >= Collectible.Count)
+		{
+			throw new Exception($"Invalid collectible id {(int)collectible}");
+		}
+
+		return _startCollectibleCounts[(int)collectible];
 	}
 
 	public void CompleteLevel()

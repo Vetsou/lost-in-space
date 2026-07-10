@@ -12,4 +12,5 @@ public interface ILevelHandler
 	public IPlatform GetPlatform(Vector2I pos);
 	public void PickUpCollectible(Vector2I pos);
 	public ushort GetCollectiblePickedUpCount(Collectible collectible);
+	public ushort GetCollectibleStartCount(Collectible collectible);
 }
