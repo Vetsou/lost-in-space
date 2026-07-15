@@ -17,7 +17,7 @@ public readonly struct LevelData
 		{
 			throw new Exception("Level platforms is null");
 		}
-		if (Platforms.GetLength(0) != Width || Platforms.GetLength(1) != Height)
+		if (Platforms.GetLength(1) != Width || Platforms.GetLength(0) != Height)
 		{
 			throw new Exception("Level platforms dimensions don't match");
 		}
@@ -33,7 +33,7 @@ public readonly struct LevelData
 		{
 			throw new Exception("Level collectibles is null");
 		}
-		if (Collectibles.GetLength(0) != Width || Collectibles.GetLength(1) != Height)
+		if (Collectibles.GetLength(1) != Width || Collectibles.GetLength(0) != Height)
 		{
 			throw new Exception("Level collectibles dimensions don't match");
 		}
