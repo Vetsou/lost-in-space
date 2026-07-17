@@ -9,9 +9,9 @@
 	],
 	"Collectibles": [
 		[0, 0, 1, 0],
-		[0, 1, 0, 0],
+		[0, 2, 0, 0],
 		[0, 0, 1, 0],
-		[0, 0, 1, 0]
+		[0, 0, 2, 0]
 	],
 	"PlayerPositionX": 2,
 	"PlayerPositionY": 1

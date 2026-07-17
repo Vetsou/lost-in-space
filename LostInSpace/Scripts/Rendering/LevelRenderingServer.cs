@@ -36,17 +36,16 @@ public partial class LevelRenderingServer : Node3D
 		UpdatePlatformColor(pos, data.Albedo);
 	}
 
-	public void RenderCollectible(Vector2I pos, Collectible collectible)
+	public void RenderCollectible(Vector2I pos, VisualData visualData)
 	{
-		CollectibleType collectibleType = CollectibleFactory.GetCollectibleType(collectible);
 		if (collectibleLookup.ContainsKey(pos))
 		{
 			return;
 		}
 
-		(BatchData batch, int index) = RenderInstance(pos, collectibleType.VisualData, POINT_HOVER_HEIGHT);
+		(BatchData batch, int index) = RenderInstance(pos, visualData, POINT_HOVER_HEIGHT);
 		collectibleLookup[pos] = (batch, index);
-		UpdateCollectibleColor(pos, collectibleType.VisualData.Albedo);
+		UpdateCollectibleColor(pos, visualData.Albedo);
 	}
 
 	private (BatchData, int) RenderInstance(Vector2I pos, VisualData data, float height)

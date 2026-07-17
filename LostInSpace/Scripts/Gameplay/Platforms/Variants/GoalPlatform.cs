@@ -11,8 +11,7 @@ public class GoalPlatform : IPlatform
 
 	public void OnEnter(TileContext context)
 	{
-		if (context.LevelHandler.GetCollectiblePickedUpCount(Collectible.Point)
-			== context.LevelHandler.GetCollectibleStartCount(Collectible.Point))
+		if (context.LevelHandler.PrimaryPointsCurrentCount == context.LevelHandler.PrimaryPointsTotalCount)
 		{
 			context.LevelHandler.CompleteLevel();
 		}
