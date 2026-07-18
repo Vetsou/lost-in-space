@@ -17,6 +17,7 @@ public static class SettingsMap
 	public static class Video
 	{
 		public const string FULLSCREEN = "fullscreen";
+		public const string LANGUAGE = "language";
 	}
 
 	public static class Keys
