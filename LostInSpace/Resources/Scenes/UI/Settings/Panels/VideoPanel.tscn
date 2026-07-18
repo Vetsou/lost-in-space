@@ -22,6 +22,6 @@ grow_vertical = 2
 
 [node name="FullscreenToggle" type="CheckBox" parent="VideoContainer" unique_id=1739118942]
 layout_mode = 2
-text = "Fullscreen"
+text = "FULLSCREEN"
 
 [connection signal="toggled" from="VideoContainer/FullscreenToggle" to="." method="OnFullscreenToggled"]

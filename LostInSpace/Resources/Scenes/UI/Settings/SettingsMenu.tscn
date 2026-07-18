@@ -38,7 +38,7 @@ layout_mode = 2
 
 [node name="VideoButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=829115245]
 layout_mode = 2
-text = "Video"
+text = "VIDEO"
 
 [node name="AudioButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=2088618229]
 layout_mode = 2
@@ -46,12 +46,12 @@ text = "Audio"
 
 [node name="KeybindsButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=1409986095]
 layout_mode = 2
-text = "Keybinds"
+text = "KEYBINDS"
 
 [node name="ResetButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=1278635557]
 layout_mode = 2
 size_flags_horizontal = 10
-text = "Reset to default"
+text = "RESET_TO_DEFAULT"
 
 [node name="PanelContainer" type="PanelContainer" parent="OptionsContainer" unique_id=890397027]
 layout_mode = 2
@@ -69,7 +69,7 @@ layout_mode = 2
 [node name="BackButton" type="Button" parent="OptionsContainer" unique_id=416545207]
 layout_mode = 2
 size_flags_vertical = 8
-text = "Back"
+text = "RETURN_TO_MENU"
 
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/VideoButton" to="." method="OnVideoCategoryPressed"]
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/AudioButton" to="." method="OnAudioCategoryPressed"]

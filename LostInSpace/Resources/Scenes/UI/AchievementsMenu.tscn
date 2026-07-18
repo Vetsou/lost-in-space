@@ -8,4 +8,4 @@ script = ExtResource("1_suhmw")
 [node name="Label" type="Label" parent="." unique_id=733373225]
 offset_right = 40.0
 offset_bottom = 23.0
-text = "Achievements"
+text = "ACHIEVEMENTS"

@@ -39,27 +39,27 @@ theme_override_constants/separation = 15
 
 [node name="PlayButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=2133388026]
 layout_mode = 2
-text = "Play"
+text = "PLAY"
 
 [node name="CreateLevelButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=56628457]
 layout_mode = 2
-text = "Create Level"
+text = "CREATE_LEVEL"
 
 [node name="WorkshopButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1402275541]
 layout_mode = 2
-text = "Workshop"
+text = "WORKSHOP"
 
 [node name="AchievementsButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1399085429]
 layout_mode = 2
-text = "Achievements"
+text = "ACHIEVEMENTS"
 
 [node name="SettingsButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1471047026]
 layout_mode = 2
-text = "Settings"
+text = "SETTINGS"
 
 [node name="ExitButton" type="Button" parent="CenterContainer/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=670867117]
 layout_mode = 2
-text = "Exit"
+text = "EXIT"
 
 [node name="VersionLabel" type="Label" parent="." unique_id=528209320]
 layout_mode = 1
