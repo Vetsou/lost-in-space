@@ -1,4 +1,5 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay.Collectibles;
 using LostInSpace.Scripts.Gameplay.Data;
 
 namespace LostInSpace.Scripts.Rendering;
@@ -16,7 +17,7 @@ public partial class LevelRenderingServer : Node3D
 	}
 	private readonly Dictionary<VisualData, BatchData> multimeshBatches = [];
 	private readonly Dictionary<Vector2I, (BatchData batch, int index)> platformLookup = [];
-	private readonly Dictionary<Vector2I, (BatchData batch, int index)> pointLookup = [];
+	private readonly Dictionary<Vector2I, (BatchData batch, int index)> collectibleLookup = [];
 	private int batchSize = 0;
 
 	public void SetBatchSize(int size) => batchSize = size;
@@ -35,18 +36,16 @@ public partial class LevelRenderingServer : Node3D
 		UpdatePlatformColor(pos, data.Albedo);
 	}
 
-	public void RenderPoint(Vector2I pos, VisualData data)
+	public void RenderCollectible(Vector2I pos, VisualData visualData)
 	{
-		if (pointLookup.ContainsKey(pos))
+		if (collectibleLookup.ContainsKey(pos))
 		{
 			return;
 		}
 
-		(BatchData batch, int index) = RenderInstance(pos, data, POINT_HOVER_HEIGHT);
-
-		pointLookup[pos] = (batch, index);
-
-		UpdatePointColor(pos, data.Albedo);
+		(BatchData batch, int index) = RenderInstance(pos, visualData, POINT_HOVER_HEIGHT);
+		collectibleLookup[pos] = (batch, index);
+		UpdateCollectibleColor(pos, visualData.Albedo);
 	}
 
 	private (BatchData, int) RenderInstance(Vector2I pos, VisualData data, float height)
@@ -95,7 +94,7 @@ public partial class LevelRenderingServer : Node3D
 
 	public void FreePlatform(Vector2I pos) => FreeInstance(pos, platformLookup);
 
-	public void FreePoint(Vector2I pos) => FreeInstance(pos, pointLookup);
+	public void FreeCollectible(Vector2I pos) => FreeInstance(pos, collectibleLookup);
 
 	private void FreeInstance(Vector2I pos, Dictionary<Vector2I, (BatchData, int)> lookupDict)
 	{
@@ -139,7 +138,7 @@ public partial class LevelRenderingServer : Node3D
 
 		multimeshBatches.Clear();
 		platformLookup.Clear();
-		pointLookup.Clear();
+		collectibleLookup.Clear();
 	}
 
 	public void UpdatePlatformColor(Vector2I pos, Color color)
@@ -160,18 +159,18 @@ public partial class LevelRenderingServer : Node3D
 		RenderingServer.MultimeshInstanceSetCustomData(lookup.batch.rid, lookup.index, color);
 	}
 
-	public void UpdatePointColor(Vector2I pos, Color color)
+	public void UpdateCollectibleColor(Vector2I pos, Color color)
 	{
-		if (!pointLookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
+		if (!collectibleLookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
 		{
 			return;
 		}
 		RenderingServer.MultimeshInstanceSetColor(lookup.batch.rid, lookup.index, color);
 	}
 
-	public void UpdatePointData(Vector2I pos, Color color)
+	public void UpdateCollectibleData(Vector2I pos, Color color)
 	{
-		if (!pointLookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
+		if (!collectibleLookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
 		{
 			return;
 		}

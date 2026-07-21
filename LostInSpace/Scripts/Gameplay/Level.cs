@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Godot;
+using LostInSpace.Scripts.Gameplay.Collectibles;
 using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Gameplay.Systems;
@@ -18,7 +19,14 @@ public partial class Level : Scene, ILevelHandler
 	private MovementSystem MovementSystem { get; set; }
 
 	private Vector2I MapSize { get; set; }
-	private Platform[] _platforms;
+	private IPlatform[] _platforms;
+	private bool[] _primaryPoints;
+	private bool[] _optionalPoints;
+
+	public ushort PrimaryPointsTotalCount { get; private set; }
+	public ushort PrimaryPointsCurrentCount { get; private set; }
+	public ushort OptionalPointsTotalCount { get; private set; }
+	public ushort OptionalPointsCurrentCount { get; private set; }
 
 	public override void _Ready() => MovementSystem = new MovementSystem(this);
 	public override void _ExitTree() => ClearLevel();
@@ -42,36 +50,68 @@ public partial class Level : Scene, ILevelHandler
 
 		MapSize = new Vector2I(levelData.Width, levelData.Height);
 		_levelRenderingServer.SetBatchSize(MapSize.X * MapSize.Y);
-		_platforms = new Platform[MapSize.X * MapSize.Y];
+		_platforms = new IPlatform[MapSize.X * MapSize.Y];
+		_primaryPoints = new bool[MapSize.X * MapSize.Y];
+		_optionalPoints = new bool[MapSize.X * MapSize.Y];
+		PrimaryPointsCurrentCount = 0;
+		PrimaryPointsTotalCount = 0;
+		OptionalPointsCurrentCount = 0;
+		OptionalPointsTotalCount = 0;
 
 		for (int i = 0; i < MapSize.X; i++)
 		{
 			for (int j = 0; j < MapSize.Y; j++)
 			{
-				if (levelData.Platforms[j, i] == 0)
+				var gridPos = new Vector2I(i, j);
+				if (levelData.Platforms[j, i] != 0)
 				{
-					continue;
+					IPlatform platform = PlatformFactory.CreatePlatform(levelData.Platforms[j, i]);
+					_platforms[GridToIndex(gridPos)] = platform;
+					_levelRenderingServer.RenderPlatform(gridPos, platform.VisualData);
 				}
 
-				var gridPos = new Vector2I(i, j);
+				bool primaryPoint = levelData.Collectibles[j, i] == 1;
+				_primaryPoints[GridToIndex(gridPos)] = primaryPoint;
+				if (primaryPoint)
+				{
+					PrimaryPointsTotalCount++;
+					_levelRenderingServer.RenderCollectible(gridPos, CollectibleData.PrimaryCollectibleVisualData);
+				}
 
-				Platform platform = PlatformRegistry.CreatePlatform(levelData.Platforms[j, i], gridPos);
-				_platforms[GridToIndex(gridPos)] = platform;
-				_levelRenderingServer.RenderPlatform(gridPos, platform.VisualData);
+				bool optionalPoint = levelData.Collectibles[j, i] == 2;
+				_optionalPoints[GridToIndex(gridPos)] = optionalPoint;
+				if (optionalPoint)
+				{
+					OptionalPointsTotalCount++;
+					_levelRenderingServer.RenderCollectible(gridPos, CollectibleData.OptionalCollectibleVisualData);
+				}
 			}
 		}
 
 		_player.SetPosition(new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
 	}
 
-	public Platform GetTile(Vector2I pos)
+	private bool IsPositionValid(Vector2I pos) => pos.X >= 0 && pos.Y >= 0 && pos.X < MapSize.X && pos.Y < MapSize.Y;
+
+	public IPlatform GetPlatform(Vector2I pos) => IsPositionValid(pos) ? _platforms[GridToIndex(pos)] : null;
+	private bool GetPrimaryPoint(Vector2I pos) => IsPositionValid(pos) && _primaryPoints[GridToIndex(pos)];
+	private bool GetOptionalPoint(Vector2I pos) => IsPositionValid(pos) && _optionalPoints[GridToIndex(pos)];
+
+	public void PickUpCollectible(Vector2I pos)
 	{
-		int index = GridToIndex(pos);
-		if (index < 0 || index >= _platforms.Length)
+		if (GetPrimaryPoint(pos))
 		{
-			return null;
+			PrimaryPointsCurrentCount++;
+			_levelRenderingServer.FreeCollectible(pos);
+			_primaryPoints[GridToIndex(pos)] = false;
 		}
-		return _platforms[index];
+
+		if (GetOptionalPoint(pos))
+		{
+			OptionalPointsCurrentCount++;
+			_levelRenderingServer.FreeCollectible(pos);
+			_optionalPoints[GridToIndex(pos)] = false;
+		}
 	}
 
 	public void CompleteLevel()
@@ -82,7 +122,7 @@ public partial class Level : Scene, ILevelHandler
 
 	public void RemovePlatform(Vector2I pos)
 	{
-		Platform platform = _platforms[GridToIndex(pos)];
+		IPlatform platform = GetPlatform(pos);
 		if (platform == null)
 		{
 			return;
@@ -104,13 +144,9 @@ public partial class Level : Scene, ILevelHandler
 	{
 		for (int i = 0; i < _platforms.Length; i++)
 		{
-			Platform platform = _platforms[i];
-			if (platform == null)
-			{
-				continue;
-			}
-
 			_platforms[i] = null;
+			_primaryPoints[i] = false;
+			_optionalPoints[i] = false;
 		}
 
 		_levelRenderingServer.ClearLevel();
