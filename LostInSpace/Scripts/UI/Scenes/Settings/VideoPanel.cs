@@ -20,16 +20,11 @@ public partial class VideoPanel : Control
 
 	private void UpdateVideoSettings(string section, string key, Variant value)
 	{
-		if (key != SettingsMap.Section.VIDEO)
+		if (section != SettingsMap.Section.VIDEO)
 		{
 			return;
 		}
 
-		switch (key)
-		{
-			case SettingsMap.Video.FULLSCREEN:
-				FullscreenToggle.ButtonPressed = value.As<bool>();
-				break;
-		}
+		FullscreenToggle.ButtonPressed = value.As<bool>();
 	}
 }

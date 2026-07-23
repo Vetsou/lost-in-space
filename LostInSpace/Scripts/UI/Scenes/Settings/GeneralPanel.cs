@@ -24,16 +24,11 @@ public partial class GeneralPanel : Control
 
 	private void UpdateGeneralSettings(string section, string key, Variant value)
 	{
-		if (key != SettingsMap.Section.GENERAL)
+		if (section != SettingsMap.Section.GENERAL)
 		{
 			return;
 		}
 
-		switch (key)
-		{
-			case SettingsMap.General.LANGUAGE:
-				LanguageSelector.Selected = value.As<int>();
-				break;
-		}
+		LanguageSelector.Selected = value.As<int>();
 	}
 }

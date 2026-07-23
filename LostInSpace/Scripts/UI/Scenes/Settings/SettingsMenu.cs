@@ -33,7 +33,7 @@ public partial class SettingsMenu : Scene
 		};
 
 		_keybindsPanel.Connect(KeybindsPanel.SignalName.RebindStateChanged, Callable.From<bool>(OnRebindStateChanged));
-		ChangePanel(SettingsTab.Video);
+		ChangePanel(SettingsTab.General);
 	}
 
 	private void OnGeneralCategoryPressed() => ChangePanel(SettingsTab.General);
