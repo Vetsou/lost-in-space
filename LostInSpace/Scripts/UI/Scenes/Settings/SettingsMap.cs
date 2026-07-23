@@ -4,9 +4,15 @@ public static class SettingsMap
 {
 	public static class Section
 	{
+		public const string GENERAL = "General";
 		public const string AUDIO = "Audio";
 		public const string VIDEO = "Video";
 		public const string KEYBINDS = "Keybindings";
+	}
+
+	public static class General
+	{
+		public const string LANGUAGE = "language";
 	}
 
 	public static class Audio
@@ -17,7 +23,6 @@ public static class SettingsMap
 	public static class Video
 	{
 		public const string FULLSCREEN = "fullscreen";
-		public const string LANGUAGE = "language";
 	}
 
 	public static class Keys

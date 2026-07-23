@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bfhy6l84a1cxw"]
+
+[ext_resource type="Script" uid="uid://bi5coaxetsuvu" path="res://Scripts/UI/Scenes/Settings/GeneralPanel.cs" id="1_arf4y"]
+
+[node name="GeneralPanel" type="Control" unique_id=1994329431 node_paths=PackedStringArray("LanguageSelector")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_arf4y")
+LanguageSelector = NodePath("GeneralContainer/MarginContainer/LanguageContainer/LanguageSelector")
+
+[node name="GeneralContainer" type="VBoxContainer" parent="." unique_id=985538565]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GeneralContainer" unique_id=996795612]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="LanguageContainer" type="HBoxContainer" parent="GeneralContainer/MarginContainer" unique_id=1245451674]
+layout_mode = 2
+
+[node name="LanguageLabel" type="Label" parent="GeneralContainer/MarginContainer/LanguageContainer" unique_id=1286777309]
+layout_mode = 2
+text = "LANGUAGE"
+
+[node name="LanguageSelector" type="OptionButton" parent="GeneralContainer/MarginContainer/LanguageContainer" unique_id=806683542]
+layout_mode = 2
+item_count = 2
+popup/item_0/text = "English"
+popup/item_0/id = 0
+popup/item_1/text = "Polski"
+popup/item_1/id = 1
+
+[connection signal="item_selected" from="GeneralContainer/MarginContainer/LanguageContainer/LanguageSelector" to="." method="OnLanguageChanged"]

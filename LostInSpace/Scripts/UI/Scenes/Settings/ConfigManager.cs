@@ -16,10 +16,11 @@ public partial class ConfigManager : Node
 	#region DefaultSettings
 	private static readonly SettingEntry[] _defaultSettings =
 	[
+		new(SettingsMap.Section.GENERAL, SettingsMap.General.LANGUAGE, "en"),
+
 		new(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME, 100.0f),
 
 		new(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, false),
-		new(SettingsMap.Section.VIDEO, SettingsMap.Video.LANGUAGE, "en"),
 
 		new(SettingsMap.Section.KEYBINDS, SettingsMap.Keys.MOVE_LEFT, "A"),
 		new(SettingsMap.Section.KEYBINDS, SettingsMap.Keys.MOVE_RIGHT, "D"),
@@ -39,7 +40,7 @@ public partial class ConfigManager : Node
 				? DisplayServer.WindowMode.Fullscreen
 				: DisplayServer.WindowMode.Windowed),
 
-		[(SettingsMap.Section.VIDEO, SettingsMap.Video.LANGUAGE)] = v =>
+		[(SettingsMap.Section.GENERAL, SettingsMap.General.LANGUAGE)] = v =>
 			TranslationServer.SetLocale(((Languagues)v.As<int>()).ToString())
 	};
 	#endregion
