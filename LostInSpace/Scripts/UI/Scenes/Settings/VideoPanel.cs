@@ -6,6 +6,8 @@ public partial class VideoPanel : Control
 {
 	[Export]
 	private CheckBox FullscreenToggle { get; set; }
+	[Export]
+	private OptionButton LanguageSelector { get; set; }
 
 	public override void _Ready()
 	{
@@ -16,7 +18,7 @@ public partial class VideoPanel : Control
 	private static void OnFullscreenToggled(bool toggledOn) =>
 		ConfigManager.Instance.SetSetting(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, toggledOn);
 
-	private void UpdateVideoSettings(string section, string _, Variant value)
+	private void UpdateVideoSettings(string section, string key, Variant value)
 	{
 		if (section != SettingsMap.Section.VIDEO)
 		{

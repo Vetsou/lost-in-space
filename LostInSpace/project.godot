@@ -23,6 +23,10 @@ ConfigManager="*uid://bx77vbmun6u38"
 project/assembly_name="LostInSpace"
 project/solution_directory="../"
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://Resources/Translations/translation.en.translation", "res://Resources/Translations/translation.pl.translation")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

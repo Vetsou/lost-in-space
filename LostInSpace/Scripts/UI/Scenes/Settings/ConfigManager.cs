@@ -16,6 +16,8 @@ public partial class ConfigManager : Node
 	#region DefaultSettings
 	private static readonly SettingEntry[] _defaultSettings =
 	[
+		new(SettingsMap.Section.GENERAL, SettingsMap.General.LANGUAGE, "en"),
+
 		new(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME, 100.0f),
 
 		new(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN, false),
@@ -37,6 +39,9 @@ public partial class ConfigManager : Node
 			DisplayServer.WindowSetMode(v.As<bool>()
 				? DisplayServer.WindowMode.Fullscreen
 				: DisplayServer.WindowMode.Windowed),
+
+		[(SettingsMap.Section.GENERAL, SettingsMap.General.LANGUAGE)] = v =>
+			TranslationServer.SetLocale(((Languagues)v.As<int>()).ToString())
 	};
 	#endregion
 
