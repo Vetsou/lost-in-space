@@ -21,22 +21,21 @@ public class MovementSystem(ILevelHandler level)
 
 	public void MovePlayer(PlayerData player, Vector2I direction)
 	{
-		Platform nextTile = CurrentLevel.GetTile(player.GridPosition + direction);
+		IPlatform nextTile = CurrentLevel.GetPlatform(player.GridPosition + direction);
 
 		if (nextTile == null)
 		{
 			return;
 		}
 
-		TileContext context = CreateTileContext(direction);
-
-		Platform currPlatform = CurrentLevel.GetTile(player.GridPosition);
-		currPlatform.OnExit(context);
+		IPlatform currPlatform = CurrentLevel.GetPlatform(player.GridPosition);
+		currPlatform.OnExit(CreateTileContext(player.GridPosition, direction));
 
 		player.SetPosition(player.GridPosition + direction);
+		CurrentLevel.PickUpCollectible(player.GridPosition);
 
-		Platform newPlatform = CurrentLevel.GetTile(player.GridPosition);
-		newPlatform?.OnEnter(context);
+		IPlatform newPlatform = CurrentLevel.GetPlatform(player.GridPosition);
+		newPlatform?.OnEnter(CreateTileContext(player.GridPosition, direction));
 	}
 
 	private static bool GetPlayerMovementDirection(InputEvent @event, out Vector2I direction)
@@ -69,9 +68,10 @@ public class MovementSystem(ILevelHandler level)
 		return false;
 	}
 
-	private TileContext CreateTileContext(Vector2I direction) => new()
+	private TileContext CreateTileContext(Vector2I position, Vector2I direction) => new()
 	{
 		LevelHandler = CurrentLevel,
-		MoveDirection = direction
+		MoveDirection = direction,
+		Position = position
 	};
 }
