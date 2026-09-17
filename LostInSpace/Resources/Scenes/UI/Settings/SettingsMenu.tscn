@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://cobi6jrijcisg"]
 
 [ext_resource type="Script" uid="uid://dpgax7cqu6jx3" path="res://Scripts/UI/Scenes/Settings/SettingsMenu.cs" id="1_e3jmt"]
+[ext_resource type="PackedScene" uid="uid://bfhy6l84a1cxw" path="res://Resources/Scenes/UI/Settings/Panels/GeneralPanel.tscn" id="2_12m4e"]
 [ext_resource type="PackedScene" uid="uid://blqtwagtqn01r" path="res://Resources/Scenes/UI/Settings/Panels/VideoPanel.tscn" id="2_m4dqw"]
 [ext_resource type="PackedScene" uid="uid://b0kmy4njoca15" path="res://Resources/Scenes/UI/Settings/Panels/AudioPanel.tscn" id="3_wqold"]
 [ext_resource type="PackedScene" uid="uid://c2dabaf0cmwcm" path="res://Resources/Scenes/UI/Settings/Panels/KeybindsPanel.tscn" id="4_mjpxk"]
 
-[node name="SettingsMenu" type="Control" unique_id=1613867365 node_paths=PackedStringArray("_audioPanel", "_videoPanel", "_keybindsPanel", "_settingsButtons")]
+[node name="SettingsMenu" type="Control" unique_id=1613867365 node_paths=PackedStringArray("_generalPanel", "_audioPanel", "_videoPanel", "_keybindsPanel", "_settingsButtons")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,6 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
 script = ExtResource("1_e3jmt")
+_generalPanel = NodePath("OptionsContainer/PanelContainer/GeneralPanel")
 _audioPanel = NodePath("OptionsContainer/PanelContainer/AudioPanel")
 _videoPanel = NodePath("OptionsContainer/PanelContainer/VideoPanel")
 _keybindsPanel = NodePath("OptionsContainer/PanelContainer/KeybindsPanel")
@@ -36,9 +38,13 @@ grow_vertical = 2
 [node name="CategoryContainer" type="HBoxContainer" parent="OptionsContainer" unique_id=575039179]
 layout_mode = 2
 
+[node name="GeneralButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=2025959948]
+layout_mode = 2
+text = "GENERAL"
+
 [node name="VideoButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=829115245]
 layout_mode = 2
-text = "Video"
+text = "VIDEO"
 
 [node name="AudioButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=2088618229]
 layout_mode = 2
@@ -46,18 +52,21 @@ text = "Audio"
 
 [node name="KeybindsButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=1409986095]
 layout_mode = 2
-text = "Keybinds"
+text = "KEYBINDS"
 
 [node name="ResetButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=1278635557]
 layout_mode = 2
 size_flags_horizontal = 10
-text = "Reset to default"
+text = "RESET_TO_DEFAULT"
 
 [node name="PanelContainer" type="PanelContainer" parent="OptionsContainer" unique_id=890397027]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VideoPanel" parent="OptionsContainer/PanelContainer" unique_id=1994329431 instance=ExtResource("2_m4dqw")]
+[node name="GeneralPanel" parent="OptionsContainer/PanelContainer" unique_id=1994329431 instance=ExtResource("2_12m4e")]
+layout_mode = 2
+
+[node name="VideoPanel" parent="OptionsContainer/PanelContainer" unique_id=1482553420 instance=ExtResource("2_m4dqw")]
 layout_mode = 2
 
 [node name="AudioPanel" parent="OptionsContainer/PanelContainer" unique_id=173584112 instance=ExtResource("3_wqold")]
@@ -69,8 +78,9 @@ layout_mode = 2
 [node name="BackButton" type="Button" parent="OptionsContainer" unique_id=416545207]
 layout_mode = 2
 size_flags_vertical = 8
-text = "Back"
+text = "RETURN_TO_MENU"
 
+[connection signal="pressed" from="OptionsContainer/CategoryContainer/GeneralButton" to="." method="OnGeneralCategoryPressed"]
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/VideoButton" to="." method="OnVideoCategoryPressed"]
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/AudioButton" to="." method="OnAudioCategoryPressed"]
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/KeybindsButton" to="." method="OnKeybindsCategoryPressed"]

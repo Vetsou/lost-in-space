@@ -34,7 +34,7 @@ size_flags_vertical = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/KeybindsContainer/MoveUpContainer" unique_id=62962701]
 layout_mode = 2
-text = "Move Up"
+text = "MOVE_UP"
 
 [node name="MoveUpButton" type="Button" parent="ScrollContainer/KeybindsContainer/MoveUpContainer" unique_id=1050582659]
 custom_minimum_size = Vector2(150, 0)
@@ -46,7 +46,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="ScrollContainer/KeybindsContainer/MoveDownContainer" unique_id=743316102]
 layout_mode = 2
-text = "Move Down"
+text = "MOVE_DOWN"
 
 [node name="MoveDownButton" type="Button" parent="ScrollContainer/KeybindsContainer/MoveDownContainer" unique_id=1951419987]
 custom_minimum_size = Vector2(150, 0)
@@ -58,7 +58,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="ScrollContainer/KeybindsContainer/MoveLeftContainer" unique_id=224261424]
 layout_mode = 2
-text = "Move Left"
+text = "MOVE_LEFT"
 
 [node name="MoveLeftButton" type="Button" parent="ScrollContainer/KeybindsContainer/MoveLeftContainer" unique_id=1805435450]
 custom_minimum_size = Vector2(150, 0)
@@ -70,7 +70,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="ScrollContainer/KeybindsContainer/MoveRightContainer" unique_id=1004836956]
 layout_mode = 2
-text = "Move Right"
+text = "MOVE_RIGHT"
 
 [node name="MoveRightButton" type="Button" parent="ScrollContainer/KeybindsContainer/MoveRightContainer" unique_id=1487449386]
 custom_minimum_size = Vector2(150, 0)

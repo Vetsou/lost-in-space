@@ -4,6 +4,7 @@ namespace LostInSpace.Scripts.UI.Scenes.Settings;
 
 public enum SettingsTab
 {
+	General,
 	Audio,
 	Video,
 	Keybinds,
@@ -11,6 +12,7 @@ public enum SettingsTab
 
 public partial class SettingsMenu : Scene
 {
+	[Export] private GeneralPanel _generalPanel;
 	[Export] private AudioPanel _audioPanel;
 	[Export] private VideoPanel _videoPanel;
 	[Export] private KeybindsPanel _keybindsPanel;
@@ -24,15 +26,17 @@ public partial class SettingsMenu : Scene
 	{
 		_panels = new Godot.Collections.Dictionary<SettingsTab, Control>
 		{
+			{ SettingsTab.General, _generalPanel},
 			{ SettingsTab.Audio, _audioPanel },
 			{ SettingsTab.Video, _videoPanel },
 			{ SettingsTab.Keybinds, _keybindsPanel }
 		};
 
 		_keybindsPanel.Connect(KeybindsPanel.SignalName.RebindStateChanged, Callable.From<bool>(OnRebindStateChanged));
-		ChangePanel(SettingsTab.Video);
+		ChangePanel(SettingsTab.General);
 	}
 
+	private void OnGeneralCategoryPressed() => ChangePanel(SettingsTab.General);
 	private void OnVideoCategoryPressed() => ChangePanel(SettingsTab.Video);
 	private void OnAudioCategoryPressed() => ChangePanel(SettingsTab.Audio);
 	private void OnKeybindsCategoryPressed() => ChangePanel(SettingsTab.Keybinds);

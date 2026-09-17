@@ -8,4 +8,4 @@ script = ExtResource("1_wk5ty")
 [node name="Label" type="Label" parent="." unique_id=1230679127]
 offset_right = 40.0
 offset_bottom = 23.0
-text = "Level Creator"
+text = "LEVEL_CREATOR"
