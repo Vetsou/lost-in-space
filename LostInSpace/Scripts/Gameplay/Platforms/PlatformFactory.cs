@@ -15,6 +15,10 @@ public static class PlatformFactory
 		6 => new MovePlatform(Vector2I.Down),
 		7 => new MovePlatform(Vector2I.Up),
 		8 => new SlipperyPlatform(),
+		9 => new TeleporterPlatform(0),
+		10 => new TeleporterPlatform(1),
+		11 => new TeleporterPlatform(2),
+		12 => new TeleporterPlatform(3),
 		_ => null
 	};
 }
