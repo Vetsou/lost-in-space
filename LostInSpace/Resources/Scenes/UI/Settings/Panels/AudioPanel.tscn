@@ -25,7 +25,7 @@ layout_mode = 2
 [node name="MVolumeLabel" type="Label" parent="AudioContainer/MVolumeContainer" unique_id=898042341]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Volume"
+text = "VOLUME"
 
 [node name="MVolumeSlider" type="HSlider" parent="AudioContainer/MVolumeContainer" unique_id=169414737]
 layout_mode = 2

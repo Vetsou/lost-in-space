@@ -69,11 +69,11 @@ uppercase = true
 [node name="PlayButton" type="Button" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer" unique_id=1923218177]
 layout_mode = 2
 size_flags_vertical = 10
-text = "Play"
+text = "PLAY"
 
 [node name="ReturnButton" type="Button" parent="MarginContainer/HBoxContainer/SideContainer" unique_id=145734593]
 layout_mode = 2
-text = "Return to Menu"
+text = "RETURN_TO_MENU"
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/PlayButton" to="." method="OnPlayButtonPressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/SideContainer/ReturnButton" to="." method="OnReturnButtonPressed"]
