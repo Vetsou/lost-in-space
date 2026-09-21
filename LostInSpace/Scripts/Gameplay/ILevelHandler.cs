@@ -14,6 +14,7 @@ public interface ILevelHandler
 	public void CompleteLevel();
 	public void RemovePlatform(Vector2I pos);
 	public void MovePlayer(Vector2I direction);
+	public (Vector2I a, Vector2I b) GetTeleporterLinkPositions(byte teleporterLinkId);
 	public IPlatform GetPlatform(Vector2I pos);
 	public void PickUpCollectible(Vector2I pos);
 }

@@ -1,8 +1,10 @@
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Godot;
 using LostInSpace.Scripts.Gameplay.Collectibles;
 using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
+using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 using LostInSpace.Scripts.Gameplay.Systems;
 using LostInSpace.Scripts.Rendering;
 using LostInSpace.Scripts.UI;
@@ -22,6 +24,7 @@ public partial class Level : Scene, ILevelHandler
 	private IPlatform[] _platforms;
 	private bool[] _primaryPoints;
 	private bool[] _optionalPoints;
+	private Dictionary<byte, (Vector2I a, Vector2I b)> _teleporters = new();
 
 	public ushort PrimaryPointsTotalCount { get; private set; }
 	public ushort PrimaryPointsCurrentCount { get; private set; }
@@ -57,6 +60,7 @@ public partial class Level : Scene, ILevelHandler
 		PrimaryPointsTotalCount = 0;
 		OptionalPointsCurrentCount = 0;
 		OptionalPointsTotalCount = 0;
+		var teleporters = new List<(TeleporterPlatform platform, Vector2I position)>();
 
 		for (int i = 0; i < MapSize.X; i++)
 		{
@@ -68,6 +72,10 @@ public partial class Level : Scene, ILevelHandler
 					IPlatform platform = PlatformFactory.CreatePlatform(levelData.Platforms[j, i]);
 					_platforms[GridToIndex(gridPos)] = platform;
 					_levelRenderingServer.RenderPlatform(gridPos, platform.VisualData);
+					if (platform is TeleporterPlatform teleporter)
+					{
+						teleporters.Add((teleporter, gridPos));
+					}
 				}
 
 				bool primaryPoint = levelData.Collectibles[j, i] == 1;
@@ -88,10 +96,53 @@ public partial class Level : Scene, ILevelHandler
 			}
 		}
 
+		InitializeTeleporters(teleporters);
+
 		_player.SetPosition(new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
 	}
 
+	private void InitializeTeleporters(IList<(TeleporterPlatform platform, Vector2I position)> teleporters)
+	{
+		if (teleporters.Count % 2 != 0)
+		{
+			throw new ArgumentException("Teleporter platforms count must be evenly divisible by 2");
+		}
+
+		if (teleporters.Count < 2)
+		{
+			return;
+		}
+
+		for (int i = 0; i < teleporters.Count - 1; i++)
+		{
+			byte linkId = teleporters[i].platform.TeleportLinkId;
+			for (int j = i + 1; j < teleporters.Count; j++)
+			{
+				if (linkId != teleporters[j].platform.TeleportLinkId)
+				{
+					continue;
+				}
+
+				if (_teleporters.ContainsKey(linkId))
+				{
+					throw new UnreachableException();
+				}
+
+				_teleporters[linkId] = (teleporters[i].position, teleporters[j].position);
+			}
+		}
+	}
+
 	private bool IsPositionValid(Vector2I pos) => pos.X >= 0 && pos.Y >= 0 && pos.X < MapSize.X && pos.Y < MapSize.Y;
+
+	public (Vector2I a, Vector2I b) GetTeleporterLinkPositions(byte teleporterLinkId)
+	{
+		if (_teleporters.TryGetValue(teleporterLinkId, out (Vector2I a, Vector2I b) positions))
+		{
+			return positions;
+		}
+		throw new ArgumentException($"Teleporter link id '{teleporterLinkId}' does not exist");
+	}
 
 	public IPlatform GetPlatform(Vector2I pos) => IsPositionValid(pos) ? _platforms[GridToIndex(pos)] : null;
 	private bool GetPrimaryPoint(Vector2I pos) => IsPositionValid(pos) && _primaryPoints[GridToIndex(pos)];
@@ -154,5 +205,6 @@ public partial class Level : Scene, ILevelHandler
 
 	public void UpdatePlatformColor(Vector2I pos, Color color) => _levelRenderingServer.UpdatePlatformColor(pos, color);
 
-	public void UpdatePlatformRenderData(Vector2I pos, Color color) => _levelRenderingServer.UpdatePlatformData(pos, color);
+	public void UpdatePlatformRenderData(Vector2I pos, Color color) =>
+		_levelRenderingServer.UpdatePlatformData(pos, color);
 }

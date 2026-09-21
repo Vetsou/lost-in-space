@@ -1,4 +1,6 @@
 using LostInSpace.Scripts.Gameplay.Collectibles;
+using LostInSpace.Scripts.Gameplay.Platforms;
+using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 
 namespace LostInSpace.Scripts.Gameplay.Data;
 
@@ -43,6 +45,7 @@ public readonly struct LevelData
 			throw new Exception("Collectibles dimensions don't match");
 		}
 
+		var teleporterCounts = new Dictionary<byte, uint>();
 		for (int x = 0; x < Width; x++)
 		{
 			for (int y = 0; y < Height; y++)
@@ -57,6 +60,23 @@ public readonly struct LevelData
 				{
 					throw new Exception($"Collectible at position x={x}, y={y}, has no platform underneath");
 				}
+
+				if (PlatformFactory.CreatePlatform(Platforms[y, x]) is TeleporterPlatform teleporter)
+				{
+					if (!teleporterCounts.TryAdd(teleporter.TeleportLinkId, 1))
+					{
+						teleporterCounts[teleporter.TeleportLinkId]++;
+					}
+				}
+			}
+		}
+
+		foreach (KeyValuePair<byte, uint> teleporter in teleporterCounts)
+		{
+			if (teleporter.Value != 2)
+			{
+				throw new Exception(
+					$"Invalid teleporter platform count {teleporter.Value} for teleport link {teleporter.Key}, it can only equal 0 or 2");
 			}
 		}
 	}
