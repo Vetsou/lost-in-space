@@ -9,23 +9,23 @@ public class MovementSystem(ILevelHandler level)
 {
 	private ILevelHandler CurrentLevel { get; init; } = level;
 
-	public void HandlePlayerMovement(PlayerData player, InputEvent @event)
+	public bool HandlePlayerMovement(PlayerData player, InputEvent @event)
 	{
 		if (!GetPlayerMovementDirection(@event, out Vector2I direction))
 		{
-			return;
+			return false;
 		}
 
-		MovePlayer(player, direction);
+		return TryMovePlayer(player, direction);
 	}
 
-	public void MovePlayer(PlayerData player, Vector2I direction)
+	public bool TryMovePlayer(PlayerData player, Vector2I direction)
 	{
 		IPlatform nextTile = CurrentLevel.GetPlatform(player.GridPosition + direction);
 
 		if (nextTile == null)
 		{
-			return;
+			return false;
 		}
 
 		IPlatform currPlatform = CurrentLevel.GetPlatform(player.GridPosition);
@@ -36,6 +36,8 @@ public class MovementSystem(ILevelHandler level)
 
 		IPlatform newPlatform = CurrentLevel.GetPlatform(player.GridPosition);
 		newPlatform?.OnEnter(CreateTileContext(player.GridPosition, direction));
+
+		return true;
 	}
 
 	private static bool GetPlayerMovementDirection(InputEvent @event, out Vector2I direction)

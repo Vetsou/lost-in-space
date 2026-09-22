@@ -17,23 +17,56 @@ public partial class Level : Scene, ILevelHandler
 {
 	[Export] private LevelRenderingServer _levelRenderingServer;
 	[Export] private PlayerData _player;
+	[Export] private LevelHud _hud;
 
 	private MovementSystem MovementSystem { get; set; }
 
+	#region MapData
 	private Vector2I MapSize { get; set; }
 	private IPlatform[] _platforms;
 	private bool[] _primaryPoints;
 	private bool[] _optionalPoints;
-	private Dictionary<byte, (Vector2I a, Vector2I b)> _teleporters = new();
+	private readonly Dictionary<byte, (Vector2I a, Vector2I b)> _teleporters = [];
+	#endregion
+
+	#region HudValues
+	public string LevelId { get; private set; }
+	public ushort StepCount { get; private set; }
+	public ushort BestStepCount { get; private set; }
 
 	public ushort PrimaryPointsTotalCount { get; private set; }
 	public ushort PrimaryPointsCurrentCount { get; private set; }
 	public ushort OptionalPointsTotalCount { get; private set; }
 	public ushort OptionalPointsCurrentCount { get; private set; }
+	#endregion
 
-	public override void _Ready() => MovementSystem = new MovementSystem(this);
-	public override void _ExitTree() => ClearLevel();
-	public override void _Input(InputEvent @event) => MovementSystem.HandlePlayerMovement(_player, @event);
+	#region HudSignals
+	[Signal] public delegate void LevelLoadedEventHandler(string levelId);
+	[Signal] public delegate void StepsChangedEventHandler(int steps);
+	[Signal] public delegate void BestStepsChangedEventHandler(int bestSteps);
+	[Signal] public delegate void PrimaryPointsChangedEventHandler(int current, int total);
+	[Signal] public delegate void OptionalPointsChangedEventHandler(int current, int total);
+	#endregion
+
+	public override void _Ready()
+	{
+		_hud.Bind(this);
+		MovementSystem = new MovementSystem(this);
+	}
+
+	public override void _ExitTree()
+	{
+		_hud.Unbind();
+		ClearLevel();
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (MovementSystem.HandlePlayerMovement(_player, @event))
+		{
+			IncrementStep();
+		}
+	}
 
 	public override void _Process(double delta)
 	{
@@ -56,11 +89,16 @@ public partial class Level : Scene, ILevelHandler
 		_platforms = new IPlatform[MapSize.X * MapSize.Y];
 		_primaryPoints = new bool[MapSize.X * MapSize.Y];
 		_optionalPoints = new bool[MapSize.X * MapSize.Y];
+		var teleporters = new List<(TeleporterPlatform platform, Vector2I position)>();
+
+		LevelId = "1-1";
+		StepCount = 0;
+		BestStepCount = 0;
+
 		PrimaryPointsCurrentCount = 0;
 		PrimaryPointsTotalCount = 0;
 		OptionalPointsCurrentCount = 0;
 		OptionalPointsTotalCount = 0;
-		var teleporters = new List<(TeleporterPlatform platform, Vector2I position)>();
 
 		for (int i = 0; i < MapSize.X; i++)
 		{
@@ -99,9 +137,15 @@ public partial class Level : Scene, ILevelHandler
 		InitializeTeleporters(teleporters);
 
 		_player.SetPosition(new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
+
+		EmitSignal(SignalName.LevelLoaded, LevelId);
+		EmitSignal(SignalName.StepsChanged, StepCount);
+		EmitSignal(SignalName.BestStepsChanged, BestStepCount);
+		EmitSignal(SignalName.PrimaryPointsChanged, PrimaryPointsCurrentCount, PrimaryPointsTotalCount);
+		EmitSignal(SignalName.OptionalPointsChanged, OptionalPointsCurrentCount, OptionalPointsTotalCount);
 	}
 
-	private void InitializeTeleporters(IList<(TeleporterPlatform platform, Vector2I position)> teleporters)
+	private void InitializeTeleporters(List<(TeleporterPlatform platform, Vector2I position)> teleporters)
 	{
 		if (teleporters.Count % 2 != 0)
 		{
@@ -155,6 +199,7 @@ public partial class Level : Scene, ILevelHandler
 			PrimaryPointsCurrentCount++;
 			_levelRenderingServer.FreeCollectible(pos);
 			_primaryPoints[GridToIndex(pos)] = false;
+			EmitSignal(SignalName.PrimaryPointsChanged, PrimaryPointsCurrentCount, PrimaryPointsTotalCount);
 		}
 
 		if (GetOptionalPoint(pos))
@@ -162,6 +207,7 @@ public partial class Level : Scene, ILevelHandler
 			OptionalPointsCurrentCount++;
 			_levelRenderingServer.FreeCollectible(pos);
 			_optionalPoints[GridToIndex(pos)] = false;
+			EmitSignal(SignalName.OptionalPointsChanged, OptionalPointsCurrentCount, OptionalPointsTotalCount);
 		}
 	}
 
@@ -183,7 +229,19 @@ public partial class Level : Scene, ILevelHandler
 		_platforms[GridToIndex(pos)] = null;
 	}
 
-	public void MovePlayer(Vector2I direction) => MovementSystem.MovePlayer(_player, direction);
+	public void IncrementStep()
+	{
+		StepCount++;
+		EmitSignal(SignalName.StepsChanged, StepCount);
+	}
+
+	public void MovePlayer(Vector2I direction)
+	{
+		if (MovementSystem.TryMovePlayer(_player, direction))
+		{
+			IncrementStep();
+		}
+	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private int GridToIndex(Vector2I pos) => pos.Y * MapSize.X + pos.X;
