@@ -22,6 +22,7 @@ public partial class Level : Scene, ILevelHandler
 	private MovementSystem MovementSystem { get; set; }
 
 	#region MapData
+	private string _currentLevelPath = null;
 	private Vector2I MapSize { get; set; }
 	private IPlatform[] _platforms;
 	private bool[] _primaryPoints;
@@ -79,8 +80,16 @@ public partial class Level : Scene, ILevelHandler
 		}
 	}
 
+	public void ResetLevel()
+	{
+		ClearLevel();
+		LoadLevel(_currentLevelPath);
+	}
+
 	public void LoadLevel(string levelFilePath)
 	{
+		_currentLevelPath = levelFilePath;
+
 		LevelData levelData = JsonConvert.DeserializeObject<LevelData>(FileAccess.GetFileAsString(levelFilePath));
 		levelData.Validate();
 
@@ -258,6 +267,7 @@ public partial class Level : Scene, ILevelHandler
 			_optionalPoints[i] = false;
 		}
 
+		_teleporters.Clear();
 		_levelRenderingServer.ClearLevel();
 	}
 

@@ -1,5 +1,4 @@
 using Godot;
-using LostInSpace.Scripts.Gameplay.Collectibles;
 using LostInSpace.Scripts.Gameplay.Platforms;
 
 namespace LostInSpace.Scripts.Gameplay;

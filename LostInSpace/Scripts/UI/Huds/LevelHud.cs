@@ -1,6 +1,7 @@
 using Godot;
 using LostInSpace.Scripts.Gameplay;
-using System;
+
+namespace LostInSpace.Scripts.UI;
 
 public partial class LevelHud : CanvasLayer
 {
@@ -25,6 +26,8 @@ public partial class LevelHud : CanvasLayer
 		_level.BestStepsChanged += OnBestStepsChanged;
 		_level.PrimaryPointsChanged += OnPrimaryPointsChanged;
 		_level.OptionalPointsChanged += OnOptionalPointsChanged;
+
+		_resetButton.Pressed += OnResetPressed;
 	}
 
 	public void Unbind()
@@ -39,6 +42,8 @@ public partial class LevelHud : CanvasLayer
 		_level.BestStepsChanged -= OnBestStepsChanged;
 		_level.PrimaryPointsChanged -= OnPrimaryPointsChanged;
 		_level.OptionalPointsChanged -= OnOptionalPointsChanged;
+
+		_resetButton.Pressed -= OnResetPressed;
 		_level = null;
 	}
 
@@ -46,6 +51,8 @@ public partial class LevelHud : CanvasLayer
 	private void OnStepsChanged(int steps) => _stepsLabel.Text = $"Steps: {steps}";
 	private void OnBestStepsChanged(int best) => _bestLabel.Text = best > 0 ? $"Best: {best}" : "BEST: -";
 	private void OnPrimaryPointsChanged(int c, int t) => _pointsLabel.Text = $"Points: {c} / {t}";
+	private void OnResetPressed() => _level.ResetLevel();
+
 	private void OnOptionalPointsChanged(int c, int t)
 	{
 		bool hasOptionalPoints = t > 0;
