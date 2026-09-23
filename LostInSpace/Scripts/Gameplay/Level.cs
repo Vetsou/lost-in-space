@@ -100,7 +100,7 @@ public partial class Level : Scene, ILevelHandler
 		_optionalPoints = new bool[MapSize.X * MapSize.Y];
 		var teleporters = new List<(TeleporterPlatform platform, Vector2I position)>();
 
-		LevelId = "1-1";
+		LevelId = levelData.LevelId;
 		StepCount = 0;
 		BestStepCount = 0;
 

@@ -1,4 +1,3 @@
-using LostInSpace.Scripts.Gameplay.Collectibles;
 using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 
@@ -6,6 +5,7 @@ namespace LostInSpace.Scripts.Gameplay.Data;
 
 public readonly struct LevelData
 {
+	public required string LevelId { get; init; }
 	public required ushort Width { get; init; }
 	public required ushort Height { get; init; }
 	public required ushort[,] Platforms { get; init; }
@@ -15,6 +15,11 @@ public readonly struct LevelData
 
 	public void Validate()
 	{
+		if (string.IsNullOrWhiteSpace(LevelId))
+		{
+			throw new Exception("Level ID is null or empty");
+		}
+
 		if (Platforms == null)
 		{
 			throw new Exception("Level platforms is null");

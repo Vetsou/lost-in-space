@@ -8,8 +8,6 @@ public interface ILevelHandler
 {
 	public ushort PrimaryPointsTotalCount { get; }
 	public ushort PrimaryPointsCurrentCount { get; }
-	public ushort OptionalPointsTotalCount { get; }
-	public ushort OptionalPointsCurrentCount { get; }
 
 	public void CompleteLevel();
 	public void RemovePlatform(Vector2I pos);
