@@ -34,7 +34,7 @@ public class TeleporterPlatform(byte teleportLinkId) : IPlatform
 			throw new Exception($"Platform at teleport link position must be of type {nameof(TeleporterPlatform)}");
 		}
 
-		context.LevelHandler.MovePlayer(targetPosition - context.Position);
+		context.LevelHandler.MovementSystem.TryMovePlayer(targetPosition - context.Position);
 	}
 
 	public void OnExit(TileContext context) => _isDisabled = false;

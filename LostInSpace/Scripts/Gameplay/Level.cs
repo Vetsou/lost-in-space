@@ -19,7 +19,7 @@ public partial class Level : Scene, ILevelHandler
 	[Export] private PlayerData _player;
 	[Export] private LevelHud _hud;
 
-	private MovementSystem MovementSystem { get; set; }
+	public MovementSystem MovementSystem { get; private set; }
 
 	#region MapData
 	private string _currentLevelPath = null;
@@ -52,7 +52,7 @@ public partial class Level : Scene, ILevelHandler
 	public override void _Ready()
 	{
 		_hud.Bind(this);
-		MovementSystem = new MovementSystem(this);
+		MovementSystem = new MovementSystem(this, _player);
 	}
 
 	public override void _ExitTree()
@@ -63,7 +63,7 @@ public partial class Level : Scene, ILevelHandler
 
 	public override void _Input(InputEvent @event)
 	{
-		if (MovementSystem.HandlePlayerMovement(_player, @event))
+		if (MovementSystem.HandlePlayerMovement(@event))
 		{
 			IncrementStep();
 		}
@@ -242,14 +242,6 @@ public partial class Level : Scene, ILevelHandler
 	{
 		StepCount++;
 		EmitSignal(SignalName.StepsChanged, StepCount);
-	}
-
-	public void MovePlayer(Vector2I direction)
-	{
-		if (MovementSystem.TryMovePlayer(_player, direction))
-		{
-			IncrementStep();
-		}
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
