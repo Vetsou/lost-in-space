@@ -47,15 +47,18 @@ public partial class LevelHud : CanvasLayer
 		_level = null;
 	}
 
-	private void OnLevelLoaded(string id) => _levelLabel.Text = $"Level {id}";
-	private void OnStepsChanged(int steps) => _stepsLabel.Text = $"Steps: {steps}";
-	private void OnBestStepsChanged(int best) => _bestLabel.Text = best > 0 ? $"Best: {best}" : "BEST: -";
-	private void OnPrimaryPointsChanged(int c, int t) => _pointsLabel.Text = $"Points: {c} / {t}";
+	private void OnLevelLoaded(string id) => _levelLabel.Text = $"{Tr("HUD_LEVEL")} {id}";
+	private void OnStepsChanged(int steps) => _stepsLabel.Text = $"{Tr("HUD_STEPS")}: {steps}";
+	private void OnPrimaryPointsChanged(int c, int t) => _pointsLabel.Text = $"{Tr("HUD_POINTS")}: {c} / {t}";
+	private void OnBestStepsChanged(int best) => _bestLabel.Text = best > 
+		0 ? $"{Tr("HUD_BEST")}: {best}" : $"{Tr("HUD_BEST")}: -";
+
 	private void OnResetPressed() => _level.ResetLevel();
 
 	private void OnOptionalPointsChanged(int c, int t)
 	{
 		bool hasOptionalPoints = t > 0;
-		_optionalPointsLabel.Text = hasOptionalPoints ? $"Optional: {c} / {t}" : "Optional: - / -";
+		_optionalPointsLabel.Text =
+			hasOptionalPoints ? $"{Tr("HUD_OPTIONAL")}: {c} / {t}" : $"{Tr("HUD_OPTIONAL")}: - / -";
 	}
 }
