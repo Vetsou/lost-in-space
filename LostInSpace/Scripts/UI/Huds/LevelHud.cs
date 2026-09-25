@@ -50,7 +50,7 @@ public partial class LevelHud : CanvasLayer
 	private void OnLevelLoaded(string id) => _levelLabel.Text = $"{Tr("HUD_LEVEL")} {id}";
 	private void OnStepsChanged(int steps) => _stepsLabel.Text = $"{Tr("HUD_STEPS")}: {steps}";
 	private void OnPrimaryPointsChanged(int c, int t) => _pointsLabel.Text = $"{Tr("HUD_POINTS")}: {c} / {t}";
-	private void OnBestStepsChanged(int best) => _bestLabel.Text = best > 
+	private void OnBestStepsChanged(int best) => _bestLabel.Text = best >
 		0 ? $"{Tr("HUD_BEST")}: {best}" : $"{Tr("HUD_BEST")}: -";
 
 	private void OnResetPressed() => _level.ResetLevel();
