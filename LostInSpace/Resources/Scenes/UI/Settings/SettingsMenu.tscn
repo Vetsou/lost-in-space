@@ -23,17 +23,16 @@ _settingsButtons = [NodePath("OptionsContainer/CategoryContainer/VideoButton"), 
 
 [node name="OptionsContainer" type="VBoxContainer" parent="." unique_id=807495786]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -250.0
-offset_right = 200.0
-offset_bottom = 250.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+offset_left = 100.0
+offset_top = 100.0
+offset_right = -100.0
+offset_bottom = -100.0
+theme_override_constants/separation = 12
 
 [node name="CategoryContainer" type="HBoxContainer" parent="OptionsContainer" unique_id=575039179]
 layout_mode = 2
@@ -62,6 +61,7 @@ text = "RESET_TO_DEFAULT"
 [node name="PanelContainer" type="PanelContainer" parent="OptionsContainer" unique_id=890397027]
 layout_mode = 2
 size_flags_vertical = 3
+custom_minimum_size = Vector2(100, 300)
 
 [node name="GeneralPanel" parent="OptionsContainer/PanelContainer" unique_id=1994329431 instance=ExtResource("2_12m4e")]
 layout_mode = 2

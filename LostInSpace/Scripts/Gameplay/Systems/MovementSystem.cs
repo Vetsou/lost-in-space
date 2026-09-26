@@ -5,37 +5,40 @@ using LostInSpace.Scripts.UI.Scenes.Settings;
 
 namespace LostInSpace.Scripts.Gameplay.Systems;
 
-public class MovementSystem(ILevelHandler level)
+public class MovementSystem(ILevelHandler level, PlayerData player)
 {
 	private ILevelHandler CurrentLevel { get; init; } = level;
+	private PlayerData Player { get; init; } = player;
 
-	public void HandlePlayerMovement(PlayerData player, InputEvent @event)
+	public bool HandlePlayerMovement(InputEvent @event)
 	{
 		if (!GetPlayerMovementDirection(@event, out Vector2I direction))
 		{
-			return;
+			return false;
 		}
 
-		MovePlayer(player, direction);
+		return TryMovePlayer(direction);
 	}
 
-	public void MovePlayer(PlayerData player, Vector2I direction)
+	public bool TryMovePlayer(Vector2I direction)
 	{
-		IPlatform nextTile = CurrentLevel.GetPlatform(player.GridPosition + direction);
+		IPlatform nextTile = CurrentLevel.GetPlatform(Player.GridPosition + direction);
 
 		if (nextTile == null)
 		{
-			return;
+			return false;
 		}
 
-		IPlatform currPlatform = CurrentLevel.GetPlatform(player.GridPosition);
-		currPlatform.OnExit(CreateTileContext(player.GridPosition, direction));
+		IPlatform currPlatform = CurrentLevel.GetPlatform(Player.GridPosition);
+		currPlatform.OnExit(CreateTileContext(direction));
 
-		player.SetPosition(player.GridPosition + direction);
-		CurrentLevel.PickUpCollectible(player.GridPosition);
+		Player.SetPosition(Player.GridPosition + direction);
+		CurrentLevel.PickUpCollectible(Player.GridPosition);
 
-		IPlatform newPlatform = CurrentLevel.GetPlatform(player.GridPosition);
-		newPlatform?.OnEnter(CreateTileContext(player.GridPosition, direction));
+		IPlatform newPlatform = CurrentLevel.GetPlatform(Player.GridPosition);
+		newPlatform?.OnEnter(CreateTileContext(direction));
+
+		return true;
 	}
 
 	private static bool GetPlayerMovementDirection(InputEvent @event, out Vector2I direction)
@@ -68,10 +71,10 @@ public class MovementSystem(ILevelHandler level)
 		return false;
 	}
 
-	private TileContext CreateTileContext(Vector2I position, Vector2I direction) => new()
+	private TileContext CreateTileContext(Vector2I direction) => new()
 	{
 		LevelHandler = CurrentLevel,
 		MoveDirection = direction,
-		Position = position
+		Position = Player.GridPosition
 	};
 }

@@ -18,3 +18,10 @@ MOVE_RIGHT,Move Right,Ruch w prawo
 FULLSCREEN,Fullscreen,Pełny ekran
 LANGUAGE,Language,Język
 GENERAL,General,Ogólne
+HUD_LEVEL,Level,Poziom
+HUD_STEPS,Steps,Ruchy
+HUD_BEST,Record,Rekord
+HUD_POINTS,Points,Punkty
+HUD_OPTIONAL,Optional,Opcjonalne
+HUD_RESET_LEVEL,Reset,Restart
+HUD_PAUSE_MENU,Pause,Pauza

@@ -2,14 +2,16 @@
 
 [ext_resource type="Script" uid="uid://cvov4lwoal6h8" path="res://Scripts/Gameplay/Level.cs" id="1_eh4pv"]
 [ext_resource type="Script" uid="uid://1avicnvwyyfp" path="res://Scripts/Rendering/LevelRenderingServer.cs" id="2_05t1m"]
+[ext_resource type="Script" uid="uid://bgiq0ihh6fqj6" path="res://Scripts/UI/Huds/LevelHud.cs" id="4_8ahst"]
 [ext_resource type="PackedScene" uid="uid://d2mpou7qc41mn" path="res://Resources/Scenes/Gameplay/Player.tscn" id="4_sxngl"]
 
 [sub_resource type="Environment" id="Environment_avkng"]
 
-[node name="Level" type="Node" unique_id=1083322683 node_paths=PackedStringArray("_levelRenderingServer", "_player")]
+[node name="Level" type="Node" unique_id=1083322683 node_paths=PackedStringArray("_levelRenderingServer", "_player", "_hud")]
 script = ExtResource("1_eh4pv")
 _levelRenderingServer = NodePath("LevelRenderingServer")
 _player = NodePath("Player")
+_hud = NodePath("HudLayer")
 
 [node name="Camera" type="Camera3D" parent="." unique_id=200911215]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 4, 8.076, 4)
@@ -20,3 +22,64 @@ current = true
 script = ExtResource("2_05t1m")
 
 [node name="Player" parent="." unique_id=1574507954 instance=ExtResource("4_sxngl")]
+
+[node name="HudLayer" type="CanvasLayer" parent="." unique_id=2010826766 node_paths=PackedStringArray("_levelLabel", "_stepsLabel", "_bestLabel", "_pointsLabel", "_optionalPointsLabel", "_resetButton", "_menuButton")]
+script = ExtResource("4_8ahst")
+_levelLabel = NodePath("TopBar/HBoxContainer/LevelLabel")
+_stepsLabel = NodePath("TopBar/HBoxContainer/CurrStepsLabel")
+_bestLabel = NodePath("TopBar/HBoxContainer/BestStepsLabel")
+_pointsLabel = NodePath("TopBar/HBoxContainer/PtsLabel")
+_optionalPointsLabel = NodePath("TopBar/HBoxContainer/OptionalPtsLabel")
+_resetButton = NodePath("TopBar/HBoxContainer/ResetBtn")
+_menuButton = NodePath("TopBar/HBoxContainer/MenuBtn")
+
+[node name="TopBar" type="MarginContainer" parent="HudLayer" unique_id=76180589]
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HudLayer/TopBar" unique_id=730898611]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LevelLabel" type="Label" parent="HudLayer/TopBar/HBoxContainer" unique_id=660801418]
+layout_mode = 2
+text = "Level 1-3"
+
+[node name="VSeparator" type="VSeparator" parent="HudLayer/TopBar/HBoxContainer" unique_id=32564818]
+layout_mode = 2
+
+[node name="CurrStepsLabel" type="Label" parent="HudLayer/TopBar/HBoxContainer" unique_id=1231260120]
+layout_mode = 2
+text = "Steps: 12"
+
+[node name="VSeparator2" type="VSeparator" parent="HudLayer/TopBar/HBoxContainer" unique_id=1523549858]
+layout_mode = 2
+
+[node name="BestStepsLabel" type="Label" parent="HudLayer/TopBar/HBoxContainer" unique_id=142983376]
+layout_mode = 2
+text = "Best: 10"
+
+[node name="Separator" type="Control" parent="HudLayer/TopBar/HBoxContainer" unique_id=1267177183]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PtsLabel" type="Label" parent="HudLayer/TopBar/HBoxContainer" unique_id=863347969]
+layout_mode = 2
+text = "Points: 0 / 0"
+
+[node name="OptionalPtsLabel" type="Label" parent="HudLayer/TopBar/HBoxContainer" unique_id=55474355]
+layout_mode = 2
+text = "Opt: 0 / 0"
+
+[node name="ResetBtn" type="Button" parent="HudLayer/TopBar/HBoxContainer" unique_id=563528845]
+layout_mode = 2
+text = "HUD_RESET_LEVEL"
+
+[node name="MenuBtn" type="Button" parent="HudLayer/TopBar/HBoxContainer" unique_id=2142760662]
+layout_mode = 2
+text = "HUD_PAUSE_MENU"
