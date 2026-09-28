@@ -2,7 +2,7 @@
 
 [ext_resource type="Material" uid="uid://doplovsssdlw1" path="res://Resources/Materials/BreakablePlatform.tres" id="1_swiah"]
 [ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://Scripts/Rendering/VisualData.cs" id="2_mjbc2"]
-[ext_resource type="ArrayMesh" uid="uid://bfooiwn0n7dt6" path="res://Resources/Models/BreakablePlatform.obj" id="2_swiah"]
+[ext_resource type="ArrayMesh" uid="uid://i5xpe4gqkp4v" path="res://Resources/Models/BreakablePlatform.obj" id="2_swiah"]
 
 [resource]
 script = ExtResource("2_mjbc2")
