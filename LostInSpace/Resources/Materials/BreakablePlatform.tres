@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://doplovsssdlw1"]
+
+[ext_resource type="Shader" uid="uid://2b11xv8guepa" path="res://Resources/Shaders/BreakablePlatform.gdshader" id="1_xlwoh"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_xlwoh")
+shader_parameter/scatter_amount = 0.0

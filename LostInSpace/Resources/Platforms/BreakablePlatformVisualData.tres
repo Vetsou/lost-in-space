@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="VisualData" format=3 uid="uid://cbne4iex327jv"]
 
-[ext_resource type="Material" uid="uid://cyu7m68i6lh30" path="res://Resources/Materials/BaseShader.tres" id="1_roetb"]
-[ext_resource type="BoxMesh" uid="uid://bprlkag5hvi34" path="res://Resources/Models/BasePlatform.tres" id="2_j6hmn"]
+[ext_resource type="Material" uid="uid://doplovsssdlw1" path="res://Resources/Materials/BreakablePlatform.tres" id="1_swiah"]
 [ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://Scripts/Rendering/VisualData.cs" id="2_mjbc2"]
+[ext_resource type="ArrayMesh" uid="uid://bfooiwn0n7dt6" path="res://Resources/Models/BreakablePlatform.obj" id="2_swiah"]
 
 [resource]
 script = ExtResource("2_mjbc2")
-Mesh = ExtResource("2_j6hmn")
-Material = ExtResource("1_roetb")
-Albedo = Color(0.8862745, 0.30588236, 0.15294118, 1)
+Mesh = ExtResource("2_swiah")
+Material = ExtResource("1_swiah")
+Albedo = Color(0.3113726, 0.10545985, 0.045694605, 1)
 metadata/_custom_type_script = "uid://dqts3j7yxr6o8"
