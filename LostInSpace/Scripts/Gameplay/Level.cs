@@ -1,270 +1,90 @@
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using Godot;
-using LostInSpace.Scripts.Gameplay.Collectibles;
 using LostInSpace.Scripts.Gameplay.Data;
-using LostInSpace.Scripts.Gameplay.Platforms;
-using LostInSpace.Scripts.Gameplay.Platforms.Variants;
+using LostInSpace.Scripts.Gameplay.Player;
 using LostInSpace.Scripts.Gameplay.Systems;
-using LostInSpace.Scripts.Rendering;
 using LostInSpace.Scripts.UI;
 using Newtonsoft.Json;
 using FileAccess = Godot.FileAccess;
 
 namespace LostInSpace.Scripts.Gameplay;
 
-public partial class Level : Scene, ILevelHandler
+public partial class Level : Scene
 {
-	[Export] private LevelRenderingServer _levelRenderingServer;
-	[Export] private PlayerData _player;
+	[Export] private LevelRenderer _renderer;
+	[Export] private PlayerView _playerView;
 	[Export] private LevelHud _hud;
 
-	public MovementSystem MovementSystem { get; private set; }
+	private string _currentLevelPath;
 
-	#region MapData
-	private string _currentLevelPath = null;
-	private Vector2I MapSize { get; set; }
-	private IPlatform[] _platforms;
-	private bool[] _primaryPoints;
-	private bool[] _optionalPoints;
-	private readonly Dictionary<byte, (Vector2I a, Vector2I b)> _teleporters = [];
-	#endregion
+	private LevelState _state;
+	private PlayerData _playerData;
+	private CollectibleSystem _collectibles;
+	private LevelProgression _progression;
+	private MovementSystem _movement;
 
-	#region HudValues
-	public string LevelId { get; private set; }
-	public ushort StepCount { get; private set; }
-	public ushort BestStepCount { get; private set; }
-
-	public ushort PrimaryPointsTotalCount { get; private set; }
-	public ushort PrimaryPointsCurrentCount { get; private set; }
-	public ushort OptionalPointsTotalCount { get; private set; }
-	public ushort OptionalPointsCurrentCount { get; private set; }
-	#endregion
-
-	#region HudSignals
+	#region HUD signals
 	[Signal] public delegate void LevelLoadedEventHandler(string levelId);
 	[Signal] public delegate void StepsChangedEventHandler(int steps);
-	[Signal] public delegate void BestStepsChangedEventHandler(int bestSteps);
-	[Signal] public delegate void PrimaryPointsChangedEventHandler(int current, int total);
-	[Signal] public delegate void OptionalPointsChangedEventHandler(int current, int total);
+	[Signal] public delegate void BestStepsChangedEventHandler(int best);
+	[Signal] public delegate void PrimaryPointsChangedEventHandler(int c, int t);
+	[Signal] public delegate void OptionalPointsChangedEventHandler(int c, int t);
 	#endregion
 
 	public override void _Ready()
 	{
+		_playerData = new PlayerData();
 		_hud.Bind(this);
-		MovementSystem = new MovementSystem(this, _player);
 	}
 
 	public override void _ExitTree()
 	{
-		_hud.Unbind();
-		ClearLevel();
+		_hud?.Unbind();
+		_renderer.Clear();
 	}
 
 	public override void _Input(InputEvent @event)
 	{
-		if (MovementSystem.HandlePlayerMovement(@event))
+		if (_movement != null && InputReader.TryReadDirection(@event, out Vector2I dir))
 		{
-			IncrementStep();
+			_movement.TryMove(dir);
 		}
-	}
-
-	public override void _Process(double delta)
-	{
-		if (Engine.GetFramesDrawn() % 20 == 0)
-		{
-			GD.Print("FPS: ", Performance.GetMonitor(Performance.Monitor.TimeFps));
-			GD.Print("Memory static: ", Performance.GetMonitor(Performance.Monitor.MemoryStatic));
-			GD.Print("Draw Calls: ", Performance.GetMonitor(Performance.Monitor.RenderTotalDrawCallsInFrame));
-			GD.Print("Video Mem: ", Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed));
-		}
-	}
-
-	public void ResetLevel()
-	{
-		ClearLevel();
-		LoadLevel(_currentLevelPath);
 	}
 
 	public void LoadLevel(string levelFilePath)
 	{
 		_currentLevelPath = levelFilePath;
+		_renderer.Clear();
 
-		LevelData levelData = JsonConvert.DeserializeObject<LevelData>(FileAccess.GetFileAsString(levelFilePath));
-		levelData.Validate();
+		LevelData data = JsonConvert.DeserializeObject<LevelData>(FileAccess.GetFileAsString(levelFilePath));
+		data.Validate();
 
-		MapSize = new Vector2I(levelData.Width, levelData.Height);
-		_levelRenderingServer.SetBatchSize(MapSize.X * MapSize.Y);
-		_platforms = new IPlatform[MapSize.X * MapSize.Y];
-		_primaryPoints = new bool[MapSize.X * MapSize.Y];
-		_optionalPoints = new bool[MapSize.X * MapSize.Y];
-		var teleporters = new List<(TeleporterPlatform platform, Vector2I position)>();
+		_state = new LevelState();
+		_state.Initialize(data);
 
-		LevelId = levelData.LevelId;
-		StepCount = 0;
-		BestStepCount = 0;
+		_collectibles = new CollectibleSystem(_state, _renderer);
+		_progression = new LevelProgression { LevelId = _state.LevelId };
 
-		PrimaryPointsCurrentCount = 0;
-		PrimaryPointsTotalCount = 0;
-		OptionalPointsCurrentCount = 0;
-		OptionalPointsTotalCount = 0;
+		_movement = new MovementSystem(
+			_state, _playerData, _playerView,
+			_collectibles, _progression, _renderer);
 
-		for (int i = 0; i < MapSize.X; i++)
-		{
-			for (int j = 0; j < MapSize.Y; j++)
-			{
-				var gridPos = new Vector2I(i, j);
-				if (levelData.Platforms[j, i] != 0)
-				{
-					IPlatform platform = PlatformFactory.CreatePlatform(levelData.Platforms[j, i]);
-					_platforms[GridToIndex(gridPos)] = platform;
-					_levelRenderingServer.RenderPlatform(gridPos, platform.VisualData);
-					if (platform is TeleporterPlatform teleporter)
-					{
-						teleporters.Add((teleporter, gridPos));
-					}
-				}
+		_renderer.RenderState(_state);
 
-				bool primaryPoint = levelData.Collectibles[j, i] == 1;
-				_primaryPoints[GridToIndex(gridPos)] = primaryPoint;
-				if (primaryPoint)
-				{
-					PrimaryPointsTotalCount++;
-					_levelRenderingServer.RenderCollectible(gridPos, CollectibleData.PrimaryCollectibleVisualData);
-				}
+		_playerData.SetPosition(_state.PlayerStart);
+		_playerView.SetTo(_state.PlayerStart);
 
-				bool optionalPoint = levelData.Collectibles[j, i] == 2;
-				_optionalPoints[GridToIndex(gridPos)] = optionalPoint;
-				if (optionalPoint)
-				{
-					OptionalPointsTotalCount++;
-					_levelRenderingServer.RenderCollectible(gridPos, CollectibleData.OptionalCollectibleVisualData);
-				}
-			}
-		}
-
-		InitializeTeleporters(teleporters);
-
-		_player.SetPosition(new Vector2I(levelData.PlayerPositionX, levelData.PlayerPositionY));
-
-		EmitSignal(SignalName.LevelLoaded, LevelId);
-		EmitSignal(SignalName.StepsChanged, StepCount);
-		EmitSignal(SignalName.BestStepsChanged, BestStepCount);
-		EmitSignal(SignalName.PrimaryPointsChanged, PrimaryPointsCurrentCount, PrimaryPointsTotalCount);
-		EmitSignal(SignalName.OptionalPointsChanged, OptionalPointsCurrentCount, OptionalPointsTotalCount);
+		EmitSignal(SignalName.LevelLoaded, _state.LevelId);
+		EmitSignal(SignalName.StepsChanged, 0);
+		EmitSignal(SignalName.BestStepsChanged, 0);
+		EmitSignal(SignalName.PrimaryPointsChanged, 0, _state.PrimaryPointsTotal);
+		EmitSignal(SignalName.OptionalPointsChanged, 0, _state.OptionalPointsTotal);
 	}
 
-	private void InitializeTeleporters(List<(TeleporterPlatform platform, Vector2I position)> teleporters)
+	public void ResetLevel()
 	{
-		if (teleporters.Count % 2 != 0)
+		if (_currentLevelPath != null)
 		{
-			throw new ArgumentException("Teleporter platforms count must be evenly divisible by 2");
-		}
-
-		if (teleporters.Count < 2)
-		{
-			return;
-		}
-
-		for (int i = 0; i < teleporters.Count - 1; i++)
-		{
-			byte linkId = teleporters[i].platform.TeleportLinkId;
-			for (int j = i + 1; j < teleporters.Count; j++)
-			{
-				if (linkId != teleporters[j].platform.TeleportLinkId)
-				{
-					continue;
-				}
-
-				if (_teleporters.ContainsKey(linkId))
-				{
-					throw new UnreachableException();
-				}
-
-				_teleporters[linkId] = (teleporters[i].position, teleporters[j].position);
-			}
+			LoadLevel(_currentLevelPath);
 		}
 	}
-
-	private bool IsPositionValid(Vector2I pos) => pos.X >= 0 && pos.Y >= 0 && pos.X < MapSize.X && pos.Y < MapSize.Y;
-
-	public (Vector2I a, Vector2I b) GetTeleporterLinkPositions(byte teleporterLinkId)
-	{
-		if (_teleporters.TryGetValue(teleporterLinkId, out (Vector2I a, Vector2I b) positions))
-		{
-			return positions;
-		}
-		throw new ArgumentException($"Teleporter link id '{teleporterLinkId}' does not exist");
-	}
-
-	public IPlatform GetPlatform(Vector2I pos) => IsPositionValid(pos) ? _platforms[GridToIndex(pos)] : null;
-	private bool GetPrimaryPoint(Vector2I pos) => IsPositionValid(pos) && _primaryPoints[GridToIndex(pos)];
-	private bool GetOptionalPoint(Vector2I pos) => IsPositionValid(pos) && _optionalPoints[GridToIndex(pos)];
-
-	public void PickUpCollectible(Vector2I pos)
-	{
-		if (GetPrimaryPoint(pos))
-		{
-			PrimaryPointsCurrentCount++;
-			_levelRenderingServer.FreeCollectible(pos);
-			_primaryPoints[GridToIndex(pos)] = false;
-			EmitSignal(SignalName.PrimaryPointsChanged, PrimaryPointsCurrentCount, PrimaryPointsTotalCount);
-		}
-
-		if (GetOptionalPoint(pos))
-		{
-			OptionalPointsCurrentCount++;
-			_levelRenderingServer.FreeCollectible(pos);
-			_optionalPoints[GridToIndex(pos)] = false;
-			EmitSignal(SignalName.OptionalPointsChanged, OptionalPointsCurrentCount, OptionalPointsTotalCount);
-		}
-	}
-
-	public void CompleteLevel()
-	{
-		ClearLevel();
-		ChangeScene(SceneId.MainMenu);
-	}
-
-	public void RemovePlatform(Vector2I pos)
-	{
-		IPlatform platform = GetPlatform(pos);
-		if (platform == null)
-		{
-			return;
-		}
-
-		_levelRenderingServer.FreePlatform(pos);
-		_platforms[GridToIndex(pos)] = null;
-	}
-
-	public void IncrementStep()
-	{
-		StepCount++;
-		EmitSignal(SignalName.StepsChanged, StepCount);
-	}
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private int GridToIndex(Vector2I pos) => pos.Y * MapSize.X + pos.X;
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private Vector2I IndexToGrid(int index) => new(index % MapSize.X, index / MapSize.X);
-
-	private void ClearLevel()
-	{
-		for (int i = 0; i < _platforms.Length; i++)
-		{
-			_platforms[i] = null;
-			_primaryPoints[i] = false;
-			_optionalPoints[i] = false;
-		}
-
-		_teleporters.Clear();
-		_levelRenderingServer.ClearLevel();
-	}
-
-	public void UpdatePlatformColor(Vector2I pos, Color color) => _levelRenderingServer.UpdatePlatformColor(pos, color);
-
-	public void UpdatePlatformRenderData(Vector2I pos, Color color) =>
-		_levelRenderingServer.UpdatePlatformData(pos, color);
 }

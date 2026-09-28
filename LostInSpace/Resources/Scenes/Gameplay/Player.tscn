@@ -1,17 +1,20 @@
 [gd_scene format=3 uid="uid://d2mpou7qc41mn"]
 
-[ext_resource type="Script" uid="uid://dcnc7ryx507xb" path="res://Scripts/Gameplay/Data/PlayerData.cs" id="1_t2qwa"]
+[ext_resource type="Script" uid="uid://cocyt5wsx2j1w" path="res://Scripts/Gameplay/Player/PlayerView.cs" id="1_pmu2r"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_t3so4"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t2qwa"]
 albedo_color = Color(0.3328762, 0.25196436, 0.797902, 1)
 
-[node name="Player" type="Node3D" unique_id=1574507954]
+[node name="Player" type="Node3D" unique_id=1574507954 node_paths=PackedStringArray("_model")]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0, 0)
-script = ExtResource("1_t2qwa")
+script = ExtResource("1_pmu2r")
+_model = NodePath("Model")
 
-[node name="Mesh" type="MeshInstance3D" parent="." unique_id=928806293]
+[node name="Model" type="Node3D" parent="." unique_id=93616144]
+
+[node name="Mesh" type="MeshInstance3D" parent="Model" unique_id=928806293]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0370109, 0)
 mesh = SubResource("CapsuleMesh_t3so4")
 surface_material_override/0 = SubResource("StandardMaterial3D_t2qwa")

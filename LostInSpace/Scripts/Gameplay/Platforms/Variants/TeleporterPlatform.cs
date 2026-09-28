@@ -1,5 +1,4 @@
 using Godot;
-using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay.Platforms.Variants;
@@ -8,34 +7,26 @@ public class TeleporterPlatform(byte teleportLinkId) : IPlatform
 {
 	public byte TeleportLinkId => teleportLinkId;
 	public VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://dva7a0u42vhvn");
-	private bool _isDisabled = false;
+	public bool IsDisabled { get; set; }
 
-	public void OnEnter(TileContext context)
+	public TileResult OnEnter(PlatformContext ctx)
 	{
-		if (_isDisabled)
+		if (IsDisabled)
 		{
-			return;
+			return TileResult.Nothing;
 		}
 
-		(Vector2I a, Vector2I b) positions = context.LevelHandler.GetTeleporterLinkPositions(TeleportLinkId);
-		if (positions.a != context.Position && positions.b != context.Position)
+		if (ctx.TeleporterPartner is not { } partner)
 		{
-			throw new Exception("Invalid teleporter position");
+			return TileResult.Nothing;
 		}
 
-		Vector2I targetPosition = positions.a == context.Position ? positions.b : positions.a;
-
-		if (context.LevelHandler.GetPlatform(targetPosition) is TeleporterPlatform platform)
-		{
-			platform._isDisabled = true;
-		}
-		else
-		{
-			throw new Exception($"Platform at teleport link position must be of type {nameof(TeleporterPlatform)}");
-		}
-
-		context.LevelHandler.MovementSystem.TryMovePlayer(targetPosition - context.Position);
+		return TileResult.Teleport(partner);
 	}
 
-	public void OnExit(TileContext context) => _isDisabled = false;
+	public TileResult OnExit(PlatformContext ctx)
+	{
+		IsDisabled = false;
+		return TileResult.Nothing;
+	}
 }
