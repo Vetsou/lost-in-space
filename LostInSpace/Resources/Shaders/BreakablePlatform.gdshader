@@ -6,7 +6,7 @@ uniform float scatter_amount : hint_range(0.0, 1.0) = 0.0;
 
 void vertex()
 {
-	VERTEX.y += sin(TIME + VERTEX.x) * 0.025;
+	VERTEX.y += sin(TIME + VERTEX.x + VERTEX.z) * 0.025;
 	VERTEX.xz *= 1.0 + scatter_amount * 5.0;
 	VERTEX.y -= scatter_amount * 2.0;
 }

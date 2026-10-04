@@ -101,6 +101,8 @@ public class LevelRenderingServer(World3D world)
 		Transform3D transform = Transform3D.Identity;
 		transform.Origin = pos.GridToWorld(height);
 
+		transform = transform.RotatedLocal(Vector3.Up, (pos.X + pos.Y)%4 * (Mathf.Pi / 2));
+
 		RenderingServer.MultimeshInstanceSetTransform(batch.rid, index, transform);
 
 		return (batch, index);
