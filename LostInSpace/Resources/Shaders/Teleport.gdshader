@@ -20,22 +20,22 @@ varying vec3 v_local_pos;
 varying vec4 v_instance_custom;
 
 float hash(vec2 p) {
-    p = fract(p * vec2(123.34, 456.21));
-    p += dot(p, p + 45.32);
-    return fract(p.x * p.y);
+	p = fract(p * vec2(123.34, 456.21));
+	p += dot(p, p + 45.32);
+	return fract(p.x * p.y);
 }
 
 void vertex() {
-    v_local_pos = VERTEX;
+	v_local_pos = VERTEX;
 }
 
 void fragment() {
 	if (!FRONT_FACING) {
-        discard;
-    }
+		discard;
+	}
 
-    vec2 uv = v_local_pos.xz;
-    float dist = length(uv);
+	vec2 uv = v_local_pos.xz;
+	float dist = length(uv);
 	float distorted_dist = pow(dist, distortion_strength) + (dist * distortion_size);
 	vec3 rim_color = vortex_color.rgb * rim_color_multiplier;
 
@@ -44,14 +44,14 @@ void fragment() {
 	float final_alpha = smoothstep(shadow_radius, 0.0, distorted_dist);
 
 	//spinny star
-    float angle = atan(uv.y, uv.x) + TIME * vortex_spin_speed + distorted_dist * vortex_distortion;
+	float angle = atan(uv.y, uv.x) + TIME * vortex_spin_speed + distorted_dist * vortex_distortion;
 
 	float arms = abs(cos(angle * float(vortex_arm_count) * 0.5));
 
-    float star_shape = vortex_radius / (distorted_dist + arms * 0.2);
-    star_shape = smoothstep(0.5, 1.0, star_shape);
+	float star_shape = vortex_radius / (distorted_dist + arms * 0.2);
+	star_shape = smoothstep(0.5, 1.0, star_shape);
 
-    float alpha = star_shape * smoothstep(vortex_radius * 2.0, 0.0, distorted_dist);
+	float alpha = star_shape * smoothstep(vortex_radius * 2.0, 0.0, distorted_dist);
 
 	final_color = mix(final_color, vortex_color.rgb * star_shape * 2.0, alpha);
 	final_alpha = max(final_alpha, alpha);
@@ -71,6 +71,6 @@ void fragment() {
 	final_color = mix(final_color, rim_color, rim_outer_circle - rim_inner_circle);
 	final_alpha = max(final_alpha, rim_outer_circle - rim_inner_circle);
 
-    ALBEDO = final_color;
-    ALPHA = final_alpha;
+	ALBEDO = final_color;
+	ALPHA = final_alpha;
 }
