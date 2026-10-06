@@ -8,5 +8,5 @@
 script = ExtResource("1_cfh2y")
 Mesh = ExtResource("2_vomr6")
 Material = ExtResource("1_vomr6")
-Albedo = Color(0.30980393, 0.105882354, 0.047058824, 1)
+Albedo = Color(0.24313726, 0.2627451, 0.36862746, 1)
 metadata/_custom_type_script = "uid://dqts3j7yxr6o8"
