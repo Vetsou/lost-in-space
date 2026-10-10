@@ -46,7 +46,12 @@ public class MovementSystem(
 		}
 
 		Vector2I from = _player.GridPosition;
-		_state.GetPlatform(from)?.OnExit(BuildContext(from, direction));
+		TileResult exitResult = _state.GetPlatform(from).OnExit(BuildContext(from, direction));
+		if (exitResult.DestroySelf)
+		{
+			_state.RemovePlatform(from);
+			_renderer.FreePlatform(from);
+		}
 
 		// Logic update
 		_player.SetPosition(next, direction);
@@ -71,7 +76,9 @@ public class MovementSystem(
 	{
 		for (int i = 0; i < MaxChain; i++)
 		{
+			// Get curr platform
 			Vector2I here = _player.GridPosition;
+
 			IPlatform platform = _state.GetPlatform(here);
 			if (platform == null)
 			{
@@ -79,17 +86,9 @@ public class MovementSystem(
 			}
 
 			TileResult result = platform.OnEnter(BuildContext(here, direction));
-
 			if (result.RequestLevelComplete)
 			{
 				_progression.RegisterCompletion();
-				return;
-			}
-
-			if (result.DestroySelf)
-			{
-				_state.RemovePlatform(here);
-				_renderer.FreePlatform(here);
 				return;
 			}
 
@@ -103,7 +102,6 @@ public class MovementSystem(
 
 					direction = result.Target;
 					continue;
-
 				case MoveKind.Teleport:
 					if (_state.GetPlatform(result.Target) is TeleporterPlatform dest)
 					{

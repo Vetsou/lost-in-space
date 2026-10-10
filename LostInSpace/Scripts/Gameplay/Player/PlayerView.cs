@@ -26,8 +26,6 @@ public partial class PlayerView : Node3D, IPlayerView
 		Face(direction);
 	}
 
-
-
 	private void Face(Vector2I dir)
 	{
 		if (dir == Vector2I.Zero)

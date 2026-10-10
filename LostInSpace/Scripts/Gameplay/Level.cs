@@ -33,12 +33,27 @@ public partial class Level : Scene
 	public override void _Ready()
 	{
 		_playerData = new PlayerData();
+		_collectibles = new CollectibleSystem(_renderer);
+		_progression = new LevelProgression();
+
+		_collectibles.PrimaryChanged += OnPrimaryChanged;
+		_collectibles.OptionalChanged += OnOptionalChanged;
+		_progression.StepsChanged += OnStepsChanged;
+		_progression.BestStepsChanged += OnBestStepsChanged;
+		_progression.LevelCompleted += OnLevelCompleted;
+
 		_hud.Bind(this);
 	}
 
 	public override void _ExitTree()
 	{
-		_hud?.Unbind();
+		_collectibles.PrimaryChanged -= OnPrimaryChanged;
+		_collectibles.OptionalChanged -= OnOptionalChanged;
+		_progression.StepsChanged -= OnStepsChanged;
+		_progression.BestStepsChanged -= OnBestStepsChanged;
+		_progression.LevelCompleted -= OnLevelCompleted;
+
+		_hud.Unbind();
 		_renderer.Clear();
 	}
 
@@ -61,11 +76,10 @@ public partial class Level : Scene
 		_state = new LevelState();
 		_state.Initialize(data);
 
-		_collectibles = new CollectibleSystem(_state, _renderer);
-		_progression = new LevelProgression { LevelId = _state.LevelId };
+		_collectibles.Attach(_state);
+		_progression.StartLevel();
 
-		_movement = new MovementSystem(
-			_state, _playerData, _playerView,
+		_movement = new MovementSystem(_state, _playerData, _playerView,
 			_collectibles, _progression, _renderer);
 
 		_renderer.RenderState(_state);
@@ -86,5 +100,26 @@ public partial class Level : Scene
 		{
 			LoadLevel(_currentLevelPath);
 		}
+	}
+
+	private void OnPrimaryChanged() =>
+		EmitSignal(SignalName.PrimaryPointsChanged,
+			_collectibles.PrimaryCurrent, _state.PrimaryPointsTotal);
+
+	private void OnOptionalChanged() =>
+		EmitSignal(SignalName.OptionalPointsChanged,
+			_collectibles.OptionalCurrent, _state.OptionalPointsTotal);
+
+	private void OnStepsChanged(ushort steps) =>
+		EmitSignal(SignalName.StepsChanged, (int)steps);
+
+	private void OnBestStepsChanged(ushort best) =>
+		EmitSignal(SignalName.BestStepsChanged, (int)best);
+
+	private void OnLevelCompleted()
+	{
+		_hud.Unbind();
+		_renderer.Clear();
+		ChangeScene(SceneId.LevelSelector);
 	}
 }

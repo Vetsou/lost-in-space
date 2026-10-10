@@ -2,32 +2,42 @@ using Godot;
 
 namespace LostInSpace.Scripts.Gameplay.Systems;
 
-public class CollectibleSystem(LevelState state, LevelRenderer renderer)
+public class CollectibleSystem(LevelRenderer renderer)
 {
+	private LevelState _state;
+
 	public ushort PrimaryCurrent { get; private set; }
 	public ushort OptionalCurrent { get; private set; }
-	public bool AllPrimaryCollected => PrimaryCurrent == state.PrimaryPointsTotal;
+	public bool AllPrimaryCollected => PrimaryCurrent == _state.PrimaryPointsTotal;
 
-	public bool TryPickUp(Vector2I pos)
+    public event Action PrimaryChanged;
+    public event Action OptionalChanged;
+
+    public void Attach(LevelState state)
+    {
+        _state = state;
+        PrimaryCurrent = 0;
+        OptionalCurrent = 0;
+        PrimaryChanged?.Invoke();
+        OptionalChanged?.Invoke();
+    }
+
+	public void TryPickUp(Vector2I pos)
 	{
-		bool changed = false;
-
-		if (state.HasPrimaryPoint(pos))
+		if (_state.HasPrimaryPoint(pos))
 		{
 			PrimaryCurrent++;
-			state.ConsumePrimaryPoint(pos);
+			_state.ConsumePrimaryPoint(pos);
 			renderer.FreeCollectible(pos);
-			changed = true;
+			PrimaryChanged?.Invoke();
 		}
 
-		if (state.HasOptionalPoint(pos))
+		if (_state.HasOptionalPoint(pos))
 		{
 			OptionalCurrent++;
-			state.ConsumeOptionalPoint(pos);
+			_state.ConsumeOptionalPoint(pos);
 			renderer.FreeCollectible(pos);
-			changed = true;
+			OptionalChanged?.Invoke();
 		}
-
-		return changed;
 	}
 }

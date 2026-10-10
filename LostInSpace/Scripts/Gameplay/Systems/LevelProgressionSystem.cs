@@ -2,13 +2,19 @@ namespace LostInSpace.Scripts.Gameplay.Systems;
 
 public class LevelProgression
 {
-	public string LevelId { get; set; }
-	public ushort StepCount { get; private set; }
-	public ushort BestStepCount { get; private set; }
+	private ushort StepCount { get; set; }
+	private ushort BestStepCount { get; set; }
 
 	public event Action<ushort> StepsChanged;
 	public event Action<ushort> BestStepsChanged;
 	public event Action LevelCompleted;
+
+	public void StartLevel()
+	{
+		StepCount = 0;
+		StepsChanged?.Invoke(StepCount);
+		BestStepsChanged?.Invoke(BestStepCount);
+	}
 
 	public void IncrementStep()
 	{
