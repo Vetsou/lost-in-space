@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode depth_draw_always;
+render_mode depth_draw_always, diffuse_toon;
 
 uniform float scatter_amount : hint_range(0.0, 1.0) = 0.0;
 
