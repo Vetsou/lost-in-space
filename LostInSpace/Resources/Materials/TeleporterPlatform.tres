@@ -1,23 +1,17 @@
-[gd_resource type="ShaderMaterial" format=3 uid="uid://c1n50h7g2l34p"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://uludmjdseb8x"]
 
-[ext_resource type="Shader" uid="uid://l3wn5f4i8qh" path="res://Resources/Shaders/Teleport.gdshader" id="1_ymb5q"]
-[ext_resource type="Shader" uid="uid://ocfu1yli1px7" path="res://Resources/Shaders/BaseShader.gdshader" id="2_euce4"]
+[ext_resource type="Shader" uid="uid://bp5qrvadh7apo" path="res://Resources/Shaders/TeleporterPlatform.gdshader" id="1_ccj25"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_603px"]
-render_priority = 1
-shader = ExtResource("1_ymb5q")
-shader_parameter/vortex_radius = 0.27500000980262
-shader_parameter/vortex_color = Color(0.046499994, 0.3012167, 0.31, 1)
+[resource]
+render_priority = 0
+shader = ExtResource("1_ccj25")
+shader_parameter/vortex_radius = 0.275
+shader_parameter/vortex_color = Color(0.047058824, 0.3019608, 0.30980393, 1)
 shader_parameter/vortex_arm_count = 5
 shader_parameter/vortex_spin_speed = 3.0
 shader_parameter/vortex_distortion = 10.0
 shader_parameter/rim_color_multiplier = 5.0
-shader_parameter/circle_thickness = 0.05000000167648
-shader_parameter/shadow_radius = 0.30000001192093
-shader_parameter/distortion_strength = 0.9000000362302301
+shader_parameter/circle_thickness = 0.05
+shader_parameter/shadow_radius = 0.3
+shader_parameter/distortion_strength = 0.9
 shader_parameter/distortion_size = 0.05
-
-[resource]
-render_priority = 0
-next_pass = SubResource("ShaderMaterial_603px")
-shader = ExtResource("2_euce4")

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="VisualData" format=3 uid="uid://dva7a0u42vhvn"]
 
-[ext_resource type="Material" uid="uid://c1n50h7g2l34p" path="res://Resources/Materials/TeleporterPlatform.tres" id="1_s41ay"]
+[ext_resource type="Material" uid="uid://uludmjdseb8x" path="res://Resources/Materials/TeleporterPlatform.tres" id="1_s41ay"]
 [ext_resource type="ArrayMesh" uid="uid://bs8fj7wmxiylv" path="res://Resources/Models/RegularPlatform.obj" id="2_s41ay"]
 [ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://Scripts/Rendering/VisualData.cs" id="3_1m8re"]
 

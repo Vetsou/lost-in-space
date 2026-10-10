@@ -1,18 +1,12 @@
-[gd_resource type="ShaderMaterial" format=3 uid="uid://b3u0tfmwbay2k"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://0lqrw6qr2tyw"]
 
-[ext_resource type="Shader" uid="uid://b6kfgadebbqhe" path="res://Resources/Shaders/Wind.gdshader" id="1_qmb2i"]
-[ext_resource type="Shader" uid="uid://dgyf3cyprbw64" path="res://Resources/Shaders/RegularPlatform.gdshader" id="2_kmy8r"]
+[ext_resource type="Shader" uid="uid://ciecikerc4svo" path="res://Resources/Shaders/MovePlatform.gdshader" id="1_1cew0"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qmb2i"]
-render_priority = 1
-shader = ExtResource("1_qmb2i")
+[resource]
+render_priority = 0
+shader = ExtResource("1_1cew0")
 shader_parameter/base_wind_speed = 1.0
 shader_parameter/wind_density = 6.7
 shader_parameter/wind_color = Color(1, 1, 1, 1)
 shader_parameter/trail_length_multiplier = 2.0
-shader_parameter/trail_width = 0.17000000737648
-
-[resource]
-render_priority = 0
-next_pass = SubResource("ShaderMaterial_qmb2i")
-shader = ExtResource("2_kmy8r")
+shader_parameter/trail_width = 0.20000000880148

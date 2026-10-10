@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="VisualData" format=3 uid="uid://bt7fcql1et6em"]
 
-[ext_resource type="Material" uid="uid://b3u0tfmwbay2k" path="res://Resources/Materials/MovePlatform.tres" id="1_rgmer"]
+[ext_resource type="Material" uid="uid://0lqrw6qr2tyw" path="res://Resources/Materials/MovePlatform.tres" id="1_rgmer"]
 [ext_resource type="ArrayMesh" uid="uid://bs8fj7wmxiylv" path="res://Resources/Models/RegularPlatform.obj" id="2_14gkx"]
 [ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://Scripts/Rendering/VisualData.cs" id="2_c0rlk"]
 

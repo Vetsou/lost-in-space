@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode blend_mix, depth_draw_never, depth_test_disabled, cull_disabled, unshaded;
+render_mode depth_draw_always, diffuse_toon;
 
 uniform float vortex_radius : hint_range(0.1, 0.275) = 0.275; //alpha
 uniform vec4 vortex_color : source_color = vec4(1.0, 1.0, 1.0, 1.0); //rgb
@@ -25,23 +25,20 @@ float hash(vec2 p) {
 	return fract(p.x * p.y);
 }
 
-void vertex() {
+void vertex()
+{
+	VERTEX.y += sin(TIME + VERTEX.x + VERTEX.z) * 0.025;
 	v_local_pos = VERTEX;
 }
 
-void fragment() {
-	if (!FRONT_FACING) {
-		discard;
-	}
+void fragment()
+{
+	vec3 final_color = COLOR.rgb;
 
 	vec2 uv = v_local_pos.xz;
 	float dist = length(uv);
 	float distorted_dist = pow(dist, distortion_strength) + (dist * distortion_size);
 	vec3 rim_color = vortex_color.rgb * rim_color_multiplier;
-
-	//shadow
-	vec3 final_color = vec3(0.0);
-	float final_alpha = smoothstep(shadow_radius, 0.0, distorted_dist);
 
 	//spinny star
 	float angle = atan(uv.y, uv.x) + TIME * vortex_spin_speed + distorted_dist * vortex_distortion;
@@ -54,7 +51,6 @@ void fragment() {
 	float alpha = star_shape * smoothstep(vortex_radius * 2.0, 0.0, distorted_dist);
 
 	final_color = mix(final_color, vortex_color.rgb * star_shape * 2.0, alpha);
-	final_alpha = max(final_alpha, alpha);
 
 	//inward circle
 	float progress = fract(TIME);
@@ -62,15 +58,13 @@ void fragment() {
 	float inner_circle = smoothstep((vortex_radius - circle_thickness) * (1.0 - progress) * 2.0, (vortex_radius - circle_thickness) * (1.0 - progress) - 0.01, distorted_dist);
 
 	final_color = mix(final_color, rim_color, outer_circle - inner_circle);
-	final_alpha = max(final_alpha, outer_circle - inner_circle);
 
 	//rim
 	float rim_outer_circle = smoothstep(vortex_radius * 2.0, vortex_radius - 0.01, distorted_dist);
 	float rim_inner_circle = smoothstep((vortex_radius - circle_thickness) * 2.0, (vortex_radius - circle_thickness) - 0.01, distorted_dist);
 
 	final_color = mix(final_color, rim_color, rim_outer_circle - rim_inner_circle);
-	final_alpha = max(final_alpha, rim_outer_circle - rim_inner_circle);
 
 	ALBEDO = final_color;
-	ALPHA = final_alpha;
+	ALPHA = COLOR.a;
 }

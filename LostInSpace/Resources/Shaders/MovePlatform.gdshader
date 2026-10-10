@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode blend_mix, depth_draw_never, depth_test_disabled, cull_disabled, unshaded;
+render_mode depth_draw_always, diffuse_toon;
 
 uniform float base_wind_speed = 4.0;
 uniform float wind_density = 20.0;
@@ -17,16 +17,15 @@ float hash(vec2 p) {
 	return fract(p.x * p.y);
 }
 
-void vertex() {
+void vertex()
+{
+	VERTEX.y += sin(TIME + VERTEX.x + VERTEX.z) * 0.025;
+
 	v_world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	v_instance_custom = INSTANCE_CUSTOM;
 }
 
 void fragment() {
-	if (!FRONT_FACING) {
-		discard;
-	}
-
 	int wind_direction = int(round(v_instance_custom.r * 255.0)) % 4;
 
 	bool is_z_axis = wind_direction >= 2;
@@ -55,10 +54,6 @@ void fragment() {
 
 	float trail = star_shape * line_thickness;
 
-	if (trail < 0.05) {
-		discard;
-	}
-
-	ALBEDO = wind_color.rgb;
-	ALPHA = wind_color.a * trail;
+	ALBEDO = mix(COLOR.rgb, wind_color.rgb, wind_color.a * trail);
+	ALPHA = COLOR.a;
 }
