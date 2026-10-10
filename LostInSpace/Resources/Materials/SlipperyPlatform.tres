@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cdc4ek0msw23t"]
+
+[ext_resource type="Shader" uid="uid://0ga4bkemnw1c" path="res://Resources/Shaders/SlipperyPlatform.gdshader" id="1_hs1wd"]
+
+[resource]
+render_priority = 2
+shader = ExtResource("1_hs1wd")
+shader_parameter/edge_color = Color(0.31, 0.73, 1, 1)
+shader_parameter/line_thickness = 0.30000001425
+shader_parameter/scale = 5.00000019

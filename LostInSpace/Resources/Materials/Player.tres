@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://n4c0gyoxiw2w" path="res://Resources/Textures/Player_Roughness.png" id="3_3jvw5"]
 
 [resource]
+diffuse_mode = 3
 albedo_texture = ExtResource("1_ra4qx")
 metallic = 1.0
 metallic_texture = ExtResource("2_u8eha")
