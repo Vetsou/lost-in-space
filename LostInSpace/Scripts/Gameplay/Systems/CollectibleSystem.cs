@@ -10,17 +10,17 @@ public class CollectibleSystem(LevelRenderer renderer)
 	public ushort OptionalCurrent { get; private set; }
 	public bool AllPrimaryCollected => PrimaryCurrent == _state.PrimaryPointsTotal;
 
-    public event Action PrimaryChanged;
-    public event Action OptionalChanged;
+	public event Action PrimaryChanged;
+	public event Action OptionalChanged;
 
-    public void Attach(LevelState state)
-    {
-        _state = state;
-        PrimaryCurrent = 0;
-        OptionalCurrent = 0;
-        PrimaryChanged?.Invoke();
-        OptionalChanged?.Invoke();
-    }
+	public void Attach(LevelState state)
+	{
+		_state = state;
+		PrimaryCurrent = 0;
+		OptionalCurrent = 0;
+		PrimaryChanged?.Invoke();
+		OptionalChanged?.Invoke();
+	}
 
 	public void TryPickUp(Vector2I pos)
 	{

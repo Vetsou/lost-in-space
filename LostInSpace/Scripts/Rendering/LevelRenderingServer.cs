@@ -5,8 +5,8 @@ namespace LostInSpace.Scripts.Rendering;
 
 public enum RenderLayer
 {
-    Platforms,
-    Collectibles
+	Platforms,
+	Collectibles
 }
 
 public partial class LevelRenderingServer : Node3D
@@ -20,17 +20,17 @@ public partial class LevelRenderingServer : Node3D
 		public VisualData visualData;
 	}
 
-    private sealed class LayerData(float height)
-    {
-        public readonly float Height = height;
-        public readonly Dictionary<Vector2I, (BatchData batch, int index)> Lookup = [];
-    }
+	private sealed class LayerData(float height)
+	{
+		public readonly float Height = height;
+		public readonly Dictionary<Vector2I, (BatchData batch, int index)> Lookup = [];
+	}
 
 	private readonly Dictionary<RenderLayer, LayerData> _layers = new()
-    {
-        [RenderLayer.Platforms] = new LayerData(LevelConstants.PLATFORM_RENDER_HEIGHT),
-        [RenderLayer.Collectibles] = new LayerData(LevelConstants.POINT_RENDER_HEIGHT),
-    };
+	{
+		[RenderLayer.Platforms] = new LayerData(LevelConstants.PLATFORM_RENDER_HEIGHT),
+		[RenderLayer.Collectibles] = new LayerData(LevelConstants.POINT_RENDER_HEIGHT),
+	};
 
 	private readonly Dictionary<VisualData, BatchData> _multimeshBatches = [];
 	private int _batchSize = 0;
@@ -51,35 +51,35 @@ public partial class LevelRenderingServer : Node3D
 			RenderingServer.FreeRid(batch.rid);
 		}
 
-        foreach (LayerData layer in _layers.Values)
-        {
-            layer.Lookup.Clear();
-        }
+		foreach (LayerData layer in _layers.Values)
+		{
+			layer.Lookup.Clear();
+		}
 
 		_multimeshBatches.Clear();
 		_batchSize = 0;
 	}
 
 	public void Render(RenderLayer layer, Vector2I pos, VisualData visualData)
-	{ 
+	{
 		LayerData layerData = _layers[layer];
-        if (layerData.Lookup.ContainsKey(pos))
-        {
-            return;
-        }
+		if (layerData.Lookup.ContainsKey(pos))
+		{
+			return;
+		}
 
 		(BatchData batch, int index) = RenderInstance(pos, visualData, layerData.Height);
-        layerData.Lookup[pos] = (batch, index);
-        SetColor(layer, pos, visualData.Albedo);
+		layerData.Lookup[pos] = (batch, index);
+		SetColor(layer, pos, visualData.Albedo);
 	}
 
 	public void SetColor(RenderLayer layer, Vector2I pos, Color color)
 	{
 		LayerData layerData = _layers[layer];
 		if (!layerData.Lookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
-        {
-            return;
-        }
+		{
+			return;
+		}
 
 		RenderingServer.MultimeshInstanceSetColor(lookup.batch.rid, lookup.index, color);
 	}
