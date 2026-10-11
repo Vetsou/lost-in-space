@@ -28,7 +28,7 @@ public class CollectibleSystem(LevelRenderer renderer)
 		{
 			PrimaryCurrent++;
 			_state.ConsumePrimaryPoint(pos);
-			renderer.FreeCollectible(pos);
+			renderer.RemoveCollectible(pos);
 			PrimaryChanged?.Invoke();
 		}
 
@@ -36,7 +36,7 @@ public class CollectibleSystem(LevelRenderer renderer)
 		{
 			OptionalCurrent++;
 			_state.ConsumeOptionalPoint(pos);
-			renderer.FreeCollectible(pos);
+			renderer.RemoveCollectible(pos);
 			OptionalChanged?.Invoke();
 		}
 	}

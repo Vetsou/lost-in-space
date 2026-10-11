@@ -17,7 +17,6 @@ public partial class Level : Scene
 	private string _currentLevelPath;
 
 	private LevelState _state;
-	private PlayerData _playerData;
 	private CollectibleSystem _collectibles;
 	private LevelProgression _progression;
 	private MovementSystem _movement;
@@ -32,7 +31,6 @@ public partial class Level : Scene
 
 	public override void _Ready()
 	{
-		_playerData = new PlayerData();
 		_collectibles = new CollectibleSystem(_renderer);
 		_progression = new LevelProgression();
 
@@ -68,7 +66,6 @@ public partial class Level : Scene
 	public void LoadLevel(string levelFilePath)
 	{
 		_currentLevelPath = levelFilePath;
-		_renderer.Clear();
 
 		LevelData data = JsonConvert.DeserializeObject<LevelData>(FileAccess.GetFileAsString(levelFilePath));
 		data.Validate();
@@ -79,12 +76,10 @@ public partial class Level : Scene
 		_collectibles.Attach(_state);
 		_progression.StartLevel();
 
-		_movement = new MovementSystem(_state, _playerData, _playerView,
+		_movement = new MovementSystem(_state, _playerView,
 			_collectibles, _progression, _renderer);
 
-		_renderer.RenderState(_state);
-
-		_playerData.SetPosition(_state.PlayerStart);
+		_renderer.RenderLevel(_state);
 		_playerView.SetTo(_state.PlayerStart);
 
 		EmitSignal(SignalName.LevelLoaded, _state.LevelId);

@@ -8,8 +8,7 @@ namespace LostInSpace.Scripts.Gameplay.Systems;
 
 public class MovementSystem(
 	LevelState state,
-	PlayerData player,
-	IPlayerView playerView,
+	IPlayerView player,
 	CollectibleSystem collectibles,
 	LevelProgression progression,
 	LevelRenderer renderer)
@@ -17,15 +16,14 @@ public class MovementSystem(
 	private const int MaxChain = 64;
 
 	private readonly LevelState _state = state;
-	private readonly PlayerData _player = player;
-	private readonly IPlayerView _playerView = playerView;
+	private readonly IPlayerView _player = player;
 	private readonly CollectibleSystem _collectibles = collectibles;
 	private readonly LevelProgression _progression = progression;
 	private readonly LevelRenderer _renderer = renderer;
 
 	public bool TryMove(Vector2I direction)
 	{
-		if (!ApplyStep(direction, MoveKind.Walk))
+		if (!DoStep(direction, MoveKind.Walk))
 		{
 			return false;
 		}
@@ -34,7 +32,7 @@ public class MovementSystem(
 		return true;
 	}
 
-	private bool ApplyStep(Vector2I direction, MoveKind kind)
+	private bool DoStep(Vector2I direction, MoveKind kind)
 	{
 		Vector2I next = kind == MoveKind.Walk
 			? _player.GridPosition + direction
@@ -50,24 +48,20 @@ public class MovementSystem(
 		if (exitResult.DestroySelf)
 		{
 			_state.RemovePlatform(from);
-			_renderer.FreePlatform(from);
+			_renderer.RemovePlatform(from);
 		}
 
-		// Logic update
-		_player.SetPosition(next, direction);
-		_collectibles.TryPickUp(next);
-
-		// Visual update
 		switch (kind)
 		{
 			case MoveKind.Walk:
-				_playerView.WalkTo(next, direction);
+				_player.WalkTo(next, direction);
 				break;
 			case MoveKind.Teleport:
-				_playerView.TeleportTo(next, direction);
+				_player.TeleportTo(next, direction);
 				break;
 		}
 
+		_collectibles.TryPickUp(next);
 		_progression.IncrementStep();
 		return true;
 	}
@@ -95,7 +89,7 @@ public class MovementSystem(
 			switch (result.Kind)
 			{
 				case MoveKind.Walk:
-					if (!ApplyStep(result.Target, MoveKind.Walk))
+					if (!DoStep(result.Target, MoveKind.Walk))
 					{
 						return;
 					}
@@ -108,7 +102,7 @@ public class MovementSystem(
 						dest.IsDisabled = true;
 					}
 
-					ApplyStep(result.Target, MoveKind.Teleport);
+					DoStep(result.Target, MoveKind.Teleport);
 					return;
 			}
 

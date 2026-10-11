@@ -9,9 +9,9 @@ public partial class LevelRenderer : Node
 	public static VisualData PrimaryCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dkssxmi6nh8h0");
 	public static VisualData OptionalCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dai8uv2vxng4m");
 
-	public void RenderState(LevelState state)
+	public void RenderLevel(LevelState state)
 	{
-		_server.SetBatchSize(state.MapSize.X * state.MapSize.Y);
+		_server.InitLevel(state.MapSize);
 
 		for (int x = 0; x < state.MapSize.X; x++)
 		{
@@ -36,7 +36,7 @@ public partial class LevelRenderer : Node
 		}
 	}
 
-	public void FreePlatform(Vector2I pos) => _server.FreePlatform(pos);
-	public void FreeCollectible(Vector2I pos) => _server.FreeCollectible(pos);
+	public void RemovePlatform(Vector2I pos) => _server.FreePlatform(pos);
+	public void RemoveCollectible(Vector2I pos) => _server.FreeCollectible(pos);
 	public void Clear() => _server.ClearLevel();
 }
