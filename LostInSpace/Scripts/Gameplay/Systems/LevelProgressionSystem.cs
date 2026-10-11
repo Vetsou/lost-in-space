@@ -31,10 +31,4 @@ public class LevelProgression
 		}
 		LevelCompleted?.Invoke();
 	}
-
-	public void Reset()
-	{
-		StepCount = 0;
-		StepsChanged?.Invoke(StepCount);
-	}
 }

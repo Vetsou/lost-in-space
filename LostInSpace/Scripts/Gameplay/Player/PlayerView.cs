@@ -12,7 +12,7 @@ public partial class PlayerView : Node3D, IPlayerView
 	public void SetTo(Vector2I gridPos)
 	{
 		GridPosition = gridPos;
-		Position = gridPos.GridToWorld();;
+		Position = gridPos.GridToWorld();
 	}
 
 	public void WalkTo(Vector2I gridPos, Vector2I direction)

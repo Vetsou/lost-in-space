@@ -6,8 +6,8 @@ namespace LostInSpace.Scripts.Gameplay;
 public partial class LevelRenderer : Node
 {
 	[Export] private LevelRenderingServer _server;
-	public static VisualData PrimaryCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dkssxmi6nh8h0");
-	public static VisualData OptionalCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dai8uv2vxng4m");
+	private static VisualData PrimaryCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dkssxmi6nh8h0");
+	private static VisualData OptionalCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dai8uv2vxng4m");
 
 	public void RenderLevel(LevelState state)
 	{

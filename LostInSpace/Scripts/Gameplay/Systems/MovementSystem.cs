@@ -44,12 +44,9 @@ public class MovementSystem(
 		}
 
 		Vector2I from = _player.GridPosition;
-		TileResult exitResult = _state.GetPlatform(from).OnExit(BuildContext(from, direction));
-		if (exitResult.DestroySelf)
-		{
-			_state.RemovePlatform(from);
-			_renderer.RemovePlatform(from);
-		}
+		TileResult exitResult = _state.GetPlatform(from)?.OnExit(BuildPlatformContext(from, direction))
+			?? TileResult.Nothing;
+		HandleOnLeaveResult(exitResult, from);
 
 		switch (kind)
 		{
@@ -70,19 +67,16 @@ public class MovementSystem(
 	{
 		for (int i = 0; i < MaxChain; i++)
 		{
-			// Get curr platform
 			Vector2I here = _player.GridPosition;
-
 			IPlatform platform = _state.GetPlatform(here);
 			if (platform == null)
 			{
 				return;
 			}
 
-			TileResult result = platform.OnEnter(BuildContext(here, direction));
-			if (result.RequestLevelComplete)
+			TileResult result = platform.OnEnter(BuildPlatformContext(here, direction));
+			if (HandleOnEnterResult(result))
 			{
-				_progression.RegisterCompletion();
 				return;
 			}
 
@@ -97,22 +91,36 @@ public class MovementSystem(
 					direction = result.Target;
 					continue;
 				case MoveKind.Teleport:
-					if (_state.GetPlatform(result.Target) is TeleporterPlatform dest)
-					{
-						dest.IsDisabled = true;
-					}
-
 					DoStep(result.Target, MoveKind.Teleport);
 					return;
 			}
-
 			return;
 		}
 
 		throw new InvalidOperationException("Movement chain exceeded safe limit (64 moves)");
 	}
 
-	private PlatformContext BuildContext(Vector2I position, Vector2I direction)
+	private bool HandleOnEnterResult(TileResult result)
+	{
+		if (result.RequestLevelComplete)
+		{
+			_progression.RegisterCompletion();
+			return true;
+		}
+
+		return false;
+	}
+
+	private void HandleOnLeaveResult(TileResult result, Vector2I leavingFrom)
+	{
+		if (result.DestroySelf)
+		{
+			_state.RemovePlatform(leavingFrom);
+			_renderer.RemovePlatform(leavingFrom);
+		}
+	}
+
+	private PlatformContext BuildPlatformContext(Vector2I position, Vector2I direction)
 	{
 		Vector2I? partner = null;
 
