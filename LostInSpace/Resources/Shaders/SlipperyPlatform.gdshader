@@ -3,8 +3,8 @@ shader_type spatial;
 render_mode depth_draw_always, diffuse_toon;
 
 uniform vec4 edge_color : source_color = vec4(0.31, 0.73, 1.0, 1.0);
-uniform float line_thickness : hint_range(0.001, 0.5) = 0.3;
-uniform float scale : hint_range(1.0, 10.0) = 5.0;
+uniform float line_thickness : hint_range(0.001, 0.5) = 0.4;
+uniform float scale : hint_range(1.0, 10.0) = 6.0;
 
 vec2 hash2(vec2 p) {
 	p = fract(p * vec2(123.34, 456.21));
