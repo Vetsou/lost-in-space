@@ -21,22 +21,22 @@ public partial class LevelRenderer : Node
 
 				if (state.GetPlatform(pos) is { } platform)
 				{
-					_server.RenderPlatform(pos, platform.VisualData);
+					_server.Render(RenderLayer.Platforms, pos, platform.VisualData);
 				}
 
 				if (state.HasPrimaryPoint(pos))
 				{
-					_server.RenderCollectible(pos, PrimaryCollectibleVisualData);
+					_server.Render(RenderLayer.Collectibles, pos, PrimaryCollectibleVisualData);
 				}
 				else if (state.HasOptionalPoint(pos))
 				{
-					_server.RenderCollectible(pos, OptionalCollectibleVisualData);
+					_server.Render(RenderLayer.Collectibles, pos, OptionalCollectibleVisualData);
 				}
 			}
 		}
 	}
 
-	public void RemovePlatform(Vector2I pos) => _server.FreePlatform(pos);
-	public void RemoveCollectible(Vector2I pos) => _server.FreeCollectible(pos);
+	public void RemovePlatform(Vector2I pos) => _server.Remove(RenderLayer.Platforms, pos);
+	public void RemoveCollectible(Vector2I pos) => _server.Remove(RenderLayer.Collectibles, pos);
 	public void Clear() => _server.ClearLevel();
 }

@@ -76,8 +76,7 @@ public partial class Level : Scene
 		_collectibles.Attach(_state);
 		_progression.StartLevel();
 
-		_movement = new MovementSystem(_state, _playerView,
-			_collectibles, _progression, _renderer);
+		_movement = new MovementSystem(_state, _playerView, _collectibles, _progression, _renderer);
 
 		_renderer.RenderLevel(_state);
 		_playerView.SetTo(_state.PlayerStart);

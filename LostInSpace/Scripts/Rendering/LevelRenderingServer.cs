@@ -3,9 +3,15 @@ using LostInSpace.Scripts.Gameplay.Data;
 
 namespace LostInSpace.Scripts.Rendering;
 
+public enum RenderLayer
+{
+    Platforms,
+    Collectibles
+}
+
 public partial class LevelRenderingServer : Node3D
 {
-	private class BatchData
+	private sealed class BatchData
 	{
 		public Rid rid;
 		public Rid instanceRid;
@@ -14,10 +20,22 @@ public partial class LevelRenderingServer : Node3D
 		public VisualData visualData;
 	}
 
+    private sealed class LayerData(float height)
+    {
+        public readonly float Height = height;
+        public readonly Dictionary<Vector2I, (BatchData batch, int index)> Lookup = [];
+    }
+
+	private readonly Dictionary<RenderLayer, LayerData> _layers = new()
+    {
+        [RenderLayer.Platforms] = new LayerData(LevelConstants.PLATFORM_RENDER_HEIGHT),
+        [RenderLayer.Collectibles] = new LayerData(LevelConstants.POINT_RENDER_HEIGHT),
+    };
+
 	private readonly Dictionary<VisualData, BatchData> _multimeshBatches = [];
-	private readonly Dictionary<Vector2I, (BatchData batch, int index)> _platformLookup = [];
-	private readonly Dictionary<Vector2I, (BatchData batch, int index)> _collectibleLookup = [];
 	private int _batchSize = 0;
+
+	public override void _ExitTree() => ClearLevel();
 
 	public void InitLevel(Vector2I mapSize)
 	{
@@ -33,35 +51,40 @@ public partial class LevelRenderingServer : Node3D
 			RenderingServer.FreeRid(batch.rid);
 		}
 
+        foreach (LayerData layer in _layers.Values)
+        {
+            layer.Lookup.Clear();
+        }
+
 		_multimeshBatches.Clear();
-		_platformLookup.Clear();
-		_collectibleLookup.Clear();
 		_batchSize = 0;
 	}
 
-	public void RenderPlatform(Vector2I pos, VisualData visualData)
-	{
-		if (_platformLookup.ContainsKey(pos))
-		{
-			return;
-		}
+	public void Render(RenderLayer layer, Vector2I pos, VisualData visualData)
+	{ 
+		LayerData layerData = _layers[layer];
+        if (layerData.Lookup.ContainsKey(pos))
+        {
+            return;
+        }
 
-		(BatchData batch, int index) = RenderInstance(pos, visualData, 0);
-		_platformLookup[pos] = (batch, index);
-		UpdatePlatformColor(pos, visualData.Albedo);
+		(BatchData batch, int index) = RenderInstance(pos, visualData, layerData.Height);
+        layerData.Lookup[pos] = (batch, index);
+        SetColor(layer, pos, visualData.Albedo);
 	}
 
-	public void RenderCollectible(Vector2I pos, VisualData visualData)
+	public void SetColor(RenderLayer layer, Vector2I pos, Color color)
 	{
-		if (_collectibleLookup.ContainsKey(pos))
-		{
-			return;
-		}
+		LayerData layerData = _layers[layer];
+		if (!layerData.Lookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
+        {
+            return;
+        }
 
-		(BatchData batch, int index) = RenderInstance(pos, visualData, LevelConstants.POINT_HOVER_HEIGHT);
-		_collectibleLookup[pos] = (batch, index);
-		UpdateCollectibleColor(pos, visualData.Albedo);
+		RenderingServer.MultimeshInstanceSetColor(lookup.batch.rid, lookup.index, color);
 	}
+
+	public void Remove(RenderLayer layer, Vector2I pos) => FreeInstance(pos, _layers[layer].Lookup);
 
 	private (BatchData, int) RenderInstance(Vector2I pos, VisualData data, float height)
 	{
@@ -107,19 +130,16 @@ public partial class LevelRenderingServer : Node3D
 		return batch;
 	}
 
-	public void FreePlatform(Vector2I pos) => FreeInstance(pos, _platformLookup);
-
-	public void FreeCollectible(Vector2I pos) => FreeInstance(pos, _collectibleLookup);
-
 	private void FreeInstance(Vector2I pos, Dictionary<Vector2I, (BatchData, int)> lookupDict)
 	{
 		if (!lookupDict.TryGetValue(pos, out (BatchData batch, int index) lookup))
 		{
 			return;
 		}
-		(BatchData batch, int index) = lookup;
 
+		(BatchData batch, int index) = lookup;
 		int lastIndex = batch.count - 1;
+
 		if (index != lastIndex)
 		{
 			RenderingServer.MultimeshInstanceSetTransform(batch.rid, index, RenderingServer.MultimeshInstanceGetTransform(batch.rid, lastIndex));
@@ -135,6 +155,7 @@ public partial class LevelRenderingServer : Node3D
 		batch.reverseLookup.RemoveAt(lastIndex);
 		batch.count--;
 		RenderingServer.MultimeshSetVisibleInstances(batch.rid, batch.count);
+
 		if (batch.count == 0)
 		{
 			_multimeshBatches.Remove(batch.visualData);
@@ -142,42 +163,4 @@ public partial class LevelRenderingServer : Node3D
 			RenderingServer.FreeRid(batch.rid);
 		}
 	}
-
-	public void UpdatePlatformColor(Vector2I pos, Color color)
-	{
-		if (!_platformLookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
-		{
-			return;
-		}
-		RenderingServer.MultimeshInstanceSetColor(lookup.batch.rid, lookup.index, color);
-	}
-
-	public void UpdatePlatformData(Vector2I pos, Color color)
-	{
-		if (!_platformLookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
-		{
-			return;
-		}
-		RenderingServer.MultimeshInstanceSetCustomData(lookup.batch.rid, lookup.index, color);
-	}
-
-	public void UpdateCollectibleColor(Vector2I pos, Color color)
-	{
-		if (!_collectibleLookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
-		{
-			return;
-		}
-		RenderingServer.MultimeshInstanceSetColor(lookup.batch.rid, lookup.index, color);
-	}
-
-	public void UpdateCollectibleData(Vector2I pos, Color color)
-	{
-		if (!_collectibleLookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
-		{
-			return;
-		}
-		RenderingServer.MultimeshInstanceSetCustomData(lookup.batch.rid, lookup.index, color);
-	}
-
-	public override void _ExitTree() => ClearLevel();
 }
