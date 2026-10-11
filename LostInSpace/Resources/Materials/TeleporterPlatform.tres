@@ -1,11 +1,11 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://uludmjdseb8x"]
 
-[ext_resource type="Shader" uid="uid://bp5qrvadh7apo" path="res://Resources/Shaders/TeleporterPlatform.gdshader" id="1_ccj25"]
+[ext_resource type="Shader" uid="uid://bp5qrvadh7apo" path="res://Resources/Shaders/TeleporterPlatform.gdshader" id="1_cwikr"]
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_ccj25")
-shader_parameter/vortex_radius = 0.275
+shader = ExtResource("1_cwikr")
+shader_parameter/vortex_radius = 0.27500000596046
 shader_parameter/vortex_color = Color(0.047058824, 0.3019608, 0.30980393, 1)
 shader_parameter/vortex_arm_count = 5
 shader_parameter/vortex_spin_speed = 3.0

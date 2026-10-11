@@ -35,11 +35,17 @@ void fragment() {
 	float movement_base = is_z_axis ? v_world_pos.z : v_world_pos.x;
 	float movement_direction = invert_movement ? -movement_base : movement_base;
 
-	float lane_id = floor(normal_direction * wind_density);
+	float scaled_pos = normal_direction * wind_density;
 
-	float rand_speed = mix(0.7, 1.4, hash(vec2(lane_id, 1.23)));
-	float rand_time_offset = hash(vec2(lane_id, 4.56)) * 10.0;
-	float rand_trail_len = mix(0.4, 1.2, hash(vec2(lane_id, 7.89))) * trail_length_multiplier;
+	float lane_id = floor(scaled_pos);
+	float lane_offcenter = fract(scaled_pos) - 0.5;
+	float line_thickness = smoothstep(trail_width, 0.0, abs(lane_offcenter));
+
+	float random_seed = hash(vec2(lane_id, 3.21));
+
+	float rand_speed = mix(0.7, 1.4, fract(random_seed * 43.12));
+	float rand_time_offset = fract(random_seed * 78.65) * 10.0;
+	float rand_trail_len = mix(0.4, 1.2, fract(random_seed * 21.12)) * trail_length_multiplier;
 
 	float current_speed = base_wind_speed * rand_speed;
 	float wind_time = TIME * current_speed + rand_time_offset;
@@ -48,9 +54,6 @@ void fragment() {
 	float trail_head = smoothstep(0.0, rand_trail_len, streak_progress);
 	float trail_tail = 1.0 - smoothstep(1.0 - trail_width, 1.0, streak_progress);
 	float star_shape = trail_head * trail_tail;
-
-	float lane_offcenter = fract(normal_direction * wind_density) - 0.5;
-	float line_thickness = smoothstep(trail_width, 0.0, abs(lane_offcenter));
 
 	float trail = star_shape * line_thickness;
 
