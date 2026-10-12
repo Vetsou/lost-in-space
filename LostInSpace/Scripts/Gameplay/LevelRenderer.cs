@@ -1,4 +1,5 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay;
@@ -24,13 +25,16 @@ public partial class LevelRenderer : Node
 					_server.Render(RenderLayer.Platforms, pos, platform.VisualData);
 				}
 
-				if (state.HasPrimaryPoint(pos))
+				VisualData visual = state.GetCollectible(pos) switch
 				{
-					_server.Render(RenderLayer.Collectibles, pos, PrimaryCollectibleVisualData);
-				}
-				else if (state.HasOptionalPoint(pos))
+					CollectibleId.Primary => PrimaryCollectibleVisualData,
+					CollectibleId.Optional => OptionalCollectibleVisualData,
+					_ => null,
+				};
+
+				if (visual != null)
 				{
-					_server.Render(RenderLayer.Collectibles, pos, OptionalCollectibleVisualData);
+					_server.Render(RenderLayer.Collectibles, pos, visual);
 				}
 			}
 		}

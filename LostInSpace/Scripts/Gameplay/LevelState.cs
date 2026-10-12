@@ -12,8 +12,7 @@ public class LevelState
 	public Vector2I PlayerStart { get; private set; }
 
 	private IPlatform[] _platforms;
-	private bool[] _primaryPoints;
-	private bool[] _optionalPoints;
+	private CollectibleId[] _collectibles;
 	private readonly Dictionary<byte, (Vector2I a, Vector2I b)> _teleporters = [];
 
 	public ushort PrimaryPointsTotal { get; private set; }
@@ -26,13 +25,12 @@ public class LevelState
 		PlayerStart = new Vector2I(data.PlayerPositionX, data.PlayerPositionY);
 
 		_platforms = new IPlatform[MapSize.X * MapSize.Y];
-		_primaryPoints = new bool[MapSize.X * MapSize.Y];
-		_optionalPoints = new bool[MapSize.X * MapSize.Y];
+		_collectibles = new CollectibleId[MapSize.X * MapSize.Y];
 
 		PrimaryPointsTotal = 0;
 		OptionalPointsTotal = 0;
 
-		var teleporters = new List<(TeleporterPlatform platform, Vector2I position)>();
+		var teleporters = new List<(byte, Vector2I)>();
 
 		for (int x = 0; x < MapSize.X; x++)
 		{
@@ -45,32 +43,46 @@ public class LevelState
 				{
 					IPlatform platform = PlatformFactory.CreatePlatform(data.Platforms[y, x]);
 					_platforms[idx] = platform;
+
 					if (platform is TeleporterPlatform tp)
 					{
-						teleporters.Add((tp, pos));
+						teleporters.Add((tp.TeleportLinkId, pos));
 					}
 				}
 
-				if (data.Collectibles[y, x] == 1) { _primaryPoints[idx] = true; PrimaryPointsTotal++; }
-				if (data.Collectibles[y, x] == 2) { _optionalPoints[idx] = true; OptionalPointsTotal++; }
+				CollectibleId id = data.Collectibles[y, x];
+				if (id != CollectibleId.None)
+				{
+					_collectibles[idx] = id;
+
+					switch (id)
+					{
+						case CollectibleId.Primary:
+							PrimaryPointsTotal++;
+							break;
+						case CollectibleId.Optional:
+							OptionalPointsTotal++;
+							break;
+					}
+				}
 			}
 		}
 
 		InitializeTeleporters(teleporters);
 	}
 
-	private void InitializeTeleporters(IReadOnlyList<(TeleporterPlatform platform, Vector2I position)> teleporters)
+	private void InitializeTeleporters(IReadOnlyList<(byte linkId, Vector2I position)> teleporters)
 	{
 		_teleporters.Clear();
 
 		var groups = new Dictionary<byte, List<Vector2I>>();
-		foreach ((TeleporterPlatform platform, Vector2I position) in teleporters)
+		foreach ((byte linkId, Vector2I position) in teleporters)
 		{
-			if (!groups.TryGetValue(platform.TeleportLinkId, out List<Vector2I> list))
+			if (!groups.TryGetValue(linkId, out List<Vector2I> list))
 			{
-				groups[platform.TeleportLinkId] = list = [];
+				list = [];
+				groups[linkId] = list;
 			}
-
 			list.Add(position);
 		}
 
@@ -81,7 +93,6 @@ public class LevelState
 				throw new InvalidOperationException(
 					$"Teleporter link id {linkId} has {positions.Count} tiles; expected exactly 2.");
 			}
-
 			_teleporters[linkId] = (positions[0], positions[1]);
 		}
 	}
@@ -91,12 +102,10 @@ public class LevelState
 
 	public IPlatform GetPlatform(Vector2I pos) =>
 		IsValid(pos) ? _platforms[GridToIndex(pos)] : null;
-
-	public bool HasPrimaryPoint(Vector2I pos) => IsValid(pos) && _primaryPoints[GridToIndex(pos)];
-	public bool HasOptionalPoint(Vector2I pos) => IsValid(pos) && _optionalPoints[GridToIndex(pos)];
-	public void ConsumePrimaryPoint(Vector2I pos) => _primaryPoints[GridToIndex(pos)] = false;
-	public void ConsumeOptionalPoint(Vector2I pos) => _optionalPoints[GridToIndex(pos)] = false;
 	public void RemovePlatform(Vector2I pos) => _platforms[GridToIndex(pos)] = null;
+	public CollectibleId GetCollectible(Vector2I pos) =>
+		IsValid(pos) ? _collectibles[GridToIndex(pos)] : CollectibleId.None;
+	public void ConsumeCollectible(Vector2I pos) => _collectibles[GridToIndex(pos)] = CollectibleId.None;
 
 	public (Vector2I a, Vector2I b) GetTeleporterLinkPositions(byte linkId) =>
 		_teleporters.TryGetValue(linkId, out (Vector2I a, Vector2I b) p) ? p

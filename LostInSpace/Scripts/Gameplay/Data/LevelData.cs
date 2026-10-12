@@ -9,7 +9,7 @@ public readonly struct LevelData
 	public required ushort Width { get; init; }
 	public required ushort Height { get; init; }
 	public required ushort[,] Platforms { get; init; }
-	public required ushort[,] Collectibles { get; init; }
+	public required CollectibleId[,] Collectibles { get; init; }
 	public required ushort PlayerPositionX { get; init; }
 	public required ushort PlayerPositionY { get; init; }
 
@@ -55,13 +55,13 @@ public readonly struct LevelData
 		{
 			for (int y = 0; y < Height; y++)
 			{
-				if (Collectibles[y, x] > 2)
+				if (Collectibles[y, x] > CollectibleId.Optional)
 				{
 					throw new Exception(
 						$"Invalid collectible id {Collectibles[y, x]} at position x={x}, y{y}, id should be between 0 and 2");
 				}
 
-				if (Collectibles[y, x] > 0 && Platforms[y, x] == 0)
+				if (Collectibles[y, x] != CollectibleId.None && Platforms[y, x] == 0)
 				{
 					throw new Exception($"Collectible at position x={x}, y={y}, has no platform underneath");
 				}

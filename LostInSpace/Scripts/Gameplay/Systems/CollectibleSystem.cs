@@ -1,4 +1,5 @@
 using Godot;
+using LostInSpace.Scripts.Gameplay.Data;
 
 namespace LostInSpace.Scripts.Gameplay.Systems;
 
@@ -24,20 +25,25 @@ public class CollectibleSystem(LevelRenderer renderer)
 
 	public void TryPickUp(Vector2I pos)
 	{
-		if (_state.HasPrimaryPoint(pos))
+		CollectibleId id = _state.GetCollectible(pos);
+		if (id == CollectibleId.None)
 		{
-			PrimaryCurrent++;
-			_state.ConsumePrimaryPoint(pos);
-			renderer.RemoveCollectible(pos);
-			PrimaryChanged?.Invoke();
+			return;
 		}
 
-		if (_state.HasOptionalPoint(pos))
+		switch (id)
 		{
-			OptionalCurrent++;
-			_state.ConsumeOptionalPoint(pos);
-			renderer.RemoveCollectible(pos);
-			OptionalChanged?.Invoke();
+			case CollectibleId.Primary:
+				PrimaryCurrent++;
+				PrimaryChanged?.Invoke();
+				break;
+			case CollectibleId.Optional:
+				OptionalCurrent++;
+				OptionalChanged?.Invoke();
+				break;
 		}
+
+		_state.ConsumeCollectible(pos);
+		renderer.RemoveCollectible(pos);
 	}
 }
