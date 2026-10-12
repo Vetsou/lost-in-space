@@ -102,9 +102,12 @@ public class LevelState
 
 	public IPlatform GetPlatform(Vector2I pos) =>
 		IsValid(pos) ? _platforms[GridToIndex(pos)] : null;
+
 	public void RemovePlatform(Vector2I pos) => _platforms[GridToIndex(pos)] = null;
+
 	public CollectibleId GetCollectible(Vector2I pos) =>
 		IsValid(pos) ? _collectibles[GridToIndex(pos)] : CollectibleId.None;
+
 	public void ConsumeCollectible(Vector2I pos) => _collectibles[GridToIndex(pos)] = CollectibleId.None;
 
 	public (Vector2I a, Vector2I b) GetTeleporterLinkPositions(byte linkId) =>
