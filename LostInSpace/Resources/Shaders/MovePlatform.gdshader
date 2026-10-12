@@ -26,14 +26,10 @@ void vertex()
 }
 
 void fragment() {
-	int wind_direction = int(round(v_instance_custom.r * 255.0)) % 4;
+	vec4 custom = round(v_instance_custom);
 
-	bool is_z_axis = wind_direction >= 2;
-	bool invert_movement = (wind_direction % 2) == 1;
-
-	float normal_direction = is_z_axis ? v_world_pos.x : v_world_pos.z;
-	float movement_base = is_z_axis ? v_world_pos.z : v_world_pos.x;
-	float movement_direction = invert_movement ? -movement_base : movement_base;
+	float normal_direction = dot(v_world_pos.xz, vec2(-custom.z, custom.x));
+	float movement_direction = dot(v_world_pos.xz, vec2(custom.x, custom.z));
 
 	float scaled_pos = normal_direction * wind_density;
 
