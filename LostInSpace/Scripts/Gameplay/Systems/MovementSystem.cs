@@ -9,16 +9,14 @@ namespace LostInSpace.Scripts.Gameplay.Systems;
 public class MovementSystem(
 	LevelState state,
 	IPlayerView player,
-	CollectibleSystem collectibles,
-	LevelProgression progression,
+	LevelSession levelSession,
 	LevelRenderer renderer)
 {
 	private const int MaxChain = 64;
 
 	private readonly LevelState _state = state;
 	private readonly IPlayerView _player = player;
-	private readonly CollectibleSystem _collectibles = collectibles;
-	private readonly LevelProgression _progression = progression;
+	private readonly LevelSession _levelSession = levelSession;
 	private readonly LevelRenderer _renderer = renderer;
 
 	public bool TryMove(Vector2I direction)
@@ -58,8 +56,8 @@ public class MovementSystem(
 				break;
 		}
 
-		_collectibles.TryPickUp(next);
-		_progression.IncrementStep();
+		_levelSession.TryPickUp(next);
+		_levelSession.RecordStep();
 		return true;
 	}
 
@@ -104,7 +102,7 @@ public class MovementSystem(
 	{
 		if (result.RequestLevelComplete)
 		{
-			_progression.RegisterCompletion();
+			_levelSession.CompleteLevel();
 			return true;
 		}
 
@@ -134,7 +132,7 @@ public class MovementSystem(
 		{
 			Position = position,
 			MoveDirection = direction,
-			AllRequiredPointsCollected = _collectibles.AllPrimaryCollected,
+			AllRequiredPointsCollected = _levelSession.AllPrimaryCollected,
 			TeleporterPartner = partner
 		};
 	}

@@ -17,8 +17,7 @@ public partial class Level : Scene
 	private string _currentLevelPath;
 
 	private LevelState _state;
-	private CollectibleSystem _collectibles;
-	private LevelProgression _progression;
+	private LevelSession _levelSession;
 	private MovementSystem _movement;
 
 	#region HUD signals
@@ -31,25 +30,24 @@ public partial class Level : Scene
 
 	public override void _Ready()
 	{
-		_collectibles = new CollectibleSystem(_renderer);
-		_progression = new LevelProgression();
+		_levelSession = new LevelSession(_renderer);
 
-		_collectibles.PrimaryChanged += OnPrimaryChanged;
-		_collectibles.OptionalChanged += OnOptionalChanged;
-		_progression.StepsChanged += OnStepsChanged;
-		_progression.BestStepsChanged += OnBestStepsChanged;
-		_progression.LevelCompleted += OnLevelCompleted;
+		_levelSession.PrimaryChanged += OnPrimaryChanged;
+		_levelSession.OptionalChanged += OnOptionalChanged;
+		_levelSession.StepsChanged += OnStepsChanged;
+		_levelSession.BestStepsChanged += OnBestStepsChanged;
+		_levelSession.LevelCompleted += OnLevelCompleted;
 
 		_hud.Bind(this);
 	}
 
 	public override void _ExitTree()
 	{
-		_collectibles.PrimaryChanged -= OnPrimaryChanged;
-		_collectibles.OptionalChanged -= OnOptionalChanged;
-		_progression.StepsChanged -= OnStepsChanged;
-		_progression.BestStepsChanged -= OnBestStepsChanged;
-		_progression.LevelCompleted -= OnLevelCompleted;
+		_levelSession.PrimaryChanged -= OnPrimaryChanged;
+		_levelSession.OptionalChanged -= OnOptionalChanged;
+		_levelSession.StepsChanged -= OnStepsChanged;
+		_levelSession.BestStepsChanged -= OnBestStepsChanged;
+		_levelSession.LevelCompleted -= OnLevelCompleted;
 
 		_hud.Unbind();
 		_renderer.Clear();
@@ -73,10 +71,8 @@ public partial class Level : Scene
 		_state = new LevelState();
 		_state.Initialize(data);
 
-		_collectibles.Attach(_state);
-		_progression.StartLevel();
-
-		_movement = new MovementSystem(_state, _playerView, _collectibles, _progression, _renderer);
+		_levelSession.StartSession(_state);
+		_movement = new MovementSystem(_state, _playerView, _levelSession, _renderer);
 
 		_renderer.RenderLevel(_state);
 		_playerView.SetTo(_state.PlayerStart);
@@ -98,11 +94,11 @@ public partial class Level : Scene
 
 	private void OnPrimaryChanged() =>
 		EmitSignal(SignalName.PrimaryPointsChanged,
-			_collectibles.PrimaryCurrent, _state.PrimaryPointsTotal);
+			_levelSession.PrimaryCurrent, _state.PrimaryPointsTotal);
 
 	private void OnOptionalChanged() =>
 		EmitSignal(SignalName.OptionalPointsChanged,
-			_collectibles.OptionalCurrent, _state.OptionalPointsTotal);
+			_levelSession.OptionalCurrent, _state.OptionalPointsTotal);
 
 	private void OnStepsChanged(ushort steps) =>
 		EmitSignal(SignalName.StepsChanged, (int)steps);
