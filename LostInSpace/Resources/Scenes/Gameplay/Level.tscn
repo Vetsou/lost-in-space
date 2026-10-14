@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://b8x4ywlchfmob"]
 
 [ext_resource type="Script" uid="uid://cvov4lwoal6h8" path="res://Scripts/Gameplay/Level.cs" id="1_eh4pv"]
-[ext_resource type="Script" uid="uid://1avicnvwyyfp" path="res://Scripts/Rendering/LevelRenderingServer.cs" id="2_05t1m"]
 [ext_resource type="Script" uid="uid://b7eyd5fs1jki7" path="res://Scripts/Gameplay/LevelRenderer.cs" id="2_gjwra"]
 [ext_resource type="Script" uid="uid://bgiq0ihh6fqj6" path="res://Scripts/UI/Huds/LevelHud.cs" id="4_8ahst"]
 [ext_resource type="PackedScene" uid="uid://d2mpou7qc41mn" path="res://Resources/Scenes/Gameplay/Player.tscn" id="4_sxngl"]
@@ -19,12 +18,8 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 4, 8
 environment = SubResource("Environment_avkng")
 current = true
 
-[node name="Renderer" type="Node3D" parent="." unique_id=1103351816 node_paths=PackedStringArray("_server")]
+[node name="Renderer" type="Node3D" parent="." unique_id=1103351816]
 script = ExtResource("2_gjwra")
-_server = NodePath("../LevelRenderingServer")
-
-[node name="LevelRenderingServer" type="Node3D" parent="." unique_id=1301176574]
-script = ExtResource("2_05t1m")
 
 [node name="Player" parent="." unique_id=1574507954 instance=ExtResource("4_sxngl")]
 

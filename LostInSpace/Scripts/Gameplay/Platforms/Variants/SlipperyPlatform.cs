@@ -7,5 +7,5 @@ public class SlipperyPlatform : IPlatform
 {
 	public VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://dtyk1rdnwg8ui");
 	public TileResult OnEnter(PlatformContext ctx) => TileResult.Walk(ctx.MoveDirection);
-	public TileResult OnExit(PlatformContext ctx) => TileResult.Nothing;
+	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
 }

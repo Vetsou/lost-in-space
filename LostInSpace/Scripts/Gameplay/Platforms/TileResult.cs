@@ -11,7 +11,7 @@ public enum MoveKind
 
 public readonly record struct TileResult
 {
-	public static readonly TileResult Nothing = default;
+	public static readonly TileResult None = default;
 
 	public MoveKind Kind { get; init; }
 	public Vector2I Target { get; init; }

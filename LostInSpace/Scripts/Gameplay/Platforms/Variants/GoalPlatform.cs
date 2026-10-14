@@ -7,6 +7,6 @@ public class GoalPlatform : IPlatform
 {
 	public VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://c7l8d1q81nlhq");
 	public TileResult OnEnter(PlatformContext ctx) =>
-		ctx.AllRequiredPointsCollected ? TileResult.Complete() : TileResult.Nothing;
-	public TileResult OnExit(PlatformContext ctx) => TileResult.Nothing;
+		ctx.AllRequiredPointsCollected ? TileResult.Complete() : TileResult.None;
+	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
 }

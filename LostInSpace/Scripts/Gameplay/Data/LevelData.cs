@@ -55,7 +55,7 @@ public readonly struct LevelData
 		{
 			for (int y = 0; y < Height; y++)
 			{
-				if (Collectibles[y, x] > CollectibleId.Optional)
+				if (!Enum.IsDefined(Collectibles[y, x]))
 				{
 					throw new Exception(
 						$"Invalid collectible id {Collectibles[y, x]} at position x={x}, y{y}, id should be between 0 and 2");

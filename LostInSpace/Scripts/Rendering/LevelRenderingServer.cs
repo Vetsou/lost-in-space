@@ -9,7 +9,7 @@ public enum RenderLayer
 	Collectibles
 }
 
-public partial class LevelRenderingServer : Node3D
+public class LevelRenderingServer(World3D world)
 {
 	private sealed class BatchData
 	{
@@ -31,11 +31,10 @@ public partial class LevelRenderingServer : Node3D
 		[RenderLayer.Platforms] = new LayerData(LevelConstants.PLATFORM_RENDER_HEIGHT),
 		[RenderLayer.Collectibles] = new LayerData(LevelConstants.POINT_RENDER_HEIGHT),
 	};
-
 	private readonly Dictionary<VisualData, BatchData> _multimeshBatches = [];
-	private int _batchSize = 0;
 
-	public override void _ExitTree() => ClearLevel();
+	private readonly Rid _scenario = world.Scenario;
+	private int _batchSize = 0;
 
 	public void InitLevel(Vector2I mapSize)
 	{
@@ -121,7 +120,7 @@ public partial class LevelRenderingServer : Node3D
 		RenderingServer.MultimeshSetVisibleInstances(batch.rid, 0);
 
 		RenderingServer.InstanceSetBase(batch.instanceRid, batch.rid);
-		RenderingServer.InstanceSetScenario(batch.instanceRid, GetWorld3D().Scenario);
+		RenderingServer.InstanceSetScenario(batch.instanceRid, _scenario);
 
 		RenderingServer.InstanceGeometrySetMaterialOverride(batch.instanceRid, data.Material.GetRid());
 

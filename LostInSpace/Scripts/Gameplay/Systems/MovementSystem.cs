@@ -43,7 +43,7 @@ public class MovementSystem(
 
 		Vector2I from = _player.GridPosition;
 		TileResult exitResult = _state.GetPlatform(from)?.OnExit(BuildPlatformContext(from, direction))
-			?? TileResult.Nothing;
+			?? TileResult.None;
 		HandleOnLeaveResult(exitResult, from);
 
 		switch (kind)
@@ -130,7 +130,6 @@ public class MovementSystem(
 
 		return new PlatformContext
 		{
-			Position = position,
 			MoveDirection = direction,
 			AllRequiredPointsCollected = _levelSession.AllPrimaryCollected,
 			TeleporterPartner = partner

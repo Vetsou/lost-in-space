@@ -12,11 +12,11 @@ public class TeleporterPlatform(byte teleportLinkId) : IPlatform
 	{
 		if (ctx.TeleporterPartner is not { } partner)
 		{
-			return TileResult.Nothing;
+			return TileResult.None;
 		}
 
 		return TileResult.Teleport(partner);
 	}
 
-	public TileResult OnExit(PlatformContext ctx) => TileResult.Nothing;
+	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
 }
