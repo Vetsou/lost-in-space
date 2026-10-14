@@ -21,5 +21,5 @@ public readonly record struct TileResult
 	public static TileResult Walk(Vector2I direction) => new() { Kind = MoveKind.Walk, Target = direction };
 	public static TileResult Teleport(Vector2I position) => new() { Kind = MoveKind.Teleport, Target = position };
 	public static TileResult Destroy() => new() { DestroySelf = true };
-	public static TileResult Complete() => new() { RequestLevelComplete = true };
+	public static TileResult TryComplete() => new() { RequestLevelComplete = true };
 }

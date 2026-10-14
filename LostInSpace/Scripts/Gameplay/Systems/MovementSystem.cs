@@ -102,7 +102,7 @@ public class MovementSystem(
 	{
 		if (result.RequestLevelComplete)
 		{
-			_levelSession.CompleteLevel();
+			_levelSession.TryCompleteLevel();
 			return true;
 		}
 
@@ -131,7 +131,6 @@ public class MovementSystem(
 		return new PlatformContext
 		{
 			MoveDirection = direction,
-			AllRequiredPointsCollected = _levelSession.AllPrimaryCollected,
 			TeleporterPartner = partner
 		};
 	}

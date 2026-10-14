@@ -12,7 +12,7 @@ public class LevelSession(LevelRenderer renderer)
 	public ushort PrimaryCurrent { get; private set; }
 	public ushort OptionalCurrent { get; private set; }
 
-	public bool AllPrimaryCollected => PrimaryCurrent == _state.PrimaryPointsTotal;
+	private bool AllPrimaryCollected => PrimaryCurrent == _state.PrimaryPointsTotal;
 
 	public event Action PrimaryChanged;
 	public event Action OptionalChanged;
@@ -65,8 +65,13 @@ public class LevelSession(LevelRenderer renderer)
 		renderer.RemoveCollectible(pos);
 	}
 
-	public void CompleteLevel()
+	public void TryCompleteLevel()
 	{
+		if (!AllPrimaryCollected)
+		{
+			return;
+		}
+
 		if (BestStepCount == 0 || StepCount < BestStepCount)
 		{
 			BestStepCount = StepCount;
