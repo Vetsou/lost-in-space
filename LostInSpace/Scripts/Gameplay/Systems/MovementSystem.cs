@@ -1,80 +1,144 @@
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
-using LostInSpace.Scripts.UI.Scenes.Settings;
+using LostInSpace.Scripts.Gameplay.Platforms.Variants;
+using LostInSpace.Scripts.Gameplay.Player;
 
 namespace LostInSpace.Scripts.Gameplay.Systems;
 
-public class MovementSystem(ILevelHandler level, PlayerData player)
+public class MovementSystem(
+	LevelState state,
+	IPlayerView player,
+	LevelSession levelSession,
+	LevelRenderer renderer)
 {
-	private ILevelHandler CurrentLevel { get; init; } = level;
-	private PlayerData Player { get; init; } = player;
+	private const int MaxChain = 64;
 
-	public bool HandlePlayerMovement(InputEvent @event)
+	private readonly LevelState _state = state;
+	private readonly IPlayerView _player = player;
+	private readonly LevelSession _levelSession = levelSession;
+	private readonly LevelRenderer _renderer = renderer;
+
+	public bool TryMove(Vector2I direction)
 	{
-		if (!GetPlayerMovementDirection(@event, out Vector2I direction))
+		if (!DoStep(direction, MoveKind.Walk))
 		{
 			return false;
 		}
 
-		return TryMovePlayer(direction);
-	}
-
-	public bool TryMovePlayer(Vector2I direction)
-	{
-		IPlatform nextTile = CurrentLevel.GetPlatform(Player.GridPosition + direction);
-
-		if (nextTile == null)
-		{
-			return false;
-		}
-
-		IPlatform currPlatform = CurrentLevel.GetPlatform(Player.GridPosition);
-		currPlatform.OnExit(CreateTileContext(direction));
-
-		Player.SetPosition(Player.GridPosition + direction);
-		CurrentLevel.PickUpCollectible(Player.GridPosition);
-
-		IPlatform newPlatform = CurrentLevel.GetPlatform(Player.GridPosition);
-		newPlatform?.OnEnter(CreateTileContext(direction));
-
+		RunTileChain(direction);
 		return true;
 	}
 
-	private static bool GetPlayerMovementDirection(InputEvent @event, out Vector2I direction)
+	private bool DoStep(Vector2I direction, MoveKind moveKind)
 	{
-		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_UP))
+		Vector2I next = moveKind == MoveKind.Teleport
+			? direction
+			: _player.GridPosition + direction;
+
+		if (_state.GetPlatform(next) == null)
 		{
-			direction = Vector2I.Up;
-			return true;
+			return false;
 		}
 
-		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_DOWN))
+		Vector2I from = _player.GridPosition;
+		TileResult exitResult = _state.GetPlatform(from)?.OnExit(BuildPlatformContext(from, direction))
+			?? TileResult.None;
+		HandleOnLeaveResult(exitResult, from);
+
+		switch (moveKind)
 		{
-			direction = Vector2I.Down;
-			return true;
+			case MoveKind.Walk:
+			case MoveKind.ForcedMove:
+				_player.WalkTo(next, direction);
+				break;
+			case MoveKind.Teleport:
+				_player.TeleportTo(next, direction);
+				break;
 		}
 
-		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_LEFT))
-		{
-			direction = Vector2I.Left;
-			return true;
-		}
-
-		if (@event.IsActionPressed(SettingsMap.Keys.MOVE_RIGHT))
-		{
-			direction = Vector2I.Right;
-			return true;
-		}
-
-		direction = default;
-		return false;
+		_levelSession.TryPickUp(next);
+		_levelSession.RecordStep(moveKind);
+		return true;
 	}
 
-	private TileContext CreateTileContext(Vector2I direction) => new()
+	private void RunTileChain(Vector2I direction)
 	{
-		LevelHandler = CurrentLevel,
-		MoveDirection = direction,
-		Position = Player.GridPosition
-	};
+		for (int i = 0; i < MaxChain; i++)
+		{
+			Vector2I here = _player.GridPosition;
+			IPlatform platform = _state.GetPlatform(here);
+			if (platform == null)
+			{
+				return;
+			}
+
+			TileResult result = platform.OnEnter(BuildPlatformContext(here, direction));
+			if (HandleOnEnterResult(result))
+			{
+				return;
+			}
+
+			switch (result.MoveKind)
+			{
+				case MoveKind.Walk:
+				case MoveKind.ForcedMove:
+					if (!DoStep(result.Target, result.MoveKind))
+					{
+						return;
+					}
+
+					direction = result.Target;
+					continue;
+				case MoveKind.Teleport:
+					DoStep(result.Target, MoveKind.Teleport);
+					return;
+			}
+			return;
+		}
+
+		throw new InvalidOperationException("Movement chain exceeded safe limit (64 moves)");
+	}
+
+	private bool HandleOnEnterResult(TileResult result)
+	{
+		switch (result.EnterAction)
+		{
+			case EnterAction.TryCompleteLevel:
+				_levelSession.TryCompleteLevel();
+				return true;
+
+			default:
+			case EnterAction.None:
+				return false;
+		}
+	}
+
+	private void HandleOnLeaveResult(TileResult result, Vector2I leavingFrom)
+	{
+		switch (result.LeaveAction)
+		{
+			case LeaveAction.DestroySelf:
+				_state.RemovePlatform(leavingFrom);
+				_renderer.RemovePlatform(leavingFrom);
+				break;
+		}
+	}
+
+	private PlatformContext BuildPlatformContext(Vector2I position, Vector2I direction)
+	{
+		Vector2I? partner = null;
+
+		if (_state.GetPlatform(position) is TeleporterPlatform tp)
+		{
+			(Vector2I a, Vector2I b) = _state.GetTeleporterLinkPositions(tp.TeleportLinkId);
+			partner = a == position ? b : a;
+		}
+
+		return new PlatformContext
+		{
+			MoveDirection = direction,
+			TeleporterPartner = partner
+		};
+	}
 }
