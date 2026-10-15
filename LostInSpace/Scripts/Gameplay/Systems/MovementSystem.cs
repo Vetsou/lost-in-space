@@ -30,13 +30,13 @@ public class MovementSystem(
 		return true;
 	}
 
-	private bool DoStep(Vector2I direction, MoveKind kind)
+	private bool DoStep(Vector2I direction, MoveKind moveKind)
 	{
-		Vector2I next = kind == MoveKind.Walk
-			? _player.GridPosition + direction
-			: direction;
+		Vector2I next = moveKind == MoveKind.Teleport
+			? direction
+			: _player.GridPosition + direction;
 
-		if (kind == MoveKind.Walk && _state.GetPlatform(next) == null)
+		if (_state.GetPlatform(next) == null)
 		{
 			return false;
 		}
@@ -46,9 +46,10 @@ public class MovementSystem(
 			?? TileResult.None;
 		HandleOnLeaveResult(exitResult, from);
 
-		switch (kind)
+		switch (moveKind)
 		{
 			case MoveKind.Walk:
+			case MoveKind.ForcedMove:
 				_player.WalkTo(next, direction);
 				break;
 			case MoveKind.Teleport:
@@ -57,7 +58,7 @@ public class MovementSystem(
 		}
 
 		_levelSession.TryPickUp(next);
-		_levelSession.RecordStep();
+		_levelSession.RecordStep(moveKind);
 		return true;
 	}
 
@@ -81,7 +82,8 @@ public class MovementSystem(
 			switch (result.MoveKind)
 			{
 				case MoveKind.Walk:
-					if (!DoStep(result.Target, MoveKind.Walk))
+				case MoveKind.ForcedMove:
+					if (!DoStep(result.Target, result.MoveKind))
 					{
 						return;
 					}

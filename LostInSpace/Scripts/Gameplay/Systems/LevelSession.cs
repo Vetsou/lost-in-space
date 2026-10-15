@@ -1,5 +1,6 @@
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
+using LostInSpace.Scripts.Gameplay.Platforms;
 
 namespace LostInSpace.Scripts.Gameplay.Systems;
 
@@ -35,8 +36,13 @@ public class LevelSession(LevelRenderer renderer)
 		OptionalChanged?.Invoke();
 	}
 
-	public void RecordStep()
+	public void RecordStep(MoveKind moveKind)
 	{
+		if (moveKind != MoveKind.Walk)
+		{
+			return;
+		}
+
 		StepCount++;
 		StepsChanged?.Invoke(StepCount);
 	}

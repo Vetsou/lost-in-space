@@ -6,6 +6,7 @@ public enum MoveKind
 {
 	None,
 	Walk,
+	ForcedMove,
 	Teleport
 }
 
@@ -30,7 +31,7 @@ public readonly record struct TileResult
 	public LeaveAction LeaveAction { get; init; }
 	public Vector2I Target { get; init; }
 
-	public static TileResult Walk(Vector2I direction) => new() { MoveKind = MoveKind.Walk, Target = direction };
+	public static TileResult ForcedMove(Vector2I direction) => new() { MoveKind = MoveKind.ForcedMove, Target = direction };
 	public static TileResult Teleport(Vector2I position) => new() { MoveKind = MoveKind.Teleport, Target = position };
 	public static TileResult Destroy() => new() { LeaveAction = LeaveAction.DestroySelf };
 	public static TileResult TryComplete() => new() { EnterAction = EnterAction.TryCompleteLevel };
