@@ -78,7 +78,7 @@ public class MovementSystem(
 				return;
 			}
 
-			switch (result.Kind)
+			switch (result.MoveKind)
 			{
 				case MoveKind.Walk:
 					if (!DoStep(result.Target, MoveKind.Walk))
@@ -100,21 +100,26 @@ public class MovementSystem(
 
 	private bool HandleOnEnterResult(TileResult result)
 	{
-		if (result.RequestLevelComplete)
+		switch (result.EnterAction)
 		{
-			_levelSession.TryCompleteLevel();
-			return true;
-		}
+			case EnterAction.TryCompleteLevel:
+				_levelSession.TryCompleteLevel();
+				return true;
 
-		return false;
+			default:
+			case EnterAction.None:
+				return false;
+		}
 	}
 
 	private void HandleOnLeaveResult(TileResult result, Vector2I leavingFrom)
 	{
-		if (result.DestroySelf)
+		switch (result.LeaveAction)
 		{
-			_state.RemovePlatform(leavingFrom);
-			_renderer.RemovePlatform(leavingFrom);
+			case LeaveAction.DestroySelf:
+				_state.RemovePlatform(leavingFrom);
+				_renderer.RemovePlatform(leavingFrom);
+				break;
 		}
 	}
 

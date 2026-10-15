@@ -9,17 +9,29 @@ public enum MoveKind
 	Teleport
 }
 
+public enum EnterAction
+{
+	None,
+	TryCompleteLevel
+}
+
+public enum LeaveAction
+{
+	None,
+	DestroySelf
+}
+
 public readonly record struct TileResult
 {
 	public static readonly TileResult None = default;
 
-	public MoveKind Kind { get; init; }
+	public MoveKind MoveKind { get; init; }
+	public EnterAction EnterAction { get; init; }
+	public LeaveAction LeaveAction { get; init; }
 	public Vector2I Target { get; init; }
-	public bool DestroySelf { get; init; }
-	public bool RequestLevelComplete { get; init; }
 
-	public static TileResult Walk(Vector2I direction) => new() { Kind = MoveKind.Walk, Target = direction };
-	public static TileResult Teleport(Vector2I position) => new() { Kind = MoveKind.Teleport, Target = position };
-	public static TileResult Destroy() => new() { DestroySelf = true };
-	public static TileResult TryComplete() => new() { RequestLevelComplete = true };
+	public static TileResult Walk(Vector2I direction) => new() { MoveKind = MoveKind.Walk, Target = direction };
+	public static TileResult Teleport(Vector2I position) => new() { MoveKind = MoveKind.Teleport, Target = position };
+	public static TileResult Destroy() => new() { LeaveAction = LeaveAction.DestroySelf };
+	public static TileResult TryComplete() => new() { EnterAction = EnterAction.TryCompleteLevel };
 }
