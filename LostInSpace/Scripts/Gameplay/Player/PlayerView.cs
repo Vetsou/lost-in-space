@@ -22,11 +22,10 @@ public partial class PlayerView : Node3D, IPlayerView
 		Face(direction);
 	}
 
-	public void TeleportTo(Vector2I gridPos, Vector2I direction)
+	public void TeleportTo(Vector2I gridPos)
 	{
 		GridPosition = gridPos;
 		Position = gridPos.GridToWorld();
-		Face(direction);
 	}
 
 	private void Face(Vector2I dir)

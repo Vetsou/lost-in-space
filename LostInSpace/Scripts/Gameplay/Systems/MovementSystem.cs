@@ -53,7 +53,7 @@ public class MovementSystem(
 				_player.WalkTo(next, direction);
 				break;
 			case MoveKind.Teleport:
-				_player.TeleportTo(next, direction);
+				_player.TeleportTo(next);
 				break;
 		}
 
