@@ -2,28 +2,32 @@ shader_type spatial;
 
 render_mode depth_draw_always, diffuse_toon;
 
-uniform float scatter_amount : hint_range(0.0, 1.0) = 0.0;
+varying float v_scatter_amount;
 
 void vertex()
 {
-	VERTEX.y += sin(TIME + VERTEX.x + VERTEX.z) * 0.025;
-	VERTEX.y -= scatter_amount * 0.5;
-	VERTEX.xz *= 1.0 + scatter_amount * 2.0;
+	vec4 custom = INSTANCE_CUSTOM; // XY - direction, Z - scatter_amount, W - health
+	vec3 dir = vec3(custom.x, 0, custom.y);
+	float time_wave = TIME + VERTEX.x + VERTEX.z;
+	float inv_health = 1.0 / custom.a;
+	v_scatter_amount = custom.z;
 
-	//scatter animation direction (based on custom_data)
-	vec4 custom = round(INSTANCE_CUSTOM);
+	VERTEX.y += sin(time_wave) * 0.025;
+	VERTEX.y -= v_scatter_amount * 0.5;
+	VERTEX.xz *= 1.0 + v_scatter_amount * 2.0;
+	VERTEX.xz *= 1.0 + (sin(time_wave * (10.0 * inv_health)) * 0.01 * inv_health);
 
 	vec3 local_dir = vec3(
-		dot(MODEL_MATRIX[0].xyz, custom.xyz),
-		dot(MODEL_MATRIX[1].xyz, custom.xyz),
-		dot(MODEL_MATRIX[2].xyz, custom.xyz)
+		dot(MODEL_MATRIX[0].xyz, dir),
+		dot(MODEL_MATRIX[1].xyz, dir),
+		dot(MODEL_MATRIX[2].xyz, dir)
 	);
 
-	VERTEX += local_dir * scatter_amount * 2.0;
+	VERTEX += local_dir * v_scatter_amount * 2.0;
 }
 
 void fragment()
 {
 	ALBEDO = COLOR.rgb;
-	ALPHA = clamp(COLOR.a - scatter_amount, 0, 1);
+	ALPHA = clamp(COLOR.a - v_scatter_amount, 0.0, 1.0);
 }

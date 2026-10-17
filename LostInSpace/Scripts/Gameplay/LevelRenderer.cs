@@ -45,5 +45,18 @@ public partial class LevelRenderer : Node3D
 
 	public void RemovePlatform(Vector2I pos) => _server.Remove(RenderLayer.Platforms, pos);
 	public void RemoveCollectible(Vector2I pos) => _server.Remove(RenderLayer.Collectibles, pos);
+	public void SetPlatformColor(Vector2I pos, Color color) => _server.SetColor(RenderLayer.Platforms, pos, color);
+	public void SetPlatformData(Vector2I pos, Color data) => _server.SetData(RenderLayer.Platforms, pos, data);
 	public void Clear() => _server.ClearLevel();
+
+	public void AnimateDestroy(Vector2I pos, Vector2I dir)
+	{
+		Tween tween = CreateTween();
+
+		tween.TweenMethod(Callable.From<float>(x => SetPlatformData(pos, new(-dir.X, -dir.Y, x, 1f))), 0f, 1f, 0.5f)
+		.SetTrans(Tween.TransitionType.Quad)
+		.SetEase(Tween.EaseType.Out);
+
+		tween.TweenCallback(Callable.From(() => RemovePlatform(pos)));
+	}
 }

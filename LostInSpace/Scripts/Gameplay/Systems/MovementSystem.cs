@@ -44,7 +44,7 @@ public class MovementSystem(
 		Vector2I from = _player.GridPosition;
 		TileResult exitResult = _state.GetPlatform(from)?.OnExit(BuildPlatformContext(from, direction))
 			?? TileResult.None;
-		HandleOnLeaveResult(exitResult, from);
+		HandleOnLeaveResult(exitResult, from, direction);
 
 		switch (moveKind)
 		{
@@ -114,13 +114,16 @@ public class MovementSystem(
 		}
 	}
 
-	private void HandleOnLeaveResult(TileResult result, Vector2I leavingFrom)
+	private void HandleOnLeaveResult(TileResult result, Vector2I leavingFrom, Vector2I direction)
 	{
 		switch (result.LeaveAction)
 		{
+			case LeaveAction.DemageSelf:
+				_renderer.SetPlatformData(leavingFrom, result.Data);
+				break;
 			case LeaveAction.DestroySelf:
+				_renderer.AnimateDestroy(leavingFrom, direction);
 				_state.RemovePlatform(leavingFrom);
-				_renderer.RemovePlatform(leavingFrom);
 				break;
 		}
 	}
