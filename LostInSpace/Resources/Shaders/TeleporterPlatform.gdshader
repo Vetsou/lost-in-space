@@ -2,8 +2,7 @@ shader_type spatial;
 
 render_mode depth_draw_always, diffuse_toon;
 
-uniform float vortex_radius : hint_range(0.1, 0.275) = 0.275; //alpha_custom
-uniform vec4 vortex_color : source_color = vec4(1.0, 1.0, 1.0, 1.0); //rgb_custom
+uniform float vortex_radius : hint_range(0.1, 0.275) = 0.275; // Can be controlled through custom.a for open/close animation
 uniform int vortex_arm_count : hint_range(2, 10) = 5;
 uniform float vortex_spin_speed = 3.0;
 uniform float vortex_distortion = 10.0;
@@ -23,11 +22,14 @@ void vertex()
 {
 	VERTEX.y += sin(TIME + VERTEX.x + VERTEX.z) * 0.025;
 	v_local_pos = VERTEX;
+	v_instance_custom = INSTANCE_CUSTOM;
 }
 
 void fragment()
 {
 	vec3 final_color = COLOR.rgb;
+
+	vec4 vortex_color = v_instance_custom;
 
 	vec2 uv = v_local_pos.xz;
 	float dist = length(uv);

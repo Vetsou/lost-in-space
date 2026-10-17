@@ -19,6 +19,10 @@ public static class PlatformFactory
 		10 => new TeleporterPlatform(1),
 		11 => new TeleporterPlatform(2),
 		12 => new TeleporterPlatform(3),
+		13 => new TeleporterPlatform(4),
+		14 => new TeleporterPlatform(5),
+		15 => new TeleporterPlatform(6),
+		16 => new TeleporterPlatform(7),
 		_ => null
 	};
 }

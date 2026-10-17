@@ -6,11 +6,11 @@
 render_priority = 0
 shader = ExtResource("1_cwikr")
 shader_parameter/vortex_radius = 0.27500000596046
-shader_parameter/vortex_color = Color(0.047058824, 0.3019608, 0.30980393, 1)
+shader_parameter/vortex_color = Color(0.9254902, 0.28235295, 0.6, 1)
 shader_parameter/vortex_arm_count = 5
 shader_parameter/vortex_spin_speed = 3.0
 shader_parameter/vortex_distortion = 10.0
-shader_parameter/rim_color_multiplier = 5.0
+shader_parameter/rim_color_multiplier = 2.50000011549012
 shader_parameter/circle_thickness = 0.05
 shader_parameter/shadow_radius = 0.3
 shader_parameter/distortion_strength = 0.9
