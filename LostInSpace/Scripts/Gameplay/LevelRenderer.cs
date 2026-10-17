@@ -25,7 +25,7 @@ public partial class LevelRenderer : Node3D
 
 				if (state.GetPlatform(pos) is { } platform)
 				{
-					_server.Render(RenderLayer.Platforms, pos, platform.VisualData);
+					_server.Render(RenderLayer.Platforms, pos, platform.VisualData, platform.InitialCustomData);
 				}
 
 				VisualData visual = state.GetCollectible(pos) switch
@@ -37,7 +37,7 @@ public partial class LevelRenderer : Node3D
 
 				if (visual != null)
 				{
-					_server.Render(RenderLayer.Collectibles, pos, visual);
+					_server.Render(RenderLayer.Collectibles, pos, visual, default);
 				}
 			}
 		}

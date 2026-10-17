@@ -6,6 +6,7 @@ namespace LostInSpace.Scripts.Gameplay.Platforms.Variants;
 public class RegularPlatform : IPlatform
 {
 	public VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://b686csrmwec88");
+	public Color InitialCustomData { get; } = default;
 	public TileResult OnEnter(PlatformContext ctx) => TileResult.None;
 	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
 }

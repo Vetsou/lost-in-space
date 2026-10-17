@@ -59,7 +59,7 @@ public class LevelRenderingServer(World3D world)
 		_batchSize = 0;
 	}
 
-	public void Render(RenderLayer layer, Vector2I pos, VisualData visualData)
+	public void Render(RenderLayer layer, Vector2I pos, VisualData visualData, Color initialData)
 	{
 		LayerData layerData = _layers[layer];
 		if (layerData.Lookup.ContainsKey(pos))
@@ -70,6 +70,8 @@ public class LevelRenderingServer(World3D world)
 		(BatchData batch, int index) = RenderInstance(pos, visualData, layerData.Height);
 		layerData.Lookup[pos] = (batch, index);
 		SetColor(layer, pos, visualData.Albedo);
+		SetData(layer, pos, initialData);
+
 	}
 
 	public void SetColor(RenderLayer layer, Vector2I pos, Color color)
@@ -81,6 +83,17 @@ public class LevelRenderingServer(World3D world)
 		}
 
 		RenderingServer.MultimeshInstanceSetColor(lookup.batch.rid, lookup.index, color);
+	}
+
+	public void SetData(RenderLayer layer, Vector2I pos, Color data)
+	{
+		LayerData layerData = _layers[layer];
+		if (!layerData.Lookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
+		{
+			return;
+		}
+
+		RenderingServer.MultimeshInstanceSetCustomData(lookup.batch.rid, lookup.index, data);
 	}
 
 	public void Remove(RenderLayer layer, Vector2I pos) => FreeInstance(pos, _layers[layer].Lookup);

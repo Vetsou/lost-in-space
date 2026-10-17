@@ -1,3 +1,4 @@
+using Godot;
 using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay.Platforms;
@@ -5,6 +6,7 @@ namespace LostInSpace.Scripts.Gameplay.Platforms;
 public interface IPlatform
 {
 	VisualData VisualData { get; }
+	Color InitialCustomData { get; }
 	TileResult OnEnter(PlatformContext ctx);
 	TileResult OnExit(PlatformContext ctx);
 }
