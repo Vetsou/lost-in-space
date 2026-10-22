@@ -1,0 +1,28 @@
+[gd_resource type="Theme" format=3 uid="uid://qoiosg23wohj"]
+
+[ext_resource type="StyleBox" uid="uid://dannchv14ygtr" path="res://Resources/UI/Components/UI_9slice_glow.tres" id="1_0vibh"]
+[ext_resource type="StyleBox" uid="uid://ctn68cwle7jgv" path="res://Resources/UI/Components/UI_9slice.tres" id="1_eey1f"]
+[ext_resource type="Texture2D" uid="uid://byc83cjbei7tq" path="res://Resources/Textures/Unchecked.png" id="3_0vibh"]
+[ext_resource type="StyleBox" uid="uid://dx011wfb6ss37" path="res://Resources/UI/Components/UI_fill.tres" id="3_rn1c5"]
+[ext_resource type="Texture2D" uid="uid://biu5043ajhfbu" path="res://Resources/Textures/Checked.png" id="3_vd6yx"]
+[ext_resource type="Texture2D" uid="uid://dmm3smb8rgf1e" path="res://Resources/Textures/Grabber_Full.png" id="5_oqdbo"]
+[ext_resource type="StyleBox" uid="uid://f8jl3ujadus8" path="res://Resources/UI/Components/UI_fill_glow.tres" id="7_aq2o5"]
+[ext_resource type="Texture2D" uid="uid://bberoq8568q3d" path="res://Resources/Textures/Grabber_Empty.png" id="8_2qqeg"]
+
+[resource]
+Button/styles/hover = ExtResource("1_0vibh")
+Button/styles/hover_pressed = ExtResource("1_0vibh")
+Button/styles/normal = ExtResource("1_eey1f")
+Button/styles/pressed = ExtResource("1_eey1f")
+CheckBox/icons/checked = ExtResource("3_vd6yx")
+CheckBox/icons/unchecked = ExtResource("3_0vibh")
+HSlider/icons/grabber = ExtResource("5_oqdbo")
+HSlider/icons/grabber_highlight = ExtResource("5_oqdbo")
+HSlider/styles/grabber_area = ExtResource("3_rn1c5")
+HSlider/styles/grabber_area_highlight = ExtResource("7_aq2o5")
+HSlider/styles/slider = ExtResource("1_eey1f")
+Panel/styles/panel = ExtResource("1_eey1f")
+PanelContainer/styles/panel = ExtResource("1_eey1f")
+PopupMenu/icons/radio_checked = ExtResource("5_oqdbo")
+PopupMenu/icons/radio_unchecked = ExtResource("8_2qqeg")
+PopupMenu/styles/panel = ExtResource("1_eey1f")
