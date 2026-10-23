@@ -23,6 +23,11 @@ ConfigManager="*uid://bx77vbmun6u38"
 project/assembly_name="LostInSpace"
 project/solution_directory="../"
 
+[gui]
+
+theme/custom="uid://qoiosg23wohj"
+theme/custom_font="uid://bepu6r66v2t7x"
+
 [internationalization]
 
 locale/translations=PackedStringArray("res://Resources/Translations/translation.en.translation", "res://Resources/Translations/translation.pl.translation")
@@ -33,6 +38,7 @@ locale/translations=PackedStringArray("res://Resources/Translations/translation.
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

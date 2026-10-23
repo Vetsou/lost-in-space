@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ampnh")
 _buttonsContainer = NodePath("MarginContainer/HBoxContainer/ScrollContainer/LevelButtonsContainer")
-_levelNameLabel = NodePath("MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/LevelName")
+_levelNameLabel = NodePath("MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/MarginContainer/LevelName")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=472100588]
 layout_mode = 1
@@ -37,13 +37,15 @@ size_flags_stretch_ratio = 80.0
 [node name="LevelButtonsContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer" unique_id=100275717]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
 columns = 6
 
 [node name="SideContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1453113337]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 20.0
-theme_override_constants/separation = 25
+theme_override_constants/separation = 5
 
 [node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/SideContainer" unique_id=913026832]
 layout_mode = 2
@@ -59,7 +61,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LevelName" type="Label" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer" unique_id=1866618477]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer" unique_id=2002542052]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+
+[node name="LevelName" type="Label" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/MarginContainer" unique_id=1866618477]
 layout_mode = 2
 text = "Level Name text"
 horizontal_alignment = 1
