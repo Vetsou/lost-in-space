@@ -37,13 +37,15 @@ size_flags_stretch_ratio = 80.0
 [node name="LevelButtonsContainer" type="GridContainer" parent="MarginContainer/HBoxContainer/ScrollContainer" unique_id=100275717]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
 columns = 6
 
 [node name="SideContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=1453113337]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 20.0
-theme_override_constants/separation = 25
+theme_override_constants/separation = 5
 
 [node name="Panel" type="Panel" parent="MarginContainer/HBoxContainer/SideContainer" unique_id=913026832]
 layout_mode = 2

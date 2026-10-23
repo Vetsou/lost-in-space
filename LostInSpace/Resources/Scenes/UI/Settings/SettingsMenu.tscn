@@ -32,10 +32,11 @@ offset_right = -100.0
 offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 4
 
 [node name="CategoryContainer" type="HBoxContainer" parent="OptionsContainer" unique_id=575039179]
 layout_mode = 2
+theme_override_constants/separation = 4
 
 [node name="GeneralButton" type="Button" parent="OptionsContainer/CategoryContainer" unique_id=2025959948]
 layout_mode = 2
