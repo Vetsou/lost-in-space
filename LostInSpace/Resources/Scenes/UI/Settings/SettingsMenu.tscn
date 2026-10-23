@@ -15,10 +15,10 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
 script = ExtResource("1_e3jmt")
-_generalPanel = NodePath("OptionsContainer/PanelContainer/GeneralPanel")
-_audioPanel = NodePath("OptionsContainer/PanelContainer/AudioPanel")
-_videoPanel = NodePath("OptionsContainer/PanelContainer/VideoPanel")
-_keybindsPanel = NodePath("OptionsContainer/PanelContainer/KeybindsPanel")
+_generalPanel = NodePath("OptionsContainer/PanelContainer/MarginContainer/GeneralPanel")
+_audioPanel = NodePath("OptionsContainer/PanelContainer/MarginContainer/AudioPanel")
+_videoPanel = NodePath("OptionsContainer/PanelContainer/MarginContainer/VideoPanel")
+_keybindsPanel = NodePath("OptionsContainer/PanelContainer/MarginContainer/KeybindsPanel")
 _settingsButtons = [NodePath("OptionsContainer/CategoryContainer/VideoButton"), NodePath("OptionsContainer/CategoryContainer/AudioButton"), NodePath("OptionsContainer/CategoryContainer/KeybindsButton"), NodePath("OptionsContainer/CategoryContainer/ResetButton"), NodePath("OptionsContainer/BackButton")]
 
 [node name="OptionsContainer" type="VBoxContainer" parent="." unique_id=807495786]
@@ -63,16 +63,23 @@ custom_minimum_size = Vector2(100, 300)
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GeneralPanel" parent="OptionsContainer/PanelContainer" unique_id=1994329431 instance=ExtResource("2_12m4e")]
+[node name="MarginContainer" type="MarginContainer" parent="OptionsContainer/PanelContainer" unique_id=853694676]
+layout_mode = 2
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="GeneralPanel" parent="OptionsContainer/PanelContainer/MarginContainer" unique_id=1994329431 instance=ExtResource("2_12m4e")]
 layout_mode = 2
 
-[node name="VideoPanel" parent="OptionsContainer/PanelContainer" unique_id=1482553420 instance=ExtResource("2_m4dqw")]
+[node name="VideoPanel" parent="OptionsContainer/PanelContainer/MarginContainer" unique_id=1482553420 instance=ExtResource("2_m4dqw")]
 layout_mode = 2
 
-[node name="AudioPanel" parent="OptionsContainer/PanelContainer" unique_id=173584112 instance=ExtResource("3_wqold")]
+[node name="AudioPanel" parent="OptionsContainer/PanelContainer/MarginContainer" unique_id=173584112 instance=ExtResource("3_wqold")]
 layout_mode = 2
 
-[node name="KeybindsPanel" parent="OptionsContainer/PanelContainer" unique_id=270025585 instance=ExtResource("4_mjpxk")]
+[node name="KeybindsPanel" parent="OptionsContainer/PanelContainer/MarginContainer" unique_id=270025585 instance=ExtResource("4_mjpxk")]
 layout_mode = 2
 
 [node name="BackButton" type="Button" parent="OptionsContainer" unique_id=416545207]

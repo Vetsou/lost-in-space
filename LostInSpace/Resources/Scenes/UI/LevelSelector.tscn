@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ampnh")
 _buttonsContainer = NodePath("MarginContainer/HBoxContainer/ScrollContainer/LevelButtonsContainer")
-_levelNameLabel = NodePath("MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/LevelName")
+_levelNameLabel = NodePath("MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/MarginContainer/LevelName")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=472100588]
 layout_mode = 1
@@ -59,7 +59,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LevelName" type="Label" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer" unique_id=1866618477]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer" unique_id=2002542052]
+layout_mode = 2
+theme_override_constants/margin_top = 5
+
+[node name="LevelName" type="Label" parent="MarginContainer/HBoxContainer/SideContainer/Panel/VBoxContainer/MarginContainer" unique_id=1866618477]
 layout_mode = 2
 text = "Level Name text"
 horizontal_alignment = 1
