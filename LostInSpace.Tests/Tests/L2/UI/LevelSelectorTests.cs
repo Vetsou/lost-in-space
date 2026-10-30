@@ -5,7 +5,7 @@ using LostInSpace.Scripts.UI;
 using LostInSpace.Scripts.UI.Scenes.LevelSelector;
 using static GdUnit4.Assertions;
 
-namespace LostInSpace.Tests.UI;
+namespace LostInSpace.Tests.L2.UI;
 
 [TestSuite]
 [RequireGodotRuntime]
