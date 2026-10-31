@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dstctghm35p55"]
+
+[ext_resource type="Shader" uid="uid://nu5lnn22xxvy" path="res://Resources/Shaders/GoalPlatform.gdshader" id="1_leith"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_leith")
+shader_parameter/lights_speed = 3.00000014180148
+shader_parameter/base_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/rim_color = Color(1, 1, 1, 1)

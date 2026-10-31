@@ -15,4 +15,7 @@ public static class VisualConstants
         new("#000000ff"),
         new("#a3a3a3ff")
     ];
+
+	public static readonly Color GoalPlatformClosedColor = Colors.Red;
+	public static readonly Color GoalPlatformOpenColor = Colors.Green;
 }

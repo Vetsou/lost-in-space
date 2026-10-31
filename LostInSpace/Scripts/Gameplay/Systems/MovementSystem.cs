@@ -97,7 +97,7 @@ public class MovementSystem(
 			return;
 		}
 
-		throw new InvalidOperationException("Movement chain exceeded safe limit (64 moves)");
+		throw new InvalidOperationException($"Movement chain exceeded safe limit ({MaxChain} moves)");
 	}
 
 	private bool HandleOnEnterResult(TileResult result)

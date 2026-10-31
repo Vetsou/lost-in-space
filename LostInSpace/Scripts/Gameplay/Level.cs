@@ -2,6 +2,7 @@ using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Player;
 using LostInSpace.Scripts.Gameplay.Systems;
+using LostInSpace.Scripts.Rendering;
 using LostInSpace.Scripts.UI;
 using Newtonsoft.Json;
 using FileAccess = Godot.FileAccess;
@@ -92,9 +93,19 @@ public partial class Level : Scene
 		}
 	}
 
-	private void OnPrimaryChanged() =>
+	private void OnPrimaryChanged()
+	{
 		EmitSignal(SignalName.PrimaryPointsChanged,
 			_levelSession.PrimaryCurrent, _state.PrimaryPointsTotal);
+
+		if (_levelSession.AllPrimaryCollected)
+		{
+			foreach (Vector2I pos in _state.GoalPlatforms)
+			{
+				_renderer.SetPlatformData(pos, VisualConstants.GoalPlatformOpenColor);
+			}
+		}
+	}
 
 	private void OnOptionalChanged() =>
 		EmitSignal(SignalName.OptionalPointsChanged,
