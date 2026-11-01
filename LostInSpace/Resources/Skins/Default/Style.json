@@ -1,0 +1,28 @@
+{
+	"Platforms": {
+		"Regular": {
+			"Model": "Models/BasePlatform.tres",
+			"Color": "#545454"
+		},
+		"Goal": {
+			"Model": "Models/BasePlatform.tres",
+			"Color": "#FCE508"
+		},
+		"Breakable": {
+			"Model": "Models/BasePlatform.tres",
+			"Color": "#E24E27"
+		},
+		"Move": {
+			"Model": "Models/BasePlatform.tres",
+			"Color": "#5045F1"
+		},
+		"Slippery": {
+			"Model": "Models/BasePlatform.tres",
+			"Color": "#09F0D3"
+		},
+		"Teleporter": {
+			"Model": "Models/BasePlatform.tres",
+			"Color": "#568C66"
+		}
+	}
+}

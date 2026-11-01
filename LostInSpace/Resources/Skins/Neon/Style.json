@@ -1,0 +1,92 @@
+{
+	"Platforms": {
+		"Regular": {
+			"Model": "Models/Hex.tres",
+			"Color": "#3B3F8C",
+			"Shader": "Shaders/Pulse.gdshader",
+			"ShaderParameters": {
+				"albedo_texture": "Textures/Regular.png",
+				"glow_color": "#4E5BFF",
+				"glow_strength": 0.5,
+				"pulse_speed": 1.5
+			},
+			"Sounds": {
+				"OnEnter": "Sounds/MetalPipe.mp3"
+			}
+		},
+		"Goal": {
+			"Model": "Models/Hex.tres",
+			"Color": "#FFD400",
+			"Shader": "Shaders/Pulse.gdshader",
+			"ShaderParameters": {
+				"albedo_texture": "Textures/Goal.png",
+				"glow_color": "#FFD400",
+				"glow_strength": 1.2,
+				"pulse_speed": 5.0
+			},
+			"Sounds": {
+				"OnEnter": "Sounds/MetalPipe.mp3"
+			}
+		},
+		"Breakable": {
+			"Model": "Models/Tile.tres",
+			"Color": "#FF3B6B",
+			"Shader": "Shaders/Pulse.gdshader",
+			"ShaderParameters": {
+				"albedo_texture": "Textures/Breakable.png",
+				"glow_color": "#FF1744",
+				"glow_strength": 0.8,
+				"pulse_speed": 8.0
+			},
+			"Sounds": {
+				"OnExit": "Sounds/MetalPipe.mp3"
+			}
+		},
+		"Move": {
+			"Model": "Models/Tile.tres",
+			"Color": "#B14CFF",
+			"Shader": "Shaders/Scroll.gdshader",
+			"ShaderParameters": {
+				"albedo_texture": "Textures/Move.png",
+				"scroll_speed": [
+					-0.8,
+					0.0
+				],
+				"glow_strength": 0.7
+			},
+			"Sounds": {
+				"OnEnter": "Sounds/MetalPipe.mp3"
+			}
+		},
+		"Slippery": {
+			"Model": "Models/Tile.tres",
+			"Color": "#2EF2FF",
+			"Shader": "Shaders/Scroll.gdshader",
+			"ShaderParameters": {
+				"albedo_texture": "Textures/Slippery.png",
+				"scroll_speed": [
+					0.0,
+					0.4
+				],
+				"glow_strength": 0.6
+			},
+			"Sounds": {
+				"OnEnter": "Sounds/MetalPipe.mp3"
+			}
+		},
+		"Teleporter": {
+			"Model": "Models/Hex.tres",
+			"Color": "#39FF88",
+			"Shader": "Shaders/Pulse.gdshader",
+			"ShaderParameters": {
+				"albedo_texture": "Textures/Teleporter.png",
+				"glow_color": "#39FF88",
+				"glow_strength": 1.5,
+				"pulse_speed": 3.0
+			},
+			"Sounds": {
+				"OnEnter": "Sounds/MetalPipe.mp3"
+			}
+		}
+	}
+}

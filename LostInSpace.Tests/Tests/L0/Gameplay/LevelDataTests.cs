@@ -21,6 +21,19 @@ public class LevelDataTests
 		ex.StartsWithMessage("Level ID is null or empty");
 	}
 
+	[TestCase("")]
+	[TestCase("    ")]
+	[TestCase(null)]
+	public void Level_WithoutStylePath_ShouldThrow(string stylePath)
+	{
+		// Arrange
+		LevelData levelData = CreateValidLevel() with { StylePath = stylePath };
+
+		// Act & Assert
+		IExceptionAssert ex = AssertThrown(levelData.Validate);
+		ex.StartsWithMessage("Style path is null or empty");
+	}
+
 	[TestCase(1, 1)]
 	[TestCase(1, 5)]
 	[TestCase(5, 1)]
@@ -137,6 +150,7 @@ public class LevelDataTests
 	private static LevelData CreateValidLevel() => new()
 	{
 		LevelId = "test",
+		StylePath = "res://Resources/Skins/Default/Style.json",
 		Width = 3,
 		Height = 3,
 		Platforms = new ushort[,]

@@ -1,5 +1,6 @@
 {
 	"LevelId": "1-2",
+	"StylePath": "res://Resources/Skins/Neon/Style.json",
 	"Width": 4,
 	"Height": 4,
 	"Platforms": [
