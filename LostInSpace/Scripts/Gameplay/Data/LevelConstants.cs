@@ -10,4 +10,7 @@ public static class LevelConstants
 
 	public static Vector3 GridToWorld(this Vector2I pos, float y = 0f) =>
 		new(pos.X * PLATFORM_SPACING, y, pos.Y * PLATFORM_SPACING);
+
+	public static float DirectionToRotation(this Vector2I direction) =>
+		Mathf.Atan2(-direction.Y, direction.X);
 }

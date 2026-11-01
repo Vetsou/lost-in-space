@@ -1,5 +1,6 @@
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
+using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay;
@@ -13,7 +14,7 @@ public partial class LevelRenderer : Node3D
 
 	public override void _Ready() => _server = new LevelRenderingServer(GetWorld3D());
 
-	public void RenderLevel(LevelState state)
+	public void RenderLevel(LevelState state, PlatformStyle style)
 	{
 		_server.InitLevel(state.MapSize);
 
@@ -25,7 +26,7 @@ public partial class LevelRenderer : Node3D
 
 				if (state.GetPlatform(pos) is { } platform)
 				{
-					_server.Render(RenderLayer.Platforms, pos, platform.VisualData);
+					_server.Render(RenderLayer.Platforms, pos, style.GetVisualData(platform.Type), platform.Direction.DirectionToRotation());
 				}
 
 				VisualData visual = state.GetCollectible(pos) switch

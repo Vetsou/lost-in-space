@@ -1,11 +1,11 @@
 using Godot;
-using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay.Platforms.Variants;
 
 public class MovePlatform(Vector2I direction) : IPlatform
 {
-	public VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://bt7fcql1et6em");
+	public PlatformType Type => PlatformType.Move;
+	public Vector2I Direction => direction;
 	public TileResult OnEnter(PlatformContext ctx) => TileResult.ForcedMove(direction);
 	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
 }

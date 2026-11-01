@@ -1,5 +1,7 @@
 using Godot;
+using LostInSpace.Scripts.Audio;
 using LostInSpace.Scripts.Gameplay.Data;
+using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Gameplay.Player;
 using LostInSpace.Scripts.Gameplay.Systems;
 using LostInSpace.Scripts.UI;
@@ -17,6 +19,7 @@ public partial class Level : Scene
 	private string _currentLevelPath;
 
 	private LevelState _state;
+	private PlatformStyle _style;
 	private LevelSession _levelSession;
 	private MovementSystem _movement;
 
@@ -68,13 +71,17 @@ public partial class Level : Scene
 		LevelData data = JsonConvert.DeserializeObject<LevelData>(FileAccess.GetFileAsString(levelFilePath));
 		data.Validate();
 
+		_style = PlatformStyle.LoadOrDefault(data.StylePath);
+
 		_state = new LevelState();
 		_state.Initialize(data);
 
 		_levelSession.StartSession(_state);
 		_movement = new MovementSystem(_state, _playerView, _levelSession, _renderer);
+		_movement.PlatformEntered += OnPlatformEntered;
+		_movement.PlatformExited += OnPlatformExited;
 
-		_renderer.RenderLevel(_state);
+		_renderer.RenderLevel(_state, _style);
 		_playerView.SetTo(_state.PlayerStart);
 
 		EmitSignal(SignalName.LevelLoaded, _state.LevelId);
@@ -105,6 +112,12 @@ public partial class Level : Scene
 
 	private void OnBestStepsChanged(ushort best) =>
 		EmitSignal(SignalName.BestStepsChanged, (int)best);
+
+	private void OnPlatformEntered(PlatformType type) =>
+		SfxPlayer.Instance?.Play(_style.GetAudioData(type).EnterSound);
+
+	private void OnPlatformExited(PlatformType type) =>
+		SfxPlayer.Instance?.Play(_style.GetAudioData(type).ExitSound);
 
 	private void OnLevelCompleted()
 	{

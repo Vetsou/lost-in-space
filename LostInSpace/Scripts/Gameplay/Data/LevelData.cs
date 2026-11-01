@@ -13,6 +13,9 @@ public readonly record struct LevelData
 	public required string LevelId { get; init; }
 
 	[JsonProperty(Required = Required.Always)]
+	public required string StylePath { get; init; }
+
+	[JsonProperty(Required = Required.Always)]
 	public required ushort Width { get; init; }
 
 	[JsonProperty(Required = Required.Always)]
@@ -35,6 +38,11 @@ public readonly record struct LevelData
 		if (string.IsNullOrWhiteSpace(LevelId))
 		{
 			throw new Exception("Level ID is null or empty");
+		}
+
+		if (string.IsNullOrWhiteSpace(StylePath))
+		{
+			throw new Exception("Style path is null or empty");
 		}
 
 		ValidateLevelBounds();

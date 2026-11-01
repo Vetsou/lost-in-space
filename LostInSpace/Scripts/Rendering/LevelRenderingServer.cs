@@ -59,7 +59,7 @@ public class LevelRenderingServer(World3D world)
 		_batchSize = 0;
 	}
 
-	public void Render(RenderLayer layer, Vector2I pos, VisualData visualData)
+	public void Render(RenderLayer layer, Vector2I pos, VisualData visualData, float rotation = 0f)
 	{
 		LayerData layerData = _layers[layer];
 		if (layerData.Lookup.ContainsKey(pos))
@@ -67,7 +67,7 @@ public class LevelRenderingServer(World3D world)
 			return;
 		}
 
-		(BatchData batch, int index) = RenderInstance(pos, visualData, layerData.Height);
+		(BatchData batch, int index) = RenderInstance(pos, visualData, layerData.Height, rotation);
 		layerData.Lookup[pos] = (batch, index);
 		SetColor(layer, pos, visualData.Albedo);
 	}
@@ -85,7 +85,7 @@ public class LevelRenderingServer(World3D world)
 
 	public void Remove(RenderLayer layer, Vector2I pos) => FreeInstance(pos, _layers[layer].Lookup);
 
-	private (BatchData, int) RenderInstance(Vector2I pos, VisualData data, float height)
+	private (BatchData, int) RenderInstance(Vector2I pos, VisualData data, float height, float rotation)
 	{
 		if (!_multimeshBatches.TryGetValue(data, out BatchData batch))
 		{
@@ -98,8 +98,7 @@ public class LevelRenderingServer(World3D world)
 		batch.count++;
 		RenderingServer.MultimeshSetVisibleInstances(batch.rid, batch.count);
 
-		Transform3D transform = Transform3D.Identity;
-		transform.Origin = pos.GridToWorld(height);
+		var transform = new Transform3D(new Basis(Vector3.Up, rotation), pos.GridToWorld(height));
 
 		RenderingServer.MultimeshInstanceSetTransform(batch.rid, index, transform);
 
