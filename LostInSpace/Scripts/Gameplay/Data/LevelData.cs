@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace LostInSpace.Scripts.Gameplay.Data;
 
-public readonly struct LevelData
+public readonly record struct LevelData
 {
 	private const ushort MIN_LEVEL_SIZE = 2;
 	private const ushort MAX_LEVEL_SIZE = 50;

@@ -77,3 +77,6 @@ csharp_style_expression_bodied_constructors = false:suggestion
 
 # Pattern matching
 csharp_style_pattern_local_over_anonymous_function = true:suggestion
+
+[LostInSpace.Tests/Tests/**/*.cs]
+dotnet_diagnostic.CA1822.severity = none # Disable 'static' preference for test functions

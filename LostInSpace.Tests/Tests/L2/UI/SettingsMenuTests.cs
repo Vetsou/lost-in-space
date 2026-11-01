@@ -3,7 +3,7 @@ using Godot;
 using LostInSpace.Scripts.UI.Scenes.Settings;
 using static GdUnit4.Assertions;
 
-namespace LostInSpace.Tests.UI;
+namespace LostInSpace.Tests.L2.UI;
 
 [TestSuite]
 [RequireGodotRuntime]
