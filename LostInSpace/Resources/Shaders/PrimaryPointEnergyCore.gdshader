@@ -7,18 +7,15 @@ uniform vec4 glass_color : source_color = vec4(0.2, 1.0, 0.2, 0.5);
 uniform vec4 energy_color : source_color = vec4(0.0, 1.0, 0.0, 1.0);
 uniform vec4 cap_color : source_color = vec4(0.2, 0.2, 0.2, 1.0);
 
-mat2 rotate(float angle)
-{
-    float c = cos(angle);
-    float s = sin(angle);
-    return mat2(vec2(c, -s), vec2(s, c));
-}
-
 void vertex()
 {
     float angle = TIME * rotation_speed;
-    VERTEX.xz = rotate(angle) * VERTEX.xz;
-    NORMAL.xz = rotate(angle) * NORMAL.xz;
+    float c = cos(angle);
+    float s = sin(angle);
+    mat2 rotation_matrix = mat2(vec2(c, -s), vec2(s, c));
+
+    VERTEX.xz *= rotation_matrix;
+    NORMAL.xz *= rotation_matrix;
 }
 
 void fragment()

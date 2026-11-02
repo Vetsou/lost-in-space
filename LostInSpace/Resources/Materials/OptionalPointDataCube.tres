@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://r0u5mabq64l0"]
+
+[ext_resource type="Shader" uid="uid://chjn63m1outbr" path="res://Resources/Shaders/OptionalPointDataCube.gdshader" id="1_cmfva"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_cmfva")
+shader_parameter/rotation_speed = 2.0
+shader_parameter/cube_color = Color(0.2, 0.2, 0.2, 1)
+shader_parameter/energy_color = Color(1, 1, 0, 1)
+shader_parameter/line_count = 2.0
+shader_parameter/line_thickness = 0.05
+shader_parameter/line_speed = 0.50000002305148
+shader_parameter/glow_size = 0.1
