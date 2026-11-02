@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://uludmjdseb8x"]
 
-[ext_resource type="Shader" uid="uid://bp5qrvadh7apo" path="res://Resources/Shaders/TeleporterPlatform.gdshader" id="1_cwikr"]
+[ext_resource type="Shader" uid="uid://bp5qrvadh7apo" path="res://Resources/Shaders/Platforms/TeleporterPlatform.gdshader" id="1_cwikr"]
 
 [resource]
 render_priority = 0

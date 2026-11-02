@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://dstctghm35p55"]
 
-[ext_resource type="Shader" uid="uid://nu5lnn22xxvy" path="res://Resources/Shaders/GoalPlatform.gdshader" id="1_leith"]
+[ext_resource type="Shader" uid="uid://nu5lnn22xxvy" path="res://Resources/Shaders/Platforms/GoalPlatform.gdshader" id="1_leith"]
 
 [resource]
 render_priority = 0

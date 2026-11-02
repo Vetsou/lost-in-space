@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://doplovsssdlw1"]
 
-[ext_resource type="Shader" uid="uid://2b11xv8guepa" path="res://Resources/Shaders/BreakablePlatform.gdshader" id="1_xlwoh"]
+[ext_resource type="Shader" uid="uid://2b11xv8guepa" path="res://Resources/Shaders/Platforms/BreakablePlatform.gdshader" id="1_xlwoh"]
 
 [resource]
 render_priority = 0

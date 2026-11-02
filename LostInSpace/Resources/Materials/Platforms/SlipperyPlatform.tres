@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://cdc4ek0msw23t"]
 
-[ext_resource type="Shader" uid="uid://0ga4bkemnw1c" path="res://Resources/Shaders/SlipperyPlatform.gdshader" id="1_hs1wd"]
+[ext_resource type="Shader" uid="uid://0ga4bkemnw1c" path="res://Resources/Shaders/Platforms/SlipperyPlatform.gdshader" id="1_hs1wd"]
 
 [resource]
 render_priority = 0

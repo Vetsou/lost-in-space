@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="VisualData" format=3 uid="uid://c7l8d1q81nlhq"]
 
 [ext_resource type="Script" uid="uid://dqts3j7yxr6o8" path="res://Scripts/Rendering/VisualData.cs" id="1_an7y8"]
-[ext_resource type="Material" uid="uid://dstctghm35p55" path="res://Resources/Materials/GoalPlatform.tres" id="1_asr28"]
-[ext_resource type="ArrayMesh" uid="uid://yot710u87aj5" path="res://Resources/Models/GoalPlatform.obj" id="2_asr28"]
+[ext_resource type="Material" uid="uid://dstctghm35p55" path="res://Resources/Materials/Platforms/GoalPlatform.tres" id="1_asr28"]
+[ext_resource type="ArrayMesh" uid="uid://yot710u87aj5" path="res://Resources/Models/Platforms/GoalPlatform.obj" id="2_asr28"]
 
 [resource]
 script = ExtResource("1_an7y8")
