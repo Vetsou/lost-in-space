@@ -19,7 +19,7 @@ public enum EnterAction
 public enum LeaveAction
 {
 	None,
-	DemageSelf,
+	DamageSelf,
 	DestroySelf
 }
 
@@ -35,7 +35,7 @@ public readonly record struct TileResult
 
 	public static TileResult ForcedMove(Vector2I direction) => new() { MoveKind = MoveKind.ForcedMove, Target = direction };
 	public static TileResult Teleport(Vector2I position) => new() { MoveKind = MoveKind.Teleport, Target = position };
-	public static TileResult Demage(Color data) => new() { LeaveAction = LeaveAction.DemageSelf, Data = data };
+	public static TileResult Damage(Color data) => new() { LeaveAction = LeaveAction.DamageSelf, Data = data };
 	public static TileResult Destroy() => new() { LeaveAction = LeaveAction.DestroySelf };
 	public static TileResult TryComplete() => new() { EnterAction = EnterAction.TryCompleteLevel };
 }

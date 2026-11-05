@@ -14,7 +14,6 @@ uniform float shadow_radius : hint_range(0.01, 0.3) = 0.3;
 uniform float distortion_strength : hint_range(0.2, 3.0) = 0.9;
 uniform float distortion_size : hint_range(0.01, 1.0) = 0.05;
 
-
 varying vec3 v_local_pos;
 varying vec4 v_instance_custom;
 

@@ -118,7 +118,7 @@ public class MovementSystem(
 	{
 		switch (result.LeaveAction)
 		{
-			case LeaveAction.DemageSelf:
+			case LeaveAction.DamageSelf:
 				_renderer.SetPlatformData(leavingFrom, result.Data);
 				break;
 			case LeaveAction.DestroySelf:

@@ -71,8 +71,8 @@ public class LevelSelectorTests
 	}
 
 	[TestCase(0, LeaveAction.None)]
-	[TestCase(1, LeaveAction.DemageSelf)]
-	[TestCase(2, LeaveAction.DemageSelf)]
+	[TestCase(1, LeaveAction.DamageSelf)]
+	[TestCase(2, LeaveAction.DamageSelf)]
 	[TestCase(3, LeaveAction.DestroySelf)]
 	public void DurableBreakablePlatfrom_OnExit_ShouldDestorySelfWhenZeroHealth(int moveCount, LeaveAction expectedAction)
 	{

@@ -11,5 +11,5 @@ public class BreakablePlatform(int health = 1) : IPlatform
 
 	public TileResult OnEnter(PlatformContext ctx) => TileResult.None;
 	public TileResult OnExit(PlatformContext ctx) =>
-		--Health == 0 ? TileResult.Destroy() : TileResult.Demage(new(0, 0, 0, Health));
+		--Health == 0 ? TileResult.Destroy() : TileResult.Damage(new(0, 0, 0, Health));
 }

@@ -2,7 +2,6 @@ shader_type spatial;
 
 render_mode depth_draw_always, diffuse_toon;
 
-//uniform vec3 lights_color : source_color = vec3(0.0, 1.0, 0.0);
 uniform float lights_speed : hint_range(0.01, 5) = 2.0;
 
 uniform vec3 base_color : source_color = vec3(0.2, 0.2, 0.2);

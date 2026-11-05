@@ -2,6 +2,8 @@ shader_type spatial;
 
 render_mode depth_draw_always, diffuse_toon;
 
+#include "../Utils.gdshaderinc"
+
 uniform float base_wind_speed = 4.0;
 uniform float wind_density = 20.0;
 uniform vec4 wind_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
@@ -10,12 +12,6 @@ uniform float trail_width : hint_range(0.01, 0.3) = 0.03;
 
 varying vec3 v_world_pos;
 varying vec4 v_instance_custom;
-
-float hash(vec2 p) {
-	p = fract(p * vec2(123.34, 456.21));
-	p += dot(p, p + 45.32);
-	return fract(p.x * p.y);
-}
 
 void vertex()
 {
