@@ -10,6 +10,7 @@ public class LevelState
 	public string LevelId { get; private set; }
 	public Vector2I MapSize { get; private set; }
 	public Vector2I PlayerStart { get; private set; }
+	public List<Vector2I> GoalPlatforms { get; private set; } = [];
 
 	private IPlatform[] _platforms;
 	private CollectibleId[] _collectibles;
@@ -47,6 +48,10 @@ public class LevelState
 					if (platform is TeleporterPlatform tp)
 					{
 						teleporters.Add((tp.TeleportLinkId, pos));
+					}
+					else if (platform is GoalPlatform)
+					{
+						GoalPlatforms.Add(pos);
 					}
 				}
 

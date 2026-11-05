@@ -1,0 +1,54 @@
+shader_type spatial;
+
+render_mode depth_draw_always, diffuse_toon;
+
+#include "../Utils.gdshaderinc"
+
+uniform float base_wind_speed = 4.0;
+uniform float wind_density = 20.0;
+uniform vec4 wind_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+uniform float trail_length_multiplier : hint_range(0.1, 2.0) = 1.0;
+uniform float trail_width : hint_range(0.01, 0.3) = 0.03;
+
+varying vec3 v_world_pos;
+varying vec4 v_instance_custom;
+
+void vertex()
+{
+	VERTEX.y += sin(TIME + VERTEX.x + VERTEX.z) * 0.025;
+
+	v_world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	v_instance_custom = INSTANCE_CUSTOM;
+}
+
+void fragment() {
+	vec4 custom = round(v_instance_custom);
+
+	float normal_direction = dot(v_world_pos.xz, vec2(-custom.z, custom.x));
+	float movement_direction = dot(v_world_pos.xz, vec2(custom.x, custom.z));
+
+	float scaled_pos = normal_direction * wind_density;
+
+	float lane_id = floor(scaled_pos);
+	float lane_offcenter = fract(scaled_pos) - 0.5;
+	float line_thickness = smoothstep(trail_width, 0.0, abs(lane_offcenter));
+
+	float random_seed = hash(vec2(lane_id, 3.21));
+
+	float rand_speed = mix(0.7, 1.4, fract(random_seed * 43.12));
+	float rand_time_offset = fract(random_seed * 78.65) * 10.0;
+	float rand_trail_len = mix(0.4, 1.2, fract(random_seed * 21.12)) * trail_length_multiplier;
+
+	float current_speed = base_wind_speed * rand_speed;
+	float wind_time = TIME * current_speed + rand_time_offset;
+	float streak_progress = fract(movement_direction - wind_time);
+
+	float trail_head = smoothstep(0.0, rand_trail_len, streak_progress);
+	float trail_tail = 1.0 - smoothstep(1.0 - trail_width, 1.0, streak_progress);
+	float star_shape = trail_head * trail_tail;
+
+	float trail = star_shape * line_thickness;
+
+	ALBEDO = mix(COLOR.rgb, wind_color.rgb, wind_color.a * trail);
+	ALPHA = COLOR.a;
+}

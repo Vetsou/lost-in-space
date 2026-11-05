@@ -13,7 +13,7 @@ public class LevelSession(LevelRenderer renderer)
 	public ushort PrimaryCurrent { get; private set; }
 	public ushort OptionalCurrent { get; private set; }
 
-	private bool AllPrimaryCollected => PrimaryCurrent == _state.PrimaryPointsTotal;
+	public bool AllPrimaryCollected => PrimaryCurrent == _state.PrimaryPointsTotal;
 
 	public event Action PrimaryChanged;
 	public event Action OptionalChanged;
