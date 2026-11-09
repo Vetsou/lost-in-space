@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode depth_draw_always, diffuse_toon;
+render_mode diffuse_toon;
 
 uniform float rotation_speed : hint_range(0.0, 10.0) = 2.0;
 uniform vec3 cube_color : source_color = vec3(0.2, 0.2, 0.2);
@@ -41,5 +41,4 @@ void fragment()
 
 	ALBEDO = mix(cube_color.rgb, energy_color.rgb, combined_line_mask);
 	EMISSION = vec3(1.0, 1.0, 1.0) * combined_glow_mask * combined_line_mask;
-	ALPHA = COLOR.a;
 }

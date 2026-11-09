@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode depth_draw_always, diffuse_toon;
+render_mode diffuse_toon;
 
 uniform float lights_speed : hint_range(0.01, 5) = 2.0;
 
@@ -22,5 +22,4 @@ void fragment()
 
 	EMISSION = custom.rgb * (1.0 - regionX) * (1.0 - regionY) * (sin(TIME * lights_speed) * 0.5 + 0.5);
 	ALBEDO = COLOR.rgb * regionY * (1.0 - regionX) + rim_color * regionX * (1.0 - regionY) + base_color * regionX * regionY;
-	ALPHA = COLOR.a;
 }

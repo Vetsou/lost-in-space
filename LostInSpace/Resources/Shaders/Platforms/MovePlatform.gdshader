@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode depth_draw_always, diffuse_toon;
+render_mode diffuse_toon;
 
 #include "../Utils.gdshaderinc"
 
@@ -50,5 +50,4 @@ void fragment() {
 	float trail = star_shape * line_thickness;
 
 	ALBEDO = mix(COLOR.rgb, wind_color.rgb, wind_color.a * trail);
-	ALPHA = COLOR.a;
 }

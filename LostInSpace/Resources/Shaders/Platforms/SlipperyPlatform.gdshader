@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode depth_draw_always, diffuse_toon;
+render_mode diffuse_toon;
 
 #include "../Utils.gdshaderinc"
 
@@ -26,5 +26,4 @@ void fragment()
 	vec3 final_color = mix(COLOR.rgb, edge_color.rgb, lines);
 
 	ALBEDO = final_color;
-	ALPHA = COLOR.a;
 }

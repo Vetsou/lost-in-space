@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode depth_draw_always, diffuse_toon;
+render_mode diffuse_toon;
 
 uniform float vortex_radius : hint_range(0.1, 0.275) = 0.275; // Can be controlled through custom.a for open/close animation
 uniform int vortex_arm_count : hint_range(2, 10) = 5;
@@ -68,5 +68,4 @@ void fragment()
 	final_color = mix(final_color, rim_color, rim_outer_circle - rim_inner_circle);
 
 	ALBEDO = final_color;
-	ALPHA = COLOR.a;
 }
