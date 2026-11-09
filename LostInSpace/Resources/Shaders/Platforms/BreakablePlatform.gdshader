@@ -9,7 +9,7 @@ void vertex()
 	vec4 custom = INSTANCE_CUSTOM; // XY - direction, Z - scatter_amount, W - health
 	vec3 dir = vec3(custom.x, 0, custom.y);
 	float time_wave = TIME + VERTEX.x + VERTEX.z;
-	float inv_health = 1.0 / custom.w;
+	float inv_health = 1.0 / max(custom.w, 1.0);
 	v_scatter_amount = custom.z;
 
 	VERTEX.y += sin(time_wave) * 0.025;

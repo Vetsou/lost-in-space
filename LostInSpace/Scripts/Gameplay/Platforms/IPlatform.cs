@@ -6,7 +6,7 @@ namespace LostInSpace.Scripts.Gameplay.Platforms;
 public interface IPlatform
 {
 	VisualData VisualData { get; }
-	Color InitialCustomData { get; }
 	TileResult OnEnter(PlatformContext ctx);
 	TileResult OnExit(PlatformContext ctx);
+	Color GetInstanceCustom();
 }

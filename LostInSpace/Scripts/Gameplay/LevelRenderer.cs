@@ -1,5 +1,7 @@
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
+using LostInSpace.Scripts.Gameplay.Platforms;
+using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay;
@@ -10,12 +12,15 @@ public partial class LevelRenderer : Node3D
 	private static VisualData OptionalCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dai8uv2vxng4m");
 
 	private LevelRenderingServer _server;
+	private readonly Dictionary<Vector2I, Func<Color>> _instance_customs = [];
 
 	public override void _Ready() => _server = new LevelRenderingServer(GetWorld3D());
 
+	public override void _Process(double delta) => _server.UpdateAllBatchCustomData(_instance_customs);
+
 	public void RenderLevel(LevelState state)
 	{
-		_server.InitLevel(state.MapSize);
+		_server.CreateBuffer(state.MapSize);
 
 		for (int x = 0; x < state.MapSize.X; x++)
 		{
@@ -25,7 +30,8 @@ public partial class LevelRenderer : Node3D
 
 				if (state.GetPlatform(pos) is { } platform)
 				{
-					_server.Render(RenderLayer.Platforms, pos, platform.VisualData, platform.InitialCustomData);
+					_server.Render(RenderLayer.Platforms, pos, platform.VisualData);
+					_instance_customs.Add(pos, platform.GetInstanceCustom);
 				}
 
 				VisualData visual = state.GetCollectible(pos) switch
@@ -37,7 +43,7 @@ public partial class LevelRenderer : Node3D
 
 				if (visual != null)
 				{
-					_server.Render(RenderLayer.Collectibles, pos, visual, default);
+					_server.Render(RenderLayer.Collectibles, pos, visual);
 				}
 			}
 		}
@@ -45,18 +51,36 @@ public partial class LevelRenderer : Node3D
 
 	public void RemovePlatform(Vector2I pos) => _server.Remove(RenderLayer.Platforms, pos);
 	public void RemoveCollectible(Vector2I pos) => _server.Remove(RenderLayer.Collectibles, pos);
-	public void SetPlatformColor(Vector2I pos, Color color) => _server.SetColor(RenderLayer.Platforms, pos, color);
-	public void SetPlatformData(Vector2I pos, Color data) => _server.SetData(RenderLayer.Platforms, pos, data);
-	public void Clear() => _server.ClearLevel();
-
-	public void AnimateDestroy(Vector2I pos, Vector2I dir)
+	public void Clear()
 	{
-		Tween tween = CreateTween();
+		_server.ClearLevel();
+		_instance_customs.Clear();
+	}
 
-		tween.TweenMethod(Callable.From<float>(x => SetPlatformData(pos, new(-dir.X, -dir.Y, x, 1f))), 0f, 1f, 0.5f)
-		.SetTrans(Tween.TransitionType.Quad)
-		.SetEase(Tween.EaseType.Out);
+	public void DestroyBreakable(IPlatform platform, Vector2I pos, Vector2I dir)
+	{
+		if (platform is BreakablePlatform breakPlat)
+		{
+			breakPlat.BreakDirection = new(-dir.X, -dir.Y);
 
-		tween.TweenCallback(Callable.From(() => RemovePlatform(pos)));
+			Tween tween = CreateTween();
+
+			tween.TweenMethod(Callable.From((float x) => breakPlat.BreakAmount = x), 0f, 1f, 0.5f)
+			.SetTrans(Tween.TransitionType.Quad)
+			.SetEase(Tween.EaseType.Out);
+
+			tween.TweenCallback(Callable.From(() => RemovePlatform(pos)));
+		}
+	}
+
+	public static void OpenExits(IPlatform[] platforms)
+	{
+		foreach (IPlatform platform in platforms)
+		{
+			if (platform is GoalPlatform goal)
+			{
+				goal.Open();
+			}
+		}
 	}
 }

@@ -1,5 +1,6 @@
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
+using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 using LostInSpace.Scripts.Gameplay.Player;
 using LostInSpace.Scripts.Gameplay.Systems;
 using LostInSpace.Scripts.Rendering;
@@ -100,10 +101,7 @@ public partial class Level : Scene
 
 		if (_levelSession.AllPrimaryCollected)
 		{
-			foreach (Vector2I pos in _state.GoalPlatforms)
-			{
-				_renderer.SetPlatformData(pos, VisualConstants.GoalPlatformOpenColor);
-			}
+			LevelRenderer.OpenExits(_state.Platforms);
 		}
 	}
 

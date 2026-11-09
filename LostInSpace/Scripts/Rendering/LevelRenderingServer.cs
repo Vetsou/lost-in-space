@@ -35,8 +35,10 @@ public class LevelRenderingServer(World3D world)
 
 	private readonly Rid _scenario = world.Scenario;
 	private int _batchSize = 0;
+	private const int _bufferSpan = 20; //Transform(12) + Color(4) + CustomData(4)
+	private const int _customDataOffset = 16;
 
-	public void InitLevel(Vector2I mapSize)
+	public void CreateBuffer(Vector2I mapSize)
 	{
 		ClearLevel();
 		_batchSize = mapSize.X * mapSize.Y;
@@ -59,7 +61,7 @@ public class LevelRenderingServer(World3D world)
 		_batchSize = 0;
 	}
 
-	public void Render(RenderLayer layer, Vector2I pos, VisualData visualData, Color initialData)
+	public void Render(RenderLayer layer, Vector2I pos, VisualData visualData)
 	{
 		LayerData layerData = _layers[layer];
 		if (layerData.Lookup.ContainsKey(pos))
@@ -69,31 +71,50 @@ public class LevelRenderingServer(World3D world)
 
 		(BatchData batch, int index) = RenderInstance(pos, visualData, layerData.Height);
 		layerData.Lookup[pos] = (batch, index);
-		SetColor(layer, pos, visualData.Albedo);
-		SetData(layer, pos, initialData);
-
+		RenderingServer.MultimeshInstanceSetColor(batch.rid, index, visualData.Albedo);
 	}
 
-	public void SetColor(RenderLayer layer, Vector2I pos, Color color)
+	public void UpdateAllBatchCustomData(Dictionary<Vector2I, Func<Color>> instanceCustoms)
 	{
-		LayerData layerData = _layers[layer];
-		if (!layerData.Lookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
+		var batches = new Dictionary<Rid, List<(int index, Color data)>>();
+
+		foreach ((Vector2I pos, Func<Color> dataFunc) in instanceCustoms)
 		{
-			return;
+			LayerData layerData = _layers[RenderLayer.Platforms];
+			if (!layerData.Lookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
+			{
+				continue;
+			}
+
+			if (!batches.TryGetValue(lookup.batch.rid, out List<(int, Color)> indexedDataList))
+			{
+				indexedDataList = [];
+				batches[lookup.batch.rid] = indexedDataList;
+			}
+
+			indexedDataList.Add((lookup.index, dataFunc()));
 		}
 
-		RenderingServer.MultimeshInstanceSetColor(lookup.batch.rid, lookup.index, color);
-	}
-
-	public void SetData(RenderLayer layer, Vector2I pos, Color data)
-	{
-		LayerData layerData = _layers[layer];
-		if (!layerData.Lookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
+		foreach (BatchData batch in _multimeshBatches.Values)
 		{
-			return;
-		}
+			if (!batches.TryGetValue(batch.rid, out List<(int, Color)> indexedDataList))
+			{
+				continue;
+			}
 
-		RenderingServer.MultimeshInstanceSetCustomData(lookup.batch.rid, lookup.index, data);
+			float[] buffer = RenderingServer.MultimeshGetBuffer(batch.rid);
+			foreach ((int index, Color data) in indexedDataList)
+			{
+				if (index + 3 < buffer.Length)
+				{
+					buffer[index * _bufferSpan + _customDataOffset + 0] = data.R;
+					buffer[index * _bufferSpan + _customDataOffset + 1] = data.G;
+					buffer[index * _bufferSpan + _customDataOffset + 2] = data.B;
+					buffer[index * _bufferSpan + _customDataOffset + 3] = data.A;
+				}
+			}
+			RenderingServer.MultimeshSetBuffer(batch.rid, buffer);
+		}
 	}
 
 	public void Remove(RenderLayer layer, Vector2I pos) => FreeInstance(pos, _layers[layer].Lookup);

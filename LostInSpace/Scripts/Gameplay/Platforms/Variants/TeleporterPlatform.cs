@@ -7,7 +7,6 @@ public class TeleporterPlatform(byte teleportLinkId) : IPlatform
 {
 	public byte TeleportLinkId => teleportLinkId;
 	public VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://dva7a0u42vhvn");
-	public Color InitialCustomData { get; } = VisualConstants.TeleporterColors[teleportLinkId];
 
 	public TileResult OnEnter(PlatformContext ctx)
 	{
@@ -20,4 +19,5 @@ public class TeleporterPlatform(byte teleportLinkId) : IPlatform
 	}
 
 	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
+	public Color GetInstanceCustom() => VisualConstants.TeleporterColors[teleportLinkId];
 }

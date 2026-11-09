@@ -118,11 +118,8 @@ public class MovementSystem(
 	{
 		switch (result.LeaveAction)
 		{
-			case LeaveAction.DamageSelf:
-				_renderer.SetPlatformData(leavingFrom, result.Data);
-				break;
 			case LeaveAction.DestroySelf:
-				_renderer.AnimateDestroy(leavingFrom, direction);
+				_renderer.DestroyBreakable(_state.GetPlatform(leavingFrom), leavingFrom, direction);
 				_state.RemovePlatform(leavingFrom);
 				break;
 		}
