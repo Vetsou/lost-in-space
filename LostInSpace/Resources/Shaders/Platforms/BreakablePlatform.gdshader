@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode depth_draw_always, diffuse_toon;
+render_mode diffuse_toon, depth_prepass_alpha;
 
 varying float v_scatter_amount;
 
