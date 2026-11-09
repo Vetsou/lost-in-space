@@ -5,6 +5,6 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_hs1wd")
-shader_parameter/edge_color = Color(0.5, 0.79166675, 1, 1)
-shader_parameter/line_thickness = 0.400000019
-shader_parameter/scale = 6.0000002375
+shader_parameter/edge_color = Color(0.85, 0.95, 1, 1)
+shader_parameter/line_thickness = 0.050000002375
+shader_parameter/scale = 8.0000003325

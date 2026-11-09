@@ -1,5 +1,4 @@
 using Godot;
-using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 using LostInSpace.Scripts.Gameplay.Player;
