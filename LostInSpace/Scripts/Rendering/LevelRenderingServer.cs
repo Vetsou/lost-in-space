@@ -95,25 +95,21 @@ public class LevelRenderingServer(World3D world)
 			indexedDataList.Add((lookup.index, dataFunc()));
 		}
 
-		foreach (BatchData batch in _multimeshBatches.Values)
+		foreach ((Rid rid, List<(int index, Color data)> indexedDataList) in batches)
 		{
-			if (!batches.TryGetValue(batch.rid, out List<(int, Color)> indexedDataList))
-			{
-				continue;
-			}
-
-			float[] buffer = RenderingServer.MultimeshGetBuffer(batch.rid);
+			float[] buffer = RenderingServer.MultimeshGetBuffer(rid);
 			foreach ((int index, Color data) in indexedDataList)
 			{
-				if (index + 3 < buffer.Length)
+				int baseIndex = index * _bufferSpan + _customDataOffset;
+				if (baseIndex + 3 < buffer.Length)
 				{
-					buffer[index * _bufferSpan + _customDataOffset + 0] = data.R;
-					buffer[index * _bufferSpan + _customDataOffset + 1] = data.G;
-					buffer[index * _bufferSpan + _customDataOffset + 2] = data.B;
-					buffer[index * _bufferSpan + _customDataOffset + 3] = data.A;
+					buffer[baseIndex + 0] = data.R;
+					buffer[baseIndex + 1] = data.G;
+					buffer[baseIndex + 2] = data.B;
+					buffer[baseIndex + 3] = data.A;
 				}
 			}
-			RenderingServer.MultimeshSetBuffer(batch.rid, buffer);
+			RenderingServer.MultimeshSetBuffer(rid, buffer);
 		}
 	}
 
