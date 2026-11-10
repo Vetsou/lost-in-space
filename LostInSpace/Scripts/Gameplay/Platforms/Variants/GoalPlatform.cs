@@ -10,5 +10,9 @@ public class GoalPlatform : IPlatform
 	public TileResult OnEnter(PlatformContext ctx) => TileResult.TryComplete();
 	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
 	public Color GetInstanceCustom() => _isopen ? VisualConstants.GoalPlatformOpenColor : VisualConstants.GoalPlatformClosedColor;
-	public void Unlock() => _isopen = true;
+	public void Unlock()
+	{
+		_isopen = true;
+		BufferUpdatHelper.RequestBufferChange();
+	}
 }

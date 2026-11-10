@@ -6,6 +6,12 @@ using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay;
 
+public static class BufferUpdatHelper
+{
+	public static event Action OnBufferChange;
+	public static void RequestBufferChange() => OnBufferChange?.Invoke();
+}
+
 public partial class LevelRenderer : Node3D
 {
 	private static VisualData PrimaryCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dkssxmi6nh8h0");
@@ -14,9 +20,13 @@ public partial class LevelRenderer : Node3D
 	private LevelRenderingServer _server;
 	private readonly Dictionary<Vector2I, Func<Color>> _instanceCustoms = [];
 
-	public override void _Ready() => _server = new LevelRenderingServer(GetWorld3D());
+	public override void _Ready()
+	{
+		_server = new LevelRenderingServer(GetWorld3D());
+		BufferUpdatHelper.OnBufferChange += UpdateBuffers;
+	}
 
-	public override void _Process(double delta) => _server.UpdateAllBatchCustomData(_instanceCustoms);
+	private void UpdateBuffers() => _server.UpdateAllBatchCustomData(_instanceCustoms);
 
 	public void RenderLevel(LevelState state)
 	{
@@ -47,6 +57,7 @@ public partial class LevelRenderer : Node3D
 				}
 			}
 		}
+		UpdateBuffers();
 	}
 
 	public void RemovePlatform(Vector2I pos) => _server.Remove(RenderLayer.Platforms, pos);
