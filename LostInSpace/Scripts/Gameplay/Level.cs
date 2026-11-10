@@ -101,7 +101,7 @@ public partial class Level : Scene
 
 		if (_levelSession.AllPrimaryCollected)
 		{
-			LevelRenderer.OpenExits(_state.Platforms);
+			LevelRenderer.UnlockExits(_state.Platforms);
 		}
 	}
 

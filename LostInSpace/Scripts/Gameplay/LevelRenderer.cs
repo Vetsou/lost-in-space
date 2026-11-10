@@ -12,11 +12,11 @@ public partial class LevelRenderer : Node3D
 	private static VisualData OptionalCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dai8uv2vxng4m");
 
 	private LevelRenderingServer _server;
-	private readonly Dictionary<Vector2I, Func<Color>> _instance_customs = [];
+	private readonly Dictionary<Vector2I, Func<Color>> _instanceCustoms = [];
 
 	public override void _Ready() => _server = new LevelRenderingServer(GetWorld3D());
 
-	public override void _Process(double delta) => _server.UpdateAllBatchCustomData(_instance_customs);
+	public override void _Process(double delta) => _server.UpdateAllBatchCustomData(_instanceCustoms);
 
 	public void RenderLevel(LevelState state)
 	{
@@ -31,7 +31,7 @@ public partial class LevelRenderer : Node3D
 				if (state.GetPlatform(pos) is { } platform)
 				{
 					_server.Render(RenderLayer.Platforms, pos, platform.VisualData);
-					_instance_customs.TryAdd(pos, platform.GetInstanceCustom);
+					_instanceCustoms.TryAdd(pos, platform.GetInstanceCustom);
 				}
 
 				VisualData visual = state.GetCollectible(pos) switch
@@ -54,7 +54,7 @@ public partial class LevelRenderer : Node3D
 	public void Clear()
 	{
 		_server.ClearLevel();
-		_instance_customs.Clear();
+		_instanceCustoms.Clear();
 	}
 
 	public void DestroyBreakable(IPlatform platform, Vector2I pos, Vector2I dir)
@@ -73,13 +73,13 @@ public partial class LevelRenderer : Node3D
 		}
 	}
 
-	public static void OpenExits(IPlatform[] platforms)
+	public static void UnlockExits(IPlatform[] platforms)
 	{
 		foreach (IPlatform platform in platforms)
 		{
 			if (platform is GoalPlatform goal)
 			{
-				goal.Open();
+				goal.Unlock();
 			}
 		}
 	}
