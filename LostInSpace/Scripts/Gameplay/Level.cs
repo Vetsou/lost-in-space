@@ -1,9 +1,7 @@
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
-using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 using LostInSpace.Scripts.Gameplay.Player;
 using LostInSpace.Scripts.Gameplay.Systems;
-using LostInSpace.Scripts.Rendering;
 using LostInSpace.Scripts.UI;
 using Newtonsoft.Json;
 using FileAccess = Godot.FileAccess;
@@ -101,7 +99,7 @@ public partial class Level : Scene
 
 		if (_levelSession.AllPrimaryCollected)
 		{
-			LevelRenderer.UnlockExits(_state.Platforms);
+			_renderer.UnlockExits(_state);
 		}
 	}
 

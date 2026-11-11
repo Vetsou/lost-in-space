@@ -74,7 +74,18 @@ public class LevelRenderingServer(World3D world)
 		RenderingServer.MultimeshInstanceSetColor(batch.rid, index, visualData.Albedo);
 	}
 
-	public void UpdateAllBatchCustomData(Dictionary<Vector2I, Func<Color>> instanceCustoms)
+	public void SetCustomData(RenderLayer layer, Vector2I pos, Color data)
+	{
+		LayerData layerData = _layers[layer];
+		if (!layerData.Lookup.TryGetValue(pos, out (BatchData batch, int index) lookup))
+		{
+			return;
+		}
+
+		RenderingServer.MultimeshInstanceSetCustomData(lookup.batch.rid, lookup.index, data);
+	}
+
+	public void UpdateBatchCustomData(Dictionary<Vector2I, Func<Color>> instanceCustoms)
 	{
 		var batches = new Dictionary<Rid, List<(int index, Color data)>>();
 

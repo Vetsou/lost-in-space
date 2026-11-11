@@ -6,12 +6,6 @@ using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay;
 
-public static class BufferUpdatHelper
-{
-	public static event Action OnBufferChange;
-	public static void RequestBufferChange() => OnBufferChange?.Invoke();
-}
-
 public partial class LevelRenderer : Node3D
 {
 	private static VisualData PrimaryCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dkssxmi6nh8h0");
@@ -20,13 +14,7 @@ public partial class LevelRenderer : Node3D
 	private LevelRenderingServer _server;
 	private readonly Dictionary<Vector2I, Func<Color>> _instanceCustoms = [];
 
-	public override void _Ready()
-	{
-		_server = new LevelRenderingServer(GetWorld3D());
-		BufferUpdatHelper.OnBufferChange += UpdateBuffers;
-	}
-
-	private void UpdateBuffers() => _server.UpdateAllBatchCustomData(_instanceCustoms);
+	public override void _Ready() => _server = new LevelRenderingServer(GetWorld3D());
 
 	public void RenderLevel(LevelState state)
 	{
@@ -57,7 +45,7 @@ public partial class LevelRenderer : Node3D
 				}
 			}
 		}
-		UpdateBuffers();
+		_server.UpdateBatchCustomData(_instanceCustoms);
 	}
 
 	public void RemovePlatform(Vector2I pos) => _server.Remove(RenderLayer.Platforms, pos);
@@ -76,7 +64,11 @@ public partial class LevelRenderer : Node3D
 
 			Tween tween = CreateTween();
 
-			tween.TweenMethod(Callable.From((float x) => breakPlat.BreakAmount = x), 0f, 1f, 0.5f)
+			tween.TweenMethod(Callable.From<float>(x =>
+			{
+				breakPlat.BreakAmount = x;
+				_server.SetCustomData(RenderLayer.Platforms, pos, breakPlat.GetInstanceCustom());
+			}), 0f, 1f, 0.5f)
 			.SetTrans(Tween.TransitionType.Quad)
 			.SetEase(Tween.EaseType.Out);
 
@@ -84,14 +76,23 @@ public partial class LevelRenderer : Node3D
 		}
 	}
 
-	public static void UnlockExits(IPlatform[] platforms)
+	public void UnlockExits(LevelState state)
 	{
-		foreach (IPlatform platform in platforms)
+		var toUnlock = new Dictionary<Vector2I, Func<Color>>();
+		for (int x = 0; x < state.MapSize.X; x++)
 		{
-			if (platform is GoalPlatform goal)
+			for (int y = 0; y < state.MapSize.Y; y++)
 			{
-				goal.Unlock();
+				var pos = new Vector2I(x, y);
+
+				if (state.GetPlatform(pos) is GoalPlatform goal)
+				{
+					goal.Unlock();
+					toUnlock.Add(pos, goal.GetInstanceCustom);
+				}
 			}
 		}
+
+		_server.UpdateBatchCustomData(toUnlock);
 	}
 }
