@@ -8,4 +8,5 @@ public class SlipperyPlatform : IPlatform
 	public VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://dtyk1rdnwg8ui");
 	public TileResult OnEnter(PlatformContext ctx) => TileResult.ForcedMove(ctx.MoveDirection);
 	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
+	public Color GetInstanceCustom() => default;
 }

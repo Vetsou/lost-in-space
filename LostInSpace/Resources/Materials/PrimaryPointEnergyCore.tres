@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://t331j45db3r3"]
+
+[ext_resource type="Shader" uid="uid://bptp8gjvk3m40" path="res://Resources/Shaders/PrimaryPointEnergyCore.gdshader" id="1_3ls47"]
+
+[resource]
+render_priority = 1
+shader = ExtResource("1_3ls47")
+shader_parameter/rotation_speed = 2.0
+shader_parameter/glass_color = Color(0.2, 1, 0.2, 0.5)
+shader_parameter/energy_color = Color(0, 1, 0, 1)
+shader_parameter/cap_color = Color(0.2, 0.2, 0.2, 1)

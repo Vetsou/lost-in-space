@@ -92,9 +92,16 @@ public partial class Level : Scene
 		}
 	}
 
-	private void OnPrimaryChanged() =>
+	private void OnPrimaryChanged()
+	{
 		EmitSignal(SignalName.PrimaryPointsChanged,
 			_levelSession.PrimaryCurrent, _state.PrimaryPointsTotal);
+
+		if (_levelSession.AllPrimaryCollected)
+		{
+			_renderer.UnlockExits(_state);
+		}
+	}
 
 	private void OnOptionalChanged() =>
 		EmitSignal(SignalName.OptionalPointsChanged,

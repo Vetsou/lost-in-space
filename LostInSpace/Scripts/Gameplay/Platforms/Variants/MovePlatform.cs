@@ -8,4 +8,5 @@ public class MovePlatform(Vector2I direction) : IPlatform
 	public VisualData VisualData { get; } = ResourceLoader.Load<VisualData>("uid://bt7fcql1et6em");
 	public TileResult OnEnter(PlatformContext ctx) => TileResult.ForcedMove(direction);
 	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
+	public Color GetInstanceCustom() => new(direction.X, 0, direction.Y);
 }

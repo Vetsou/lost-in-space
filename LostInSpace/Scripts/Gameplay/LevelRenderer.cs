@@ -1,5 +1,7 @@
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
+using LostInSpace.Scripts.Gameplay.Platforms;
+using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay;
@@ -10,12 +12,13 @@ public partial class LevelRenderer : Node3D
 	private static VisualData OptionalCollectibleVisualData { get; } = ResourceLoader.Load<VisualData>("uid://dai8uv2vxng4m");
 
 	private LevelRenderingServer _server;
+	private readonly Dictionary<Vector2I, Func<Color>> _instanceCustoms = [];
 
 	public override void _Ready() => _server = new LevelRenderingServer(GetWorld3D());
 
 	public void RenderLevel(LevelState state)
 	{
-		_server.InitLevel(state.MapSize);
+		_server.CreateBuffer(state.MapSize);
 
 		for (int x = 0; x < state.MapSize.X; x++)
 		{
@@ -26,6 +29,7 @@ public partial class LevelRenderer : Node3D
 				if (state.GetPlatform(pos) is { } platform)
 				{
 					_server.Render(RenderLayer.Platforms, pos, platform.VisualData);
+					_instanceCustoms.TryAdd(pos, platform.GetInstanceCustom);
 				}
 
 				VisualData visual = state.GetCollectible(pos) switch
@@ -41,9 +45,54 @@ public partial class LevelRenderer : Node3D
 				}
 			}
 		}
+		_server.UpdateBatchCustomData(_instanceCustoms);
 	}
 
 	public void RemovePlatform(Vector2I pos) => _server.Remove(RenderLayer.Platforms, pos);
 	public void RemoveCollectible(Vector2I pos) => _server.Remove(RenderLayer.Collectibles, pos);
-	public void Clear() => _server.ClearLevel();
+	public void Clear()
+	{
+		_server.ClearLevel();
+		_instanceCustoms.Clear();
+	}
+
+	public void DestroyBreakable(IPlatform platform, Vector2I pos, Vector2I dir)
+	{
+		if (platform is BreakablePlatform breakPlat)
+		{
+			breakPlat.BreakDirection = new(-dir.X, -dir.Y);
+
+			Tween tween = CreateTween();
+
+			tween.TweenMethod(Callable.From<float>(x =>
+			{
+				breakPlat.BreakAmount = x;
+				_server.SetCustomData(RenderLayer.Platforms, pos, breakPlat.GetInstanceCustom());
+			}), 0f, 1f, 0.5f)
+			.SetTrans(Tween.TransitionType.Quad)
+			.SetEase(Tween.EaseType.Out);
+
+			tween.TweenCallback(Callable.From(() => RemovePlatform(pos)));
+		}
+	}
+
+	public void UnlockExits(LevelState state)
+	{
+		var toUnlock = new Dictionary<Vector2I, Func<Color>>();
+		for (int x = 0; x < state.MapSize.X; x++)
+		{
+			for (int y = 0; y < state.MapSize.Y; y++)
+			{
+				var pos = new Vector2I(x, y);
+
+				if (state.GetPlatform(pos) is GoalPlatform goal)
+				{
+					goal.Unlock();
+					toUnlock.Add(pos, goal.GetInstanceCustom);
+				}
+			}
+		}
+
+		_server.UpdateBatchCustomData(toUnlock);
+	}
 }
