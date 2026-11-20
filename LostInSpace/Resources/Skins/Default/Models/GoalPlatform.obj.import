@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://yot710u87aj5"
-path="res://.godot/imported/GoalPlatform.obj-0fd89a8e099e44afe9d058db3355bbd4.mesh"
+path="res://.godot/imported/GoalPlatform.obj-0f642bfd43dfa4635a49326deb40847a.mesh"
 
 [deps]
 
-files=["res://.godot/imported/GoalPlatform.obj-0fd89a8e099e44afe9d058db3355bbd4.mesh"]
+files=["res://.godot/imported/GoalPlatform.obj-0f642bfd43dfa4635a49326deb40847a.mesh"]
 
 source_file="res://Resources/Skins/Default/Models/GoalPlatform.obj"
-dest_files=["res://.godot/imported/GoalPlatform.obj-0fd89a8e099e44afe9d058db3355bbd4.mesh", "res://.godot/imported/GoalPlatform.obj-0fd89a8e099e44afe9d058db3355bbd4.mesh"]
+dest_files=["res://.godot/imported/GoalPlatform.obj-0f642bfd43dfa4635a49326deb40847a.mesh", "res://.godot/imported/GoalPlatform.obj-0f642bfd43dfa4635a49326deb40847a.mesh"]
 
 [params]
 

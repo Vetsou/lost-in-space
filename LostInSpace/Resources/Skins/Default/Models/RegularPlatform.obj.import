@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://bs8fj7wmxiylv"
-path="res://.godot/imported/RegularPlatform.obj-20ea994e7a61c242715c108d596ff4e8.mesh"
+path="res://.godot/imported/RegularPlatform.obj-e936b80c058e260aec95cd505a502492.mesh"
 
 [deps]
 
-files=["res://.godot/imported/RegularPlatform.obj-20ea994e7a61c242715c108d596ff4e8.mesh"]
+files=["res://.godot/imported/RegularPlatform.obj-e936b80c058e260aec95cd505a502492.mesh"]
 
 source_file="res://Resources/Skins/Default/Models/RegularPlatform.obj"
-dest_files=["res://.godot/imported/RegularPlatform.obj-20ea994e7a61c242715c108d596ff4e8.mesh", "res://.godot/imported/RegularPlatform.obj-20ea994e7a61c242715c108d596ff4e8.mesh"]
+dest_files=["res://.godot/imported/RegularPlatform.obj-e936b80c058e260aec95cd505a502492.mesh", "res://.godot/imported/RegularPlatform.obj-e936b80c058e260aec95cd505a502492.mesh"]
 
 [params]
 

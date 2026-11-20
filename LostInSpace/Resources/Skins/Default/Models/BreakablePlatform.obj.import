@@ -4,14 +4,14 @@ importer="wavefront_obj"
 importer_version=1
 type="Mesh"
 uid="uid://i5xpe4gqkp4v"
-path="res://.godot/imported/BreakablePlatform.obj-f23516e588f5034d03fc54cb72cf7c87.mesh"
+path="res://.godot/imported/BreakablePlatform.obj-c3da606df9990e1d1805ae713ed6c317.mesh"
 
 [deps]
 
-files=["res://.godot/imported/BreakablePlatform.obj-f23516e588f5034d03fc54cb72cf7c87.mesh"]
+files=["res://.godot/imported/BreakablePlatform.obj-c3da606df9990e1d1805ae713ed6c317.mesh"]
 
 source_file="res://Resources/Skins/Default/Models/BreakablePlatform.obj"
-dest_files=["res://.godot/imported/BreakablePlatform.obj-f23516e588f5034d03fc54cb72cf7c87.mesh", "res://.godot/imported/BreakablePlatform.obj-f23516e588f5034d03fc54cb72cf7c87.mesh"]
+dest_files=["res://.godot/imported/BreakablePlatform.obj-c3da606df9990e1d1805ae713ed6c317.mesh", "res://.godot/imported/BreakablePlatform.obj-c3da606df9990e1d1805ae713ed6c317.mesh"]
 
 [params]
 
