@@ -11,7 +11,7 @@ public class LevelState
 	public Vector2I MapSize { get; private set; }
 	public Vector2I PlayerStart { get; private set; }
 
-	private IPlatform[] _platforms;
+	public IPlatform[] Platforms { get; private set; }
 	private CollectibleId[] _collectibles;
 	private readonly Dictionary<byte, (Vector2I a, Vector2I b)> _teleporters = [];
 
@@ -24,7 +24,7 @@ public class LevelState
 		LevelId = data.LevelId;
 		PlayerStart = new Vector2I(data.PlayerPositionX, data.PlayerPositionY);
 
-		_platforms = new IPlatform[MapSize.X * MapSize.Y];
+		Platforms = new IPlatform[MapSize.X * MapSize.Y];
 		_collectibles = new CollectibleId[MapSize.X * MapSize.Y];
 
 		PrimaryPointsTotal = 0;
@@ -42,7 +42,7 @@ public class LevelState
 				if (data.Platforms[y, x] != 0)
 				{
 					IPlatform platform = PlatformFactory.CreatePlatform(data.Platforms[y, x]);
-					_platforms[idx] = platform;
+					Platforms[idx] = platform;
 
 					if (platform is TeleporterPlatform tp)
 					{
@@ -101,9 +101,9 @@ public class LevelState
 		pos.X >= 0 && pos.Y >= 0 && pos.X < MapSize.X && pos.Y < MapSize.Y;
 
 	public IPlatform GetPlatform(Vector2I pos) =>
-		IsValid(pos) ? _platforms[GridToIndex(pos)] : null;
+		IsValid(pos) ? Platforms[GridToIndex(pos)] : null;
 
-	public void RemovePlatform(Vector2I pos) => _platforms[GridToIndex(pos)] = null;
+	public void RemovePlatform(Vector2I pos) => Platforms[GridToIndex(pos)] = null;
 
 	public CollectibleId GetCollectible(Vector2I pos) =>
 		IsValid(pos) ? _collectibles[GridToIndex(pos)] : CollectibleId.None;

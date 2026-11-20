@@ -1,28 +1,62 @@
 {
 	"Platforms": {
 		"Regular": {
-			"Model": "Models/BasePlatform.tres",
-			"Color": "#545454"
+			"Model": "Models/RegularPlatform.obj",
+			"Color": "#3E435E",
+			"Shader": "Shaders/RegularPlatform.gdshader"
 		},
 		"Goal": {
-			"Model": "Models/BasePlatform.tres",
-			"Color": "#FCE508"
+			"Model": "Models/GoalPlatform.obj",
+			"Color": "#FCE508",
+			"Shader": "Shaders/GoalPlatform.gdshader",
+			"ShaderParameters": {
+				"lights_speed": 3.0,
+				"base_color": "#333333",
+				"rim_color": "#FFFFFF"
+			}
 		},
 		"Breakable": {
-			"Model": "Models/BasePlatform.tres",
-			"Color": "#E24E27"
+			"Model": "Models/BreakablePlatform.obj",
+			"Color": "#F97316",
+			"Shader": "Shaders/BreakablePlatform.gdshader"
 		},
 		"Move": {
-			"Model": "Models/BasePlatform.tres",
-			"Color": "#5045F1"
+			"Model": "Models/RegularPlatform.obj",
+			"Color": "#5045F1",
+			"Shader": "Shaders/MovePlatform.gdshader",
+			"ShaderParameters": {
+				"base_wind_speed": 1.0,
+				"wind_density": 6.7,
+				"wind_color": "#FFFFFF",
+				"trail_length_multiplier": 2.0,
+				"trail_width": 0.2
+			}
 		},
 		"Slippery": {
-			"Model": "Models/BasePlatform.tres",
-			"Color": "#09F0D3"
+			"Model": "Models/RegularPlatform.obj",
+			"Color": "#33AAFF",
+			"Shader": "Shaders/SlipperyPlatform.gdshader",
+			"ShaderParameters": {
+				"edge_color": [0.85, 0.95, 1.0, 1.0],
+				"line_thickness": 0.05,
+				"scale": 8.0
+			}
 		},
 		"Teleporter": {
-			"Model": "Models/BasePlatform.tres",
-			"Color": "#568C66"
+			"Model": "Models/RegularPlatform.obj",
+			"Color": "#8B5CF6",
+			"Shader": "Shaders/TeleporterPlatform.gdshader",
+			"ShaderParameters": {
+				"vortex_radius": 0.275,
+				"vortex_arm_count": 5,
+				"vortex_spin_speed": 3.0,
+				"vortex_distortion": 10.0,
+				"rim_color_multiplier": 2.5,
+				"circle_thickness": 0.05,
+				"shadow_radius": 0.3,
+				"distortion_strength": 0.9,
+				"distortion_size": 0.05
+			}
 		}
 	}
 }

@@ -1,5 +1,4 @@
 using Godot;
-using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 using LostInSpace.Scripts.Gameplay.Player;
@@ -52,7 +51,7 @@ public class MovementSystem(
 		{
 			PlatformExited?.Invoke(leaving.Type);
 		}
-		HandleOnLeaveResult(exitResult, from);
+		HandleOnLeaveResult(exitResult, from, direction);
 
 		switch (moveKind)
 		{
@@ -61,7 +60,7 @@ public class MovementSystem(
 				_player.WalkTo(next, direction);
 				break;
 			case MoveKind.Teleport:
-				_player.TeleportTo(next, direction);
+				_player.TeleportTo(next);
 				break;
 		}
 
@@ -106,7 +105,7 @@ public class MovementSystem(
 			return;
 		}
 
-		throw new InvalidOperationException("Movement chain exceeded safe limit (64 moves)");
+		throw new InvalidOperationException($"Movement chain exceeded safe limit ({MaxChain} moves)");
 	}
 
 	private bool HandleOnEnterResult(TileResult result)
@@ -123,13 +122,13 @@ public class MovementSystem(
 		}
 	}
 
-	private void HandleOnLeaveResult(TileResult result, Vector2I leavingFrom)
+	private void HandleOnLeaveResult(TileResult result, Vector2I leavingFrom, Vector2I direction)
 	{
 		switch (result.LeaveAction)
 		{
 			case LeaveAction.DestroySelf:
+				_renderer.DestroyBreakable(_state.GetPlatform(leavingFrom), leavingFrom, direction);
 				_state.RemovePlatform(leavingFrom);
-				_renderer.RemovePlatform(leavingFrom);
 				break;
 		}
 	}

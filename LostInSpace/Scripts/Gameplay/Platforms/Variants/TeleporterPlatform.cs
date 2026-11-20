@@ -1,3 +1,6 @@
+using Godot;
+using LostInSpace.Scripts.Rendering;
+
 namespace LostInSpace.Scripts.Gameplay.Platforms.Variants;
 
 public class TeleporterPlatform(byte teleportLinkId) : IPlatform
@@ -16,4 +19,5 @@ public class TeleporterPlatform(byte teleportLinkId) : IPlatform
 	}
 
 	public TileResult OnExit(PlatformContext ctx) => TileResult.None;
+	public Color GetInstanceCustom() => VisualConstants.TeleporterColors[teleportLinkId];
 }
