@@ -1,11 +1,12 @@
 using Godot;
-using LostInSpace.Scripts.Rendering;
 
 namespace LostInSpace.Scripts.Gameplay.Platforms;
 
 public interface IPlatform
 {
-	VisualData VisualData { get; }
+	PlatformType Type { get; }
+	Vector2I? Direction => Vector2I.Right;
+
 	TileResult OnEnter(PlatformContext ctx);
 	TileResult OnExit(PlatformContext ctx);
 	Color GetInstanceCustom();

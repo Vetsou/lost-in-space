@@ -1,6 +1,7 @@
 using GdUnit4;
 using Godot;
 using LostInSpace.Scripts.Gameplay.Data;
+using LostInSpace.Scripts.Gameplay.Platforms;
 using Newtonsoft.Json;
 using static GdUnit4.Assertions;
 using FileAccess = Godot.FileAccess;
@@ -38,6 +39,7 @@ public class LevelSceneTests
 				.IsNotNull();
 
 			data.Validate();
+			PlatformStyle.Load(data.StylePath);
 		}
 	}
 }

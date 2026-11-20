@@ -16,7 +16,7 @@ public partial class LevelRenderer : Node3D
 
 	public override void _Ready() => _server = new LevelRenderingServer(GetWorld3D());
 
-	public void RenderLevel(LevelState state)
+	public void RenderLevel(LevelState state, PlatformStyle style)
 	{
 		_server.CreateBuffer(state.MapSize);
 
@@ -28,7 +28,7 @@ public partial class LevelRenderer : Node3D
 
 				if (state.GetPlatform(pos) is { } platform)
 				{
-					_server.Render(RenderLayer.Platforms, pos, platform.VisualData);
+					_server.Render(RenderLayer.Platforms, pos, style.GetVisualData(platform.Type), platform.Direction?.DirectionToRotation());
 					_instanceCustoms.TryAdd(pos, platform.GetInstanceCustom);
 				}
 

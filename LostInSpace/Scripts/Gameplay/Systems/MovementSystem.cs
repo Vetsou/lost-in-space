@@ -18,6 +18,9 @@ public class MovementSystem(
 	private readonly LevelSession _levelSession = levelSession;
 	private readonly LevelRenderer _renderer = renderer;
 
+	public event Action<PlatformType> PlatformEntered;
+	public event Action<PlatformType> PlatformExited;
+
 	public bool TryMove(Vector2I direction)
 	{
 		if (!DoStep(direction, MoveKind.Walk))
@@ -41,8 +44,13 @@ public class MovementSystem(
 		}
 
 		Vector2I from = _player.GridPosition;
-		TileResult exitResult = _state.GetPlatform(from)?.OnExit(BuildPlatformContext(from, direction))
+		IPlatform leaving = _state.GetPlatform(from);
+		TileResult exitResult = leaving?.OnExit(BuildPlatformContext(from, direction))
 			?? TileResult.None;
+		if (leaving != null)
+		{
+			PlatformExited?.Invoke(leaving.Type);
+		}
 		HandleOnLeaveResult(exitResult, from, direction);
 
 		switch (moveKind)
@@ -72,6 +80,7 @@ public class MovementSystem(
 				return;
 			}
 
+			PlatformEntered?.Invoke(platform.Type);
 			TileResult result = platform.OnEnter(BuildPlatformContext(here, direction));
 			if (HandleOnEnterResult(result))
 			{

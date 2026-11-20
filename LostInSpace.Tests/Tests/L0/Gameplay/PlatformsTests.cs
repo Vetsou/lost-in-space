@@ -1,5 +1,6 @@
 using GdUnit4;
 using Godot;
+using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Platforms;
 using LostInSpace.Scripts.Gameplay.Platforms.Variants;
 using static GdUnit4.Assertions;
@@ -152,5 +153,39 @@ public class LevelSelectorTests
 		AssertThat(result.EnterAction).IsEqual(EnterAction.None);
 		AssertThat(result.MoveKind).IsEqual(MoveKind.Teleport);
 		AssertThat(result.Target).IsEqual(destination);
+	}
+
+	[TestCase]
+	public void MovePlatform_ShouldReportItsDirection_AndOthersRight()
+	{
+		foreach (Vector2I direction in new[] { Vector2I.Left, Vector2I.Right, Vector2I.Up, Vector2I.Down })
+		{
+			IPlatform platform = new MovePlatform(direction);
+			AssertThat(platform.Direction).IsEqual(direction);
+		}
+
+		IPlatform slippery = new SlipperyPlatform();
+		AssertThat(slippery.Direction).IsEqual(Vector2I.Right);
+	}
+
+	[TestCase]
+	public void DirectionToRotation_ShouldTurnRightFacingTileTowardsDirection()
+	{
+		foreach (Vector2I direction in new[] { Vector2I.Left, Vector2I.Right, Vector2I.Up, Vector2I.Down })
+		{
+			Vector3 facing = Vector3.Right.Rotated(Vector3.Up, direction.DirectionToRotation());
+			AssertThat(facing.IsEqualApprox(direction.GridToWorld().Normalized())).IsTrue();
+		}
+	}
+
+	[TestCase]
+	public void Platforms_ShouldReportTheirType()
+	{
+		AssertThat(new RegularPlatform().Type).IsEqual(PlatformType.Regular);
+		AssertThat(new GoalPlatform().Type).IsEqual(PlatformType.Goal);
+		AssertThat(new BreakablePlatform().Type).IsEqual(PlatformType.Breakable);
+		AssertThat(new MovePlatform(Vector2I.Left).Type).IsEqual(PlatformType.Move);
+		AssertThat(new SlipperyPlatform().Type).IsEqual(PlatformType.Slippery);
+		AssertThat(new TeleporterPlatform(0).Type).IsEqual(PlatformType.Teleporter);
 	}
 }

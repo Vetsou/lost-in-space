@@ -33,7 +33,7 @@ public partial class ConfigManager : Node
 	private static readonly System.Collections.Generic.Dictionary<(string, string), Action<Variant>> _applySettingMap = new()
 	{
 		[(SettingsMap.Section.AUDIO, SettingsMap.Audio.MASTER_VOLUME)] = v =>
-			AudioServer.SetBusVolumeDb(0, Mathf.LinearToDb(v.As<float>())),
+			AudioServer.SetBusVolumeDb(0, Mathf.LinearToDb(v.As<float>() / 100f)),
 
 		[(SettingsMap.Section.VIDEO, SettingsMap.Video.FULLSCREEN)] = v =>
 			DisplayServer.WindowSetMode(v.As<bool>()
