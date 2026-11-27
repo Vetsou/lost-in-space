@@ -21,6 +21,8 @@ public partial class SettingsMenu : Scene
 	private Godot.Collections.Array<Button> _settingsButtons;
 
 	private Godot.Collections.Dictionary<SettingsTab, Control> _panels;
+	private StringName _pause = "ui_cancel";
+	public bool OpenedFromPause { get; set; } = false;
 
 	public override void _Ready()
 	{
@@ -42,6 +44,15 @@ public partial class SettingsMenu : Scene
 	private void OnKeybindsCategoryPressed() => ChangePanel(SettingsTab.Keybinds);
 	private static void OnResetButtonPressed() => ConfigManager.Instance.ResetToDefault();
 
+	public override void _UnhandledInput(InputEvent @event)
+	{
+		if(OpenedFromPause && @event.IsActionPressed(_pause))
+		{
+			OnBackPressed();
+			GetViewport().SetInputAsHandled(); 
+		}
+	}
+
 	private void ChangePanel(SettingsTab tab)
 	{
 		foreach (Control panel in _panels.Values)
@@ -56,7 +67,15 @@ public partial class SettingsMenu : Scene
 	{
 		ConfigManager.Instance.SaveSettings();
 		ConfigManager.Instance.ApplySettings();
-		ChangeScene(SceneId.MainMenu);
+		if(OpenedFromPause)
+		{
+			QueueFree();
+		}
+		else
+		{
+			ChangeScene(SceneId.MainMenu);
+		}
+		
 	}
 
 	private void OnRebindStateChanged(bool active)

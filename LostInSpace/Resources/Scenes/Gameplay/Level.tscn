@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://b7eyd5fs1jki7" path="res://Scripts/Gameplay/LevelRenderer.cs" id="2_gjwra"]
 [ext_resource type="Script" uid="uid://bgiq0ihh6fqj6" path="res://Scripts/UI/Huds/LevelHud.cs" id="4_8ahst"]
 [ext_resource type="PackedScene" uid="uid://d2mpou7qc41mn" path="res://Resources/Scenes/Gameplay/Player.tscn" id="4_sxngl"]
+[ext_resource type="PackedScene" uid="uid://cd2jjirph6cwp" path="res://Resources/Scenes/UI/PauseMenu.tscn" id="5_gjwra"]
 
 [sub_resource type="Environment" id="Environment_avkng"]
 
@@ -86,3 +87,5 @@ text = "HUD_PAUSE_MENU"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=150783671]
 transform = Transform3D(0.6819984, -0.07644726, 0.72734743, 0, 0.9945217, 0.10452849, -0.7313537, -0.07128823, 0.67826253, 0, 0, 0)
+
+[node name="PauseMenu" parent="." unique_id=1222242255 instance=ExtResource("5_gjwra")]

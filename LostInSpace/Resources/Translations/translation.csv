@@ -25,3 +25,7 @@ HUD_POINTS,Points,Punkty
 HUD_OPTIONAL,Optional,Opcjonalne
 HUD_RESET_LEVEL,Reset,Restart
 HUD_PAUSE_MENU,Pause,Pauza
+RESUME,Resume,Wznów
+LEVEL_SELECT,Level Select, Wybór poziomu
+PAUSE,Pause menu, Menu pauzy
+RETURN,Return,Wróć

@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://cd2jjirph6cwp"]
+
+[ext_resource type="Script" uid="uid://bhw3f1hdbn8ed" path="res://Scripts/UI/Scenes/PauseMenu/PauseMenu.cs" id="1_lx3dj"]
+
+[node name="PauseMenu" type="Control" unique_id=1222242255]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lx3dj")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1340585527]
+process_mode = 2
+clip_children = 2
+oversampling_with_scale = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.41568628)
+
+[node name="Foreground" type="CenterContainer" parent="." unique_id=1580339039]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenuLayout" type="VBoxContainer" parent="Foreground" unique_id=449371533]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="Title" type="Label" parent="Foreground/MainMenuLayout" unique_id=1563362220]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "PAUSE"
+horizontal_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Foreground/MainMenuLayout" unique_id=1884943349]
+layout_mode = 2
+theme_override_constants/margin_right = 500
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="Foreground/MainMenuLayout/MarginContainer" unique_id=1653900940]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ResumeButton" type="Button" parent="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=609267404]
+layout_mode = 2
+text = "RESUME"
+
+[node name="RestartButton" type="Button" parent="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1800389243]
+layout_mode = 2
+text = "HUD_RESET_LEVEL"
+
+[node name="LevelSelectButton" type="Button" parent="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1257686748]
+layout_mode = 2
+text = "LEVEL_SELECT"
+
+[node name="SettingsButton" type="Button" parent="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=1272471841]
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="ReturnToMenuButton" type="Button" parent="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer" unique_id=851658522]
+layout_mode = 2
+text = "RETURN_TO_MENU"
+
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/ResumeButton" to="." method="resumeButtonPressed"]
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/RestartButton" to="." method="restartButtonPressed"]
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/LevelSelectButton" to="." method="exitSceneButtonPressed" binds= [0]]
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/SettingsButton" to="." method="OnOptionsButtonPressed"]
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/ReturnToMenuButton" to="." method="exitSceneButtonPressed" binds= [1]]

@@ -86,7 +86,7 @@ layout_mode = 2
 [node name="BackButton" type="Button" parent="OptionsContainer" unique_id=416545207]
 layout_mode = 2
 size_flags_vertical = 8
-text = "RETURN_TO_MENU"
+text = "RETURN"
 
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/GeneralButton" to="." method="OnGeneralCategoryPressed"]
 [connection signal="pressed" from="OptionsContainer/CategoryContainer/VideoButton" to="." method="OnVideoCategoryPressed"]

@@ -28,6 +28,7 @@ public partial class LevelHud : CanvasLayer
 		_level.OptionalPointsChanged += OnOptionalPointsChanged;
 
 		_resetButton.Pressed += OnResetPressed;
+		_menuButton.Pressed += OnMenuPressed;
 	}
 
 	public void Unbind()
@@ -54,6 +55,7 @@ public partial class LevelHud : CanvasLayer
 		0 ? $"{Tr("HUD_BEST")}: {best}" : $"{Tr("HUD_BEST")}: -";
 
 	private void OnResetPressed() => _level.ResetLevel();
+	private void OnMenuPressed() => _level.PauseLevel();
 
 	private void OnOptionalPointsChanged(int c, int t)
 	{

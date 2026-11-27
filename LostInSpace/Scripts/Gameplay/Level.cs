@@ -3,6 +3,7 @@ using LostInSpace.Scripts.Gameplay.Data;
 using LostInSpace.Scripts.Gameplay.Player;
 using LostInSpace.Scripts.Gameplay.Systems;
 using LostInSpace.Scripts.UI;
+using LostInSpace.Scripts.UI.Scenes.PauseMenu;
 using Newtonsoft.Json;
 using FileAccess = Godot.FileAccess;
 
@@ -18,7 +19,9 @@ public partial class Level : Scene
 
 	private LevelState _state;
 	private LevelSession _levelSession;
+	private PauseMenu _pauseMenu;
 	private MovementSystem _movement;
+	private StringName _pause = "ui_cancel";
 
 	#region HUD signals
 	[Signal] public delegate void LevelLoadedEventHandler(string levelId);
@@ -31,6 +34,7 @@ public partial class Level : Scene
 	public override void _Ready()
 	{
 		_levelSession = new LevelSession(_renderer);
+		_pauseMenu = GetNode<PauseMenu>("PauseMenu");
 
 		_levelSession.PrimaryChanged += OnPrimaryChanged;
 		_levelSession.OptionalChanged += OnOptionalChanged;
@@ -58,6 +62,31 @@ public partial class Level : Scene
 		if (_movement != null && InputReader.TryReadDirection(@event, out Vector2I dir))
 		{
 			_movement.TryMove(dir);
+		}
+	}
+
+	public override void _UnhandledInput(InputEvent @event)
+	{
+		if(@event.IsActionPressed(_pause))
+		{
+			PauseLevel();
+		}
+	}
+
+	public override void _Notification(int what)
+	{
+		switch(what)
+		{
+			case (int)NotificationPaused:
+				_hud.Visible = false;
+				Engine.TimeScale = 0;
+			break;
+			case (int)NotificationUnpaused:
+				_hud.Visible = true;
+				Engine.TimeScale = 1;
+			break;
+			default:
+			break;
 		}
 	}
 
@@ -92,6 +121,11 @@ public partial class Level : Scene
 		}
 	}
 
+	public void PauseLevel()
+	{
+		_pauseMenu.TooglePause();
+	}
+
 	private void OnPrimaryChanged()
 	{
 		EmitSignal(SignalName.PrimaryPointsChanged,
@@ -118,5 +152,10 @@ public partial class Level : Scene
 		_hud.Unbind();
 		_renderer.Clear();
 		ChangeScene(SceneId.LevelSelector);
+	}
+
+	public void ChangeSceneExt(SceneId sceneId)
+	{
+		ChangeScene(sceneId);
 	}
 }
