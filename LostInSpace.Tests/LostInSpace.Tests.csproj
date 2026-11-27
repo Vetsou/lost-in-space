@@ -1,4 +1,4 @@
-<Project Sdk="Godot.NET.Sdk/4.6.2" InitialTargets="CreateSymlinks">
+<Project Sdk="Godot.NET.Sdk/4.7.2" InitialTargets="CreateSymlinks">
 
     <PropertyGroup>
         <!-- Disable Central Package Management for Godot projects -->
@@ -19,9 +19,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1"/>
-        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc4"/>
-        <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+        <PackageReference Include="gdUnit4.api" Version="5.1.0-rc4" />
+        <PackageReference Include="gdUnit4.test.adapter" Version="3.0.0" />
     </ItemGroup>
 
     <Target Name="CreateSymlinks">
@@ -34,31 +34,21 @@
         </PropertyGroup>
 
         <!-- Windows: Create symlinks -->
-        <Exec Command="if not exist &quot;$(ScriptTarget)&quot; mklink /D &quot;$(ScriptTarget)&quot; &quot;$(ScriptSource)&quot;"
-            Condition="'$(OS)' == 'Windows_NT'"
-            ContinueOnError="true"/>
+        <Exec Command="if not exist &quot;$(ScriptTarget)&quot; mklink /D &quot;$(ScriptTarget)&quot; &quot;$(ScriptSource)&quot;" Condition="'$(OS)' == 'Windows_NT'" ContinueOnError="true" />
 
-        <Exec Command="if not exist &quot;$(ResourcesTarget)&quot; mklink /D &quot;$(ResourcesTarget)&quot; &quot;$(ResourcesSource)&quot;"
-            Condition="'$(OS)' == 'Windows_NT'"
-            ContinueOnError="true"/>
+        <Exec Command="if not exist &quot;$(ResourcesTarget)&quot; mklink /D &quot;$(ResourcesTarget)&quot; &quot;$(ResourcesSource)&quot;" Condition="'$(OS)' == 'Windows_NT'" ContinueOnError="true" />
 
         <!-- Unix/Linux/Mac: Create symlinks -->
-        <Exec Command="[ ! -L '$(ScriptTarget)' ] &amp;&amp; ln -s '$(ScriptSource)' '$(ScriptTarget)' || true"
-            Condition="'$(OS)' != 'Windows_NT'"
-            ContinueOnError="true"/>
+        <Exec Command="[ ! -L '$(ScriptTarget)' ] &amp;&amp; ln -s '$(ScriptSource)' '$(ScriptTarget)' || true" Condition="'$(OS)' != 'Windows_NT'" ContinueOnError="true" />
 
-        <Exec Command="[ ! -L '$(ResourcesTarget)' ] &amp;&amp; ln -s '$(ResourcesSource)' '$(ResourcesTarget)' || true"
-            Condition="'$(OS)' != 'Windows_NT'"
-            ContinueOnError="true"/>
+        <Exec Command="[ ! -L '$(ResourcesTarget)' ] &amp;&amp; ln -s '$(ResourcesSource)' '$(ResourcesTarget)' || true" Condition="'$(OS)' != 'Windows_NT'" ContinueOnError="true" />
 
         <!-- Verify symlink exists and is accessible -->
-        <Error Condition="!Exists('$(ScriptTarget)')"
-            Text="Failed to create symlink at $(ScriptTarget). On Windows, try running as Administrator or enabling Developer Mode."/>
+        <Error Condition="!Exists('$(ScriptTarget)')" Text="Failed to create symlink at $(ScriptTarget). On Windows, try running as Administrator or enabling Developer Mode." />
 
-        <Error Condition="!Exists('$(ResourcesTarget)')"
-            Text="Failed to create symlink at $(ResourcesTarget). On Windows, try running as Administrator or enabling Developer Mode."/>
+        <Error Condition="!Exists('$(ResourcesTarget)')" Text="Failed to create symlink at $(ResourcesTarget). On Windows, try running as Administrator or enabling Developer Mode." />
 
         <!-- Log confirmation -->
-        <Message Text="✓ Symlink verified: $(ScriptTarget) -> $(ScriptSource) AND $(ResourcesTarget) -> $(ResourcesSource)" Importance="high"/>
+        <Message Text="✓ Symlink verified: $(ScriptTarget) -&gt; $(ScriptSource) AND $(ResourcesTarget) -&gt; $(ResourcesSource)" Importance="high" />
     </Target>
 </Project>

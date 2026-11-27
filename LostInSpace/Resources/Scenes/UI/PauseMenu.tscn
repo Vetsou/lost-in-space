@@ -70,8 +70,8 @@ text = "SETTINGS"
 layout_mode = 2
 text = "RETURN_TO_MENU"
 
-[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/ResumeButton" to="." method="resumeButtonPressed"]
-[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/RestartButton" to="." method="restartButtonPressed"]
-[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/LevelSelectButton" to="." method="exitSceneButtonPressed" binds= [0]]
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/ResumeButton" to="." method="ResumeButtonPressed"]
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/RestartButton" to="." method="RestartButtonPressed"]
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/LevelSelectButton" to="." method="ExitSceneButtonPressed" binds= [0]]
 [connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/SettingsButton" to="." method="OnOptionsButtonPressed"]
-[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/ReturnToMenuButton" to="." method="exitSceneButtonPressed" binds= [1]]
+[connection signal="pressed" from="Foreground/MainMenuLayout/MarginContainer/ButtonsContainer/ReturnToMenuButton" to="." method="ExitSceneButtonPressed" binds= [1]]
